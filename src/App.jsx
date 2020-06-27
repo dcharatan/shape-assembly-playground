@@ -1,14 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import SapNavbar from './features/nav/SapNavbar';
+import EditorArea from './features/editor/EditorArea';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Edit and save to reload.</p>
-      </header>
+    <div className="d-flex flex-column h-100">
+      <SapNavbar />
+      <div className="d-flex flex-grow-1">
+        <div className="d-flex flex-row w-100 h-100">
+          <div className="w-50 h-100 p-2">
+            <EditorArea />
+          </div>
+          <div className="w-50 h-100 p-2" />
+        </div>
+      </div>
     </div>
   );
 }
