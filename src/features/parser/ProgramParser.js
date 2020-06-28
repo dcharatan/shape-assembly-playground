@@ -7,7 +7,7 @@ export default class ProgramParser {
    * @param {SapFunction[]} functions a series of functions
    * @returns {Program} a program AST
    */
-  static parseFunctions(functions) {
+  static parseProgram(functions) {
     let entryFunction;
     const subfunctions = [];
     functions.forEach((fn) => {

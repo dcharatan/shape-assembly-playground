@@ -58,6 +58,9 @@ export default class SapFunctionParser {
 
     // Push the last incomplete function if it exists.
     pushFunction();
+    if (!functions.length) {
+      throw new ExpectationError('at least one function', 'no functions');
+    }
     return functions;
   }
 }

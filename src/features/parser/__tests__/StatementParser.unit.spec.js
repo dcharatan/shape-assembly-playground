@@ -5,7 +5,7 @@ describe('StatementParser Unit Tests', () => {
   let tokens;
 
   beforeEach(() => {
-    tokens = Tokenizer.tokenize(`
+    tokens = Tokenizer.tokenize(`\n
 def potato():
     bbox = Cuboid(.7, 1.7, .5, True)
 
