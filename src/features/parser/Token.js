@@ -2,25 +2,51 @@ import keywords from './keywords/Keywords';
 import separators from './Separators';
 
 export default class Token {
-  constructor(type, start, end) {
-    this.type = type;
+  constructor(text, start, end) {
+    this.text = text;
     this.start = start;
     this.end = end;
   }
 
-  static isWhitespace(token) {
-    return token !== '\n' && token.trim() === '';
+  static isTextWhitespace(text) {
+    return text !== text.trim() && !Token.isTextNewline(text);
   }
 
-  static isKeyword(token) {
-    return keywords.has(token);
+  static isTextNewline(text) {
+    return text === '\n';
   }
 
-  static isSeparator(token) {
-    return separators.has(token);
+  static isTextKeyword(text) {
+    return keywords.has(text);
   }
 
-  static isWord(token) {
-    return !Token.isWhitespace(token) && !Token.isKeyword(token) && !Token.isSeparator(token);
+  static isTextSeparator(text) {
+    return separators.has(text);
+  }
+
+  static isTextWord(text) {
+    return (
+      !Token.isTextWhitespace(text) && !Token.isTextKeyword(text) && !Token.isTextSeparator(text)
+    );
+  }
+
+  isWhitespace() {
+    return Token.isTextWhitespace(this.text);
+  }
+
+  isNewline() {
+    return Token.isTextNewline(this.text);
+  }
+
+  isKeyword() {
+    return Token.isTextKeyword(this.text);
+  }
+
+  isSeparator() {
+    return Token.isTextSeparator(this.text);
+  }
+
+  isWord() {
+    return Token.isTextWord(this.text);
   }
 }

@@ -1,10 +1,10 @@
 import Keyword from './Keyword';
-import Variable from '../types/VariableExisting';
+import VariableExisting from '../types/VariableExisting';
 import Axis from '../types/Axis';
 
 export default class KeywordReflect extends Keyword {
   constructor() {
-    super([Variable, Axis]);
+    super([VariableExisting, Axis]);
   }
 
   static get name() {

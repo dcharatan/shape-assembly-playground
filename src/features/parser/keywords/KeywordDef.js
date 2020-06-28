@@ -1,11 +1,11 @@
 import Keyword from './Keyword';
-import PositiveFloat from '../types/PositiveFloat';
-import BooleanType from '../types/BooleanType';
 import ExpectationError from '../ExpectationError';
+import VariableNew from '../types/VariableNew';
 
 export default class KeywordDef extends Keyword {
-  constructor() {
-    super([PositiveFloat, PositiveFloat, PositiveFloat, BooleanType]);
+  constructor(functionName) {
+    super([VariableNew, VariableNew, VariableNew, VariableNew]);
+    this.functionName = functionName;
   }
 
   parseArguments(keywordArguments) {
@@ -13,8 +13,8 @@ export default class KeywordDef extends Keyword {
       super.parseArguments(keywordArguments);
     } else if (keywordArguments.length) {
       throw new ExpectationError(
-        '0 arguments or 4 arguments',
-        `${keywordArguments.length} arguments`
+        '0 parameters or 4 parameters',
+        `${keywordArguments.length} parameters`
       );
     }
     this.keywordArguments = [1, 1, 1, true];

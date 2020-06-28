@@ -2,7 +2,7 @@ import ExpectationError from '../ExpectationError';
 
 export default class VariableExisting {
   static parse(token, variables) {
-    if (variables[token]) {
+    if (variables && variables[token]) {
       return variables[token];
     }
     const variableNames = Object.keys(variables);
