@@ -1,5 +1,4 @@
-export const separators = new Set([',', '(', ')', '=', ':', '\n']);
-export const keywords = new Set(['Cuboid', 'attach', 'squeeze', 'reflect', 'translate']);
+import Token from './Token';
 
 export default class ShapeAssemblyParser {
   constructor() {
@@ -11,15 +10,6 @@ export default class ShapeAssemblyParser {
       reflect: {},
       translate: {},
     };
-  }
-
-  static isSeparator(character) {
-    return separators.has(character);
-  }
-
-  // Newlines are considered separators, not whitespace.
-  static isWhitespace(character) {
-    return character === ' ' || character === '\t';
   }
 
   /**
@@ -41,10 +31,10 @@ export default class ShapeAssemblyParser {
     };
 
     let tokenStart = 0;
-    let charWasWhitespace = this.isWhitespace(text.charAt(0));
+    let charWasWhitespace = Token.isWhitespace(text.charAt(0));
     for (let i = 0; i < text.length; i += 1) {
       const char = text.charAt(i);
-      const charIsWhitespace = this.isWhitespace(char);
+      const charIsWhitespace = Token.isWhitespace(char);
 
       // Moving between whitespace and non-whitespace creates a new token.
       if (charWasWhitespace !== charIsWhitespace) {
@@ -53,7 +43,7 @@ export default class ShapeAssemblyParser {
       }
 
       // Individual separator characters are tokens.
-      if (this.isSeparator(char)) {
+      if (Token.isSeparator(char)) {
         pushWord(tokenStart, i);
         tokens.push(text.charAt(i));
         tokenStart = i + 1;
@@ -68,9 +58,6 @@ export default class ShapeAssemblyParser {
   }
 
   parseText(text) {
-    this.variables = {};
-
-    const withinComment = false;
-    const indented = false;
+    const tokens = ShapeAssemblyParser.tokenize(text);
   }
 }

@@ -1,34 +1,6 @@
 import ShapeAssemblyParser from '../ShapeAssemblyParser';
 
 describe('ShapeAssemblyParser Unit Tests', () => {
-  let shapeAssemblyParser;
-
-  beforeEach(() => {
-    shapeAssemblyParser = new ShapeAssemblyParser();
-  });
-
-  describe('isWhitespace', () => {
-    test('space is whitespace', () => {
-      const text = ' ';
-      expect(ShapeAssemblyParser.isWhitespace(text)).toBeTruthy();
-    });
-
-    test('tab is whitespace', () => {
-      const text = '\t';
-      expect(ShapeAssemblyParser.isWhitespace(text)).toBeTruthy();
-    });
-
-    test('newline is not whitespace', () => {
-      const text = '\n';
-      expect(ShapeAssemblyParser.isWhitespace(text)).toBeFalsy();
-    });
-
-    test('x is not whitespace', () => {
-      const text = 'x';
-      expect(ShapeAssemblyParser.isWhitespace(text)).toBeFalsy();
-    });
-  });
-
   describe('tokenize', () => {
     test('words with whitespace', () => {
       const text = 'zebras are cool';
