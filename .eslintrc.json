@@ -4,11 +4,15 @@
     "prettier"
   ],
   "plugins": [
-    "prettier"
+    "prettier",
+    "jest"
   ],
   "rules": {
     "prettier/prettier": [
       "error"
     ]
+  },
+  "env": {
+    "jest/globals": true
   }
 }
