@@ -13,20 +13,29 @@ export default class StatementParser {
     const statements = [];
     let lineTokens = [];
     let indentation;
+
+    // Add a statement if doing so is valid.
+    const pushStatement = () => {
+      if (lineTokens.length) {
+        statements.push(new Statement(indentation, lineTokens));
+        lineTokens = [];
+        indentation = undefined;
+      }
+    };
+
     tokens.forEach((token) => {
       if (token.isWhitespace()) {
         indentation = indentation || StatementParser.handleWhitespace(token.text, indentation);
       } else if (token.isNewline()) {
-        if (lineTokens.length) {
-          statements.push(new Statement(indentation, lineTokens));
-          lineTokens = [];
-          indentation = undefined;
-        }
+        pushStatement();
       } else {
         lineTokens.push(token);
         indentation = indentation || 0;
       }
     });
+
+    // Add the last statement if necessary.
+    pushStatement();
     return statements;
   }
 

@@ -1,22 +1,13 @@
-import DefinitionTracker from './DefinitionTracker';
-import ParserContext from './ParserContext';
+import Tokenizer from './Tokenizer';
+import StatementParser from './StatementParser';
+import SapFunctionParser from './SapFunctionParser';
+import ProgramParser from './ProgramParser';
 
 export default class ShapeAssemblyParser {
-  constructor() {
-    this.definitionTracker = new DefinitionTracker();
-    this.parserContext = new ParserContext();
-  }
-
-  parseText(text) {
-    const tokens = ShapeAssemblyParser.tokenize(text);
-    let tokenIndex = 0;
-    while (tokenIndex < tokens.length) {
-      const result = this.parserContext.updateState(tokens, tokenIndex, this.definitionTracker);
-      tokenIndex = result.nextTokenIndex;
-    }
-
-    tokens.forEach((_, index) => {
-      this.parserContext.updateState(tokens, index, this.definitionTracker);
-    });
+  static parseText(text) {
+    const tokens = Tokenizer.tokenize(text);
+    const statements = StatementParser.parseStatements(tokens);
+    const functions = SapFunctionParser.parseFunctions(statements);
+    return ProgramParser.parseProgram(functions);
   }
 }
