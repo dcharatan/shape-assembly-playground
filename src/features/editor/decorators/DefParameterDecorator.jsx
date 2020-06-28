@@ -1,8 +1,7 @@
 import React from 'react';
-import { Badge } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const DefParameterDecorator = ({ children }) => <Badge variant="primary">{children}</Badge>;
+const DefParameterDecorator = ({ children }) => <span className="text-success">{children}</span>;
 
 DefParameterDecorator.propTypes = {
   children: PropTypes.node.isRequired,

@@ -23,9 +23,12 @@ export default class StatementParser {
       }
     };
 
-    tokens.forEach((token) => {
+    tokens.forEach((token, index) => {
+      const nextToken = tokens[index + 1];
       if (token.isWhitespace()) {
-        indentation = indentation || StatementParser.handleWhitespace(token.text, indentation);
+        if (indentation === undefined && (!nextToken || !nextToken.isNewline())) {
+          indentation = StatementParser.handleWhitespace(token.text, indentation);
+        }
       } else if (token.isNewline()) {
         pushStatement();
       } else {

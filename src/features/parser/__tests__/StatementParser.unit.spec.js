@@ -6,9 +6,9 @@ describe('StatementParser Unit Tests', () => {
 
   beforeEach(() => {
     tokens = Tokenizer.tokenize(`\n
-def potato():
+def potato():\t
     bbox = Cuboid(.7, 1.7, .5, True)
-
+    
 def lol(l, w, h, aligned):
     bbox = Cuboid(.7, .6, .5, True)
 `);
@@ -46,6 +46,13 @@ def lol(l, w, h, aligned):
         ['def', 'lol', '(', 'l', ',', 'w', ',', 'h', ',', 'aligned', ')', ':'],
         ['bbox', '=', 'Cuboid', '(', '.7', ',', '.6', ',', '.5', ',', 'True', ')'],
       ]);
+    });
+
+    test('whitespace after tokens', () => {
+      tokens = Tokenizer.tokenize(`def potato():  `);
+      expect(
+        StatementParser.parseStatements(tokens).map((s) => s.tokens.map((t) => t.text))
+      ).toEqual([['def', 'potato', '(', ')', ':']]);
     });
   });
 });

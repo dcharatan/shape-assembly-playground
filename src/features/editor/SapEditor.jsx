@@ -1,11 +1,20 @@
 import React from 'react';
-import { Editor, EditorState, RichUtils, CompositeDecorator } from 'draft-js';
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  CompositeDecorator,
+  ContentState,
+  Modifier,
+  getDefaultKeyBinding,
+} from 'draft-js';
 import './SapEditor.scss';
 import ShapeAssemblyParser from '../parser/ShapeAssemblyParser';
 import DefDecorator, { makeDefDecoratorStrategy } from './decorators/DefDecorator';
 import DefParameterDecorator, {
   makeDefParameterDecoratorStrategy,
 } from './decorators/DefParameterDecorator';
+import 'draft-js/dist/Draft.css';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -66,6 +75,32 @@ export default class SapEditor extends React.Component {
         }),
       });
     };
+
+    this.handlePastedText = (text, html, editorState) => {
+      const pastedBlocks = ContentState.createFromText(text).blockMap;
+      const newState = Modifier.replaceWithFragment(
+        editorState.getCurrentContent(),
+        editorState.getSelection(),
+        pastedBlocks
+      );
+      const newEditorState = EditorState.push(editorState, newState, 'insert-fragment');
+      this.onChange(newEditorState);
+      return 'handled';
+    };
+
+    this.insertText = (text, editorState) => {
+      const currentContent = editorState.getCurrentContent();
+      const currentSelection = editorState.getSelection();
+      const newContent = Modifier.replaceText(currentContent, currentSelection, text);
+      const newEditorState = EditorState.push(editorState, newContent, 'insert-characters');
+      return EditorState.forceSelection(newEditorState, newContent.getSelectionAfter());
+    };
+
+    this.onTab = (event) => {
+      const { editorState } = this.state;
+      this.onChange(this.insertText('    ', editorState));
+      event.preventDefault();
+    };
   }
 
   handleKeyCommand(command, editorState) {
@@ -86,6 +121,8 @@ export default class SapEditor extends React.Component {
           editorState={editorState}
           handleKeyCommand={this.handleKeyCommand}
           onChange={this.onChange}
+          handlePastedText={this.handlePastedText}
+          onTab={this.onTab}
         />
       </div>
     );
