@@ -1,24 +1,11 @@
 import React from 'react';
 import { Editor, EditorState, RichUtils, CompositeDecorator } from 'draft-js';
 import './SapEditor.scss';
-import { Badge } from 'react-bootstrap';
 import ShapeAssemblyParser from '../parser/ShapeAssemblyParser';
-
-const DefSpan = (props) => {
-  return (
-    <span {...props} style={{ color: 'red' }}>
-      {props.children}
-    </span>
-  );
-};
-
-const DefParameterSpan = (props) => {
-  return (
-    <span {...props} style={{ color: 'blue' }}>
-      <Badge variant="danger">{props.children}</Badge>
-    </span>
-  );
-};
+import DefDecorator, { makeDefDecoratorStrategy } from './decorators/DefDecorator';
+import DefParameterDecorator, {
+  makeDefParameterDecoratorStrategy,
+} from './decorators/DefParameterDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -42,27 +29,6 @@ function applyStrategy(contentBlock, callback, contentState, highlights) {
       callback(adjustedStart, adjustedEnd);
     }
   });
-}
-
-function defStrategy(contentBlock, callback, contentState) {
-  if (!this.ast) {
-    return;
-  }
-  const functions = [this.ast.entryFunction, ...this.ast.subfunctions];
-  const highlights = functions.map((fn) => fn.defStatement.tokens[0]);
-  applyStrategy(contentBlock, callback, contentState, highlights);
-}
-
-function defParameterStrategy(contentBlock, callback, contentState) {
-  if (!this.ast) {
-    return;
-  }
-  const functions = [this.ast.entryFunction, ...this.ast.subfunctions];
-  const highlights = [];
-  functions.forEach((fn) => {
-    fn.parameterTokens.forEach((t) => highlights.push(t));
-  });
-  applyStrategy(contentBlock, callback, contentState, highlights);
 }
 
 export default class SapEditor extends React.Component {
@@ -89,12 +55,12 @@ export default class SapEditor extends React.Component {
         editorState: EditorState.set(editorState, {
           decorator: new CompositeDecorator([
             {
-              strategy: defStrategy.bind(this),
-              component: DefSpan,
+              strategy: makeDefDecoratorStrategy(() => this.ast, applyStrategy),
+              component: DefDecorator,
             },
             {
-              strategy: defParameterStrategy.bind(this),
-              component: DefParameterSpan,
+              strategy: makeDefParameterDecoratorStrategy(() => this.ast, applyStrategy),
+              component: DefParameterDecorator,
             },
           ]),
         }),
