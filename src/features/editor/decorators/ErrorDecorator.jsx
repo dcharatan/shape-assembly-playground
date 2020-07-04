@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DefDecorator = ({ children }) => <span className="text-primary">{children}</span>;
+const DefDecorator = ({ children }) => (
+  <span className="text-danger" style={{ textDecoration: 'underline' }}>
+    {children}
+  </span>
+);
 
 DefDecorator.propTypes = {
   children: PropTypes.node.isRequired,
@@ -9,14 +13,14 @@ DefDecorator.propTypes = {
 
 export default DefDecorator;
 
-export const makeDefDecoratorStrategy = (getAst, applyStrategy) => (
+export const makeErrorDecoratorStrategy = (getAst, applyStrategy) => (
   contentBlock,
   callback,
   contentState
 ) => {
   const ast = getAst();
   if (ast) {
-    const highlights = ast.definitions.map((definition) => definition.declaration.nameToken);
+    const highlights = ast.errors;
     applyStrategy(contentBlock, callback, contentState, highlights);
   }
 };

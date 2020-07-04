@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const VariableNameDecorator = ({ children }) => <span className="text-danger">{children}</span>;
+const VariableNameDecorator = ({ children }) => <span className="text-success">{children}</span>;
 
 VariableNameDecorator.propTypes = {
   children: PropTypes.node.isRequired,
@@ -16,11 +16,10 @@ export const makeVariableNameDecoratorStrategy = (getAst, applyStrategy) => (
 ) => {
   const ast = getAst();
   if (ast) {
-    const functions = [ast.entryFunction, ...ast.subfunctions];
-    const highlights = [];
-    functions.forEach((fn) => {
-      fn.assignedVariableTokens.forEach((t) => highlights.push(t));
-    });
+    const highlights = ast.definitions
+      .reduce((invocations, definition) => [...invocations, ...definition.invocations], [])
+      .filter((invocation) => invocation.assignmentToken)
+      .map((invocation) => invocation.assignmentToken);
     applyStrategy(contentBlock, callback, contentState, highlights);
   }
 };

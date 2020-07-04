@@ -8,8 +8,9 @@ import {
   Modifier,
 } from 'draft-js';
 import './SapEditor.scss';
-import ShapeAssemblyParser from '../parser/ShapeAssemblyParser';
+import ShapeAssemblyParser from '@dcharatan/shape-assembly-parser';
 import DefDecorator, { makeDefDecoratorStrategy } from './decorators/DefDecorator';
+import ErrorDecorator, { makeErrorDecoratorStrategy } from './decorators/ErrorDecorator';
 import DefParameterDecorator, {
   makeDefParameterDecoratorStrategy,
 } from './decorators/DefParameterDecorator';
@@ -49,18 +50,12 @@ export default class SapEditor extends React.Component {
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.ast = undefined;
     this.text = undefined;
-    this.error = undefined;
+    this.parser = new ShapeAssemblyParser();
 
     this.onChange = (editorState) => {
       const newText = editorState.getCurrentContent().getPlainText('\n');
       if (newText !== this.text) {
-        try {
-          this.ast = ShapeAssemblyParser.parseText(newText);
-          this.error = undefined;
-        } catch (err) {
-          this.error = err.message;
-          this.ast = undefined;
-        }
+        this.ast = this.parser.parseShapeAssemblyProgram(newText);
       }
       this.setState({
         editorState: EditorState.set(editorState, {
@@ -72,6 +67,10 @@ export default class SapEditor extends React.Component {
             {
               strategy: makeDefParameterDecoratorStrategy(() => this.ast, applyStrategy),
               component: DefParameterDecorator,
+            },
+            {
+              strategy: makeErrorDecoratorStrategy(() => this.ast, applyStrategy),
+              component: ErrorDecorator,
             },
             {
               strategy: makeVariableNameDecoratorStrategy(() => this.ast, applyStrategy),
@@ -133,7 +132,9 @@ export default class SapEditor extends React.Component {
             />
           </div>
         </div>
-        <div className="text-danger">{this.error}</div>
+        <div className="text-danger">
+          {this.ast ? this.ast.errors.map((e) => e.message).join(' | ') : ''}
+        </div>
       </div>
     );
   }

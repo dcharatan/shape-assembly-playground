@@ -16,11 +16,9 @@ export const makeDefParameterDecoratorStrategy = (getAst, applyStrategy) => (
 ) => {
   const ast = getAst();
   if (ast) {
-    const functions = [ast.entryFunction, ...ast.subfunctions];
-    const highlights = [];
-    functions.forEach((fn) => {
-      fn.parameterTokens.forEach((t) => highlights.push(t));
-    });
+    const highlights = ast.definitions
+      .map((definition) => definition.declaration.parameterTokens)
+      .reduce((tokens, newTokens) => [...tokens, ...newTokens], []);
     applyStrategy(contentBlock, callback, contentState, highlights);
   }
 };
