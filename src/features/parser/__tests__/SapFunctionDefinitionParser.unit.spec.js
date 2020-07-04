@@ -1,8 +1,8 @@
-import SapFunctionParser from '../SapFunctionParser';
+import SapFunctionDefinitionParser from '../SapFunctionDefinitionParser';
 import StatementParser from '../StatementParser';
 import Tokenizer from '../Tokenizer';
 
-describe('SapFunctionParser Unit Tests', () => {
+describe('SapFunctionDefinitionParser Unit Tests', () => {
   let statements;
 
   beforeEach(() => {
@@ -19,12 +19,12 @@ def lol(l, w, h, aligned):
 
   describe('parseFunctions', () => {
     test('correct number of functions parsed', () => {
-      expect(SapFunctionParser.parseFunctions(statements).length).toBe(2);
+      expect(SapFunctionDefinitionParser.parseFunctions(statements).length).toBe(2);
     });
 
     test('correct def statements', () => {
       expect(
-        SapFunctionParser.parseFunctions(statements).map((f) =>
+        SapFunctionDefinitionParser.parseFunctions(statements).map((f) =>
           f.defStatement.tokens.map((t) => t.text)
         )
       ).toEqual([
@@ -35,7 +35,7 @@ def lol(l, w, h, aligned):
 
     test('correct body statements', () => {
       expect(
-        SapFunctionParser.parseFunctions(statements).map((f) =>
+        SapFunctionDefinitionParser.parseFunctions(statements).map((f) =>
           f.bodyStatements.map((s) => s.tokens.map((t) => t.text))
         )
       ).toEqual([

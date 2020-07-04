@@ -4,7 +4,7 @@ import Program from './Program';
 export default class ProgramParser {
   /**
    * Parses functions into a program.
-   * @param {SapFunction[]} functions a series of functions
+   * @param {SapFunctionDefinition[]} functions a series of functions
    * @returns {Program} a program AST
    */
   static parseProgram(functions) {

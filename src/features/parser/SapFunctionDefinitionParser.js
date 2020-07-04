@@ -1,12 +1,12 @@
 import { KW_DEF } from './keywords/Keywords';
 import ExpectationError from './ExpectationError';
-import SapFunction from './SapFunction';
+import SapFunctionDefinition from './SapFunctionDefinition';
 
-export default class SapFunctionParser {
+export default class SapFunctionDefinitionParser {
   /**
    * Parses statements into functions.
    * @param {Statement[]} statements a series of statements
-   * @returns {SapFunction[]} a series of SapFunctions
+   * @returns {SapFunctionDefinition[]} a series of SapFunctionDefinitions
    */
   static parseFunctions(statements) {
     let defStatement;
@@ -16,7 +16,7 @@ export default class SapFunctionParser {
     // Add a function to the list of functions if doing so is valid.
     const pushFunction = () => {
       if (defStatement && bodyStatements.length) {
-        functions.push(new SapFunction(defStatement, bodyStatements));
+        functions.push(new SapFunctionDefinition(defStatement, bodyStatements));
         defStatement = undefined;
         bodyStatements = [];
       }

@@ -1,13 +1,77 @@
 import { KW_DEF } from './keywords/Keywords';
 import ExpectationError from './ExpectationError';
 
-export default class SapFunction {
+export default class SapFunctionDefinition {
   constructor(defStatement, bodyStatements) {
     this.defStatement = defStatement;
     this.bodyStatements = bodyStatements;
     this.parameterTokens = [];
     this.functionNameToken = undefined;
+    this.assignedVariableTokens = [];
     this.parseDefStatement();
+    this.bodyStatements.forEach((statement) => this.parseBodyStatement(statement));
+  }
+
+  parseBodyStatement(statement) {
+    const equalsIndex = statement.tokens.findIndex((t) => t.text === '=');
+
+    // Validate index of equals sign.
+    if (equalsIndex !== -1 && equalsIndex !== 1) {
+      throw new ExpectationError('equals sign at index 1', `equals sign at index ${equalsIndex}`);
+    }
+
+    const result = SapFunctionDefinition.parseFunctionCall(statement.tokens.slice(equalsIndex + 1));
+
+    // Parse assignment.
+    if (equalsIndex === 1) {
+      if (statement.tokens.length < 3 || !statement.tokens[2].isWord()) {
+        throw new ExpectationError('function name', statement.tokens[2] || 'too few tokens');
+      }
+      this.assignedVariableTokens.push(statement.tokens[0]);
+    }
+  }
+
+  static parseFunctionCall(tokens) {
+    if (tokens.length < 3) {
+      throw new ExpectationError('function call', 'too few tokens');
+    }
+    if (!tokens[0].isWord()) {
+      throw new ExpectationError('function name', tokens[0]);
+    }
+
+    // Validate the parentheses.
+    const openingParenthesisIndex = tokens.findIndex((t) => t.text === '(');
+    const closingParenthesisIndex = tokens.findIndex((t) => t.text === ')');
+    if (openingParenthesisIndex !== 1) {
+      throw new ExpectationError('opening parenthesis', tokens[1]);
+    }
+    if (closingParenthesisIndex !== tokens.length - 1) {
+      throw new ExpectationError(
+        'closing parenthesis at end of statement',
+        tokens[tokens.length - 1]
+      );
+    }
+
+    // Gather and validate the arguments.
+    const argumentTokens = [];
+    const betweenParentheses = tokens.slice(openingParenthesisIndex + 1, closingParenthesisIndex);
+    let expectingComma = false;
+    betweenParentheses.forEach((token) => {
+      if (expectingComma) {
+        if (token.text !== ',') {
+          throw new ExpectationError('comma', token);
+        }
+      } else {
+        if (!token.isWord()) {
+          throw new ExpectationError('argument name', token);
+        }
+        argumentTokens.push(token);
+      }
+      expectingComma = !expectingComma;
+    });
+    if (!expectingComma && argumentTokens.length) {
+      throw new ExpectationError('argument name', 'closing parenthesis');
+    }
   }
 
   parseDefStatement() {
@@ -79,6 +143,10 @@ export default class SapFunction {
           return Expectations.END;
         }
         throw new ExpectationError('colon', token);
+      },
+
+      [Expectations.END]: (token) => {
+        throw new ExpectationError('newline', token);
       },
     };
 

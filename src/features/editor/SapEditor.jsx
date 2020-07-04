@@ -6,7 +6,6 @@ import {
   CompositeDecorator,
   ContentState,
   Modifier,
-  getDefaultKeyBinding,
 } from 'draft-js';
 import './SapEditor.scss';
 import ShapeAssemblyParser from '../parser/ShapeAssemblyParser';
@@ -14,6 +13,9 @@ import DefDecorator, { makeDefDecoratorStrategy } from './decorators/DefDecorato
 import DefParameterDecorator, {
   makeDefParameterDecoratorStrategy,
 } from './decorators/DefParameterDecorator';
+import VariableNameDecorator, {
+  makeVariableNameDecoratorStrategy,
+} from './decorators/VariableNameDecorator';
 import 'draft-js/dist/Draft.css';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
@@ -71,6 +73,10 @@ export default class SapEditor extends React.Component {
               strategy: makeDefParameterDecoratorStrategy(() => this.ast, applyStrategy),
               component: DefParameterDecorator,
             },
+            {
+              strategy: makeVariableNameDecoratorStrategy(() => this.ast, applyStrategy),
+              component: VariableNameDecorator,
+            },
           ]),
         }),
       });
@@ -115,15 +121,19 @@ export default class SapEditor extends React.Component {
   render() {
     const { editorState } = this.state;
     return (
-      <div className="rounded border p-3 h-100 w-100">
-        <div>{this.error}</div>
-        <Editor
-          editorState={editorState}
-          handleKeyCommand={this.handleKeyCommand}
-          onChange={this.onChange}
-          handlePastedText={this.handlePastedText}
-          onTab={this.onTab}
-        />
+      <div className="rounded border p-3 h-100 w-100 d-flex flex-column">
+        <div className="d-flex flex-grow-1 w-100">
+          <div className="w-100 h-100">
+            <Editor
+              editorState={editorState}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange}
+              handlePastedText={this.handlePastedText}
+              onTab={this.onTab}
+            />
+          </div>
+        </div>
+        <div className="text-danger">{this.error}</div>
       </div>
     );
   }
