@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DefDecorator = ({ children }) => (
-  <span className="text-danger" style={{ textDecoration: 'underline' }}>
+  <span className="text-danger" style={{ textDecoration: 'underline', backgroundColor: '#ffeeee' }}>
     {children}
   </span>
 );
