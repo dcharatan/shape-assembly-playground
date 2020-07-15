@@ -8,8 +8,8 @@ const Viewer = () => {
       <Canvas>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
-        <Cuboid position={[-2.5, 0, 0]} />
-        <Cuboid position={[1.2, 0, 0]} />
+        {/* <Cuboid position={[-2.5, 0, 0]} />
+        <Cuboid position={[1.2, 0, 0]} /> */}
       </Canvas>
     </div>
   );

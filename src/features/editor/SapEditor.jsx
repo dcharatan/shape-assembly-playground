@@ -1,22 +1,11 @@
 import React from 'react';
-import {
-  Editor,
-  EditorState,
-  RichUtils,
-  CompositeDecorator,
-  ContentState,
-  Modifier,
-} from 'draft-js';
+import { Editor, EditorState, RichUtils, CompositeDecorator, ContentState, Modifier } from 'draft-js';
 import './SapEditor.scss';
 import ShapeAssemblyParser from '@dcharatan/shape-assembly-parser';
 import DefDecorator, { makeDefDecoratorStrategy } from './decorators/DefDecorator';
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './decorators/ErrorDecorator';
-import DefParameterDecorator, {
-  makeDefParameterDecoratorStrategy,
-} from './decorators/DefParameterDecorator';
-import VariableNameDecorator, {
-  makeVariableNameDecoratorStrategy,
-} from './decorators/VariableNameDecorator';
+import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './decorators/DefParameterDecorator';
+import VariableNameDecorator, { makeVariableNameDecoratorStrategy } from './decorators/VariableNameDecorator';
 import 'draft-js/dist/Draft.css';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
@@ -48,32 +37,34 @@ export default class SapEditor extends React.Component {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this.ast = undefined;
     this.text = undefined;
     this.parser = new ShapeAssemblyParser();
 
     this.onChange = (editorState) => {
+      let { ast } = this.props;
+      const { setAst } = this.props;
       const newText = editorState.getCurrentContent().getPlainText('\n');
       if (newText !== this.text) {
-        this.ast = this.parser.parseShapeAssemblyProgram(newText);
+        ast = this.parser.parseShapeAssemblyProgram(newText);
+        setAst(ast);
       }
       this.setState({
         editorState: EditorState.set(editorState, {
           decorator: new CompositeDecorator([
             {
-              strategy: makeDefDecoratorStrategy(() => this.ast, applyStrategy),
+              strategy: makeDefDecoratorStrategy(() => ast, applyStrategy),
               component: DefDecorator,
             },
             {
-              strategy: makeDefParameterDecoratorStrategy(() => this.ast, applyStrategy),
+              strategy: makeDefParameterDecoratorStrategy(() => ast, applyStrategy),
               component: DefParameterDecorator,
             },
             {
-              strategy: makeErrorDecoratorStrategy(() => this.ast, applyStrategy),
+              strategy: makeErrorDecoratorStrategy(() => ast, applyStrategy),
               component: ErrorDecorator,
             },
             {
-              strategy: makeVariableNameDecoratorStrategy(() => this.ast, applyStrategy),
+              strategy: makeVariableNameDecoratorStrategy(() => ast, applyStrategy),
               component: VariableNameDecorator,
             },
           ]),
@@ -118,6 +109,7 @@ export default class SapEditor extends React.Component {
   }
 
   render() {
+    const { ast } = this.props;
     const { editorState } = this.state;
     return (
       <div className="rounded border p-3 h-100 w-100 d-flex flex-column">
@@ -132,9 +124,7 @@ export default class SapEditor extends React.Component {
             />
           </div>
         </div>
-        <div className="text-danger">
-          {this.ast ? this.ast.errors.map((e) => e.message).join(' | ') : ''}
-        </div>
+        <div className="text-danger">{ast ? ast.errors.map((e) => e.message).join(' | ') : ''}</div>
       </div>
     );
   }

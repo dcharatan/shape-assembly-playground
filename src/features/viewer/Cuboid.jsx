@@ -1,27 +1,23 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useRef, useState } from 'react';
-import { useFrame } from 'react-three-fiber';
+import PropTypes from 'prop-types';
+import { Quaternion, Matrix4 } from 'three';
 
-const Cuboid = (props) => {
-  // This reference will give us direct access to the mesh
+const Cuboid = ({ scale, position, normals }) => {
   const mesh = useRef();
-
-  // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
 
-  // Rotate mesh every frame, this is outside of React without overhead
-  useFrame(() => {
-    mesh.current.rotation.x += 0.01;
-    mesh.current.rotation.y = mesh.current.rotation.x;
-  });
+  // Builds a quaternion from the cuboid's normals.
+  const m = new Matrix4();
+  m.set(...normals[0], 0, ...normals[1], 0, ...normals[2], 0, 0, 0, 0, 0);
+  const quaternion = new Quaternion();
+  quaternion.setFromRotationMatrix(m);
 
   return (
     <mesh
-      {...props}
+      position={position}
+      quaternion={quaternion}
       ref={mesh}
-      scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
-      onClick={() => setActive(!active)}
+      scale={scale}
       onPointerOver={() => setHover(true)}
       onPointerOut={() => setHover(false)}
     >
@@ -29,6 +25,12 @@ const Cuboid = (props) => {
       <meshStandardMaterial attach="material" color={hovered ? 'hotpink' : 'orange'} />
     </mesh>
   );
+};
+
+Cuboid.propTypes = {
+  scale: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+  position: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+  normals: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number.isRequired).isRequired).isRequired,
 };
 
 export default Cuboid;

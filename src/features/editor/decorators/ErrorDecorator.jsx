@@ -13,11 +13,7 @@ DefDecorator.propTypes = {
 
 export default DefDecorator;
 
-export const makeErrorDecoratorStrategy = (getAst, applyStrategy) => (
-  contentBlock,
-  callback,
-  contentState
-) => {
+export const makeErrorDecoratorStrategy = (getAst, applyStrategy) => (contentBlock, callback, contentState) => {
   const ast = getAst();
   if (ast) {
     const highlights = ast.errors;

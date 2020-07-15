@@ -9,11 +9,7 @@ DefDecorator.propTypes = {
 
 export default DefDecorator;
 
-export const makeDefDecoratorStrategy = (getAst, applyStrategy) => (
-  contentBlock,
-  callback,
-  contentState
-) => {
+export const makeDefDecoratorStrategy = (getAst, applyStrategy) => (contentBlock, callback, contentState) => {
   const ast = getAst();
   if (ast) {
     const highlights = ast.definitions.map((definition) => definition.declaration.nameToken);
