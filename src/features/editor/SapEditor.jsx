@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Editor, EditorState, RichUtils, CompositeDecorator, ContentState, Modifier } from 'draft-js';
 import './SapEditor.scss';
 import ShapeAssemblyParser from '@dcharatan/shape-assembly-parser';
+import { execute } from '../executor/executorSlice';
 import DefDecorator, { makeDefDecoratorStrategy } from './decorators/DefDecorator';
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './decorators/ErrorDecorator';
 import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './decorators/DefParameterDecorator';
@@ -32,7 +35,7 @@ function applyStrategy(contentBlock, callback, contentState, highlights) {
   });
 }
 
-export default class SapEditor extends React.Component {
+class SapEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
@@ -41,12 +44,13 @@ export default class SapEditor extends React.Component {
     this.parser = new ShapeAssemblyParser();
 
     this.onChange = (editorState) => {
-      let { ast } = this.props;
+      let { ast, doExecute } = this.props;
       const { setAst } = this.props;
       const newText = editorState.getCurrentContent().getPlainText('\n');
       if (newText !== this.text) {
         ast = this.parser.parseShapeAssemblyProgram(newText);
         setAst(ast);
+        doExecute(editorState.getCurrentContent().getPlainText('\n'));
       }
       this.setState({
         editorState: EditorState.set(editorState, {
@@ -109,23 +113,29 @@ export default class SapEditor extends React.Component {
   }
 
   render() {
-    const { ast } = this.props;
     const { editorState } = this.state;
     return (
-      <div className="rounded border p-3 h-100 w-100 d-flex flex-column">
-        <div className="d-flex flex-grow-1 w-100">
-          <div className="w-100 h-100">
-            <Editor
-              editorState={editorState}
-              handleKeyCommand={this.handleKeyCommand}
-              onChange={this.onChange}
-              handlePastedText={this.handlePastedText}
-              onTab={this.onTab}
-            />
-          </div>
+      <div className="rounded border p-3 h-100 w-100 overflow-y-scroll">
+        <div className="w-100 h-100">
+          <Editor
+            editorState={editorState}
+            handleKeyCommand={this.handleKeyCommand}
+            onChange={this.onChange}
+            handlePastedText={this.handlePastedText}
+            onTab={this.onTab}
+          />
         </div>
-        <div className="text-danger">{ast ? ast.errors.map((e) => e.message).join(' | ') : ''}</div>
       </div>
     );
   }
 }
+
+SapEditor.propTypes = {
+  doExecute: PropTypes.func.isRequired,
+};
+
+const mapDispatch = (dispatch) => ({
+  doExecute: (programText) => dispatch(execute(programText)),
+});
+
+export default connect(null, mapDispatch)(SapEditor);

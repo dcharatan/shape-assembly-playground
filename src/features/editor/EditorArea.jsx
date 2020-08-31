@@ -4,7 +4,7 @@ import SapEditor from './SapEditor';
 const EditorArea = (props) => (
   <div className="w-100 h-100 d-flex flex-column">
     <h5>ShapeAssembly Editor</h5>
-    <div className="d-flex flex-grow-1 w-100">
+    <div className="d-flex flex-grow-1 w-100 overflow-y-hidden">
       <SapEditor {...props} />
     </div>
   </div>
