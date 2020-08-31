@@ -1,10 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DefParameterDecorator = ({ children }) => <span className="text-success">{children}</span>;
+const DefParameterDecorator = ({ children, argumentType }) => (
+  <span className="text-success">
+    {children}
+    <span className="text-secondary">{`: ${argumentType.name}`}</span>
+  </span>
+);
 
 DefParameterDecorator.propTypes = {
   children: PropTypes.node.isRequired,
+  argumentType: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default DefParameterDecorator;
@@ -15,6 +23,10 @@ export const makeDefParameterDecoratorStrategy = (getAst, applyStrategy) => (con
     const highlights = ast.definitions
       .map((definition) => definition.declaration.parameterTokens)
       .reduce((tokens, newTokens) => [...tokens, ...newTokens], []);
-    applyStrategy(contentBlock, callback, contentState, highlights);
+    const props = ast.definitions
+      .map((definition) => definition.argumentTypes)
+      .reduce((argumentTypes, newArgumentTypes) => [...argumentTypes, ...newArgumentTypes], [])
+      .map((argumentType) => ({ argumentType }));
+    applyStrategy(contentBlock, callback, contentState, highlights, props);
   }
 };

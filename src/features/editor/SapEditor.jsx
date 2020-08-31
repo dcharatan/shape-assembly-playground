@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Editor, EditorState, RichUtils, CompositeDecorator, ContentState, Modifier } from 'draft-js';
+import { Editor, EditorState, RichUtils, ContentState, Modifier } from 'draft-js';
 import './SapEditor.scss';
 import ShapeAssemblyParser from '@dcharatan/shape-assembly-parser';
 import { execute } from '../executor/executorSlice';
@@ -10,10 +10,11 @@ import ErrorDecorator, { makeErrorDecoratorStrategy } from './decorators/ErrorDe
 import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './decorators/DefParameterDecorator';
 import VariableNameDecorator, { makeVariableNameDecoratorStrategy } from './decorators/VariableNameDecorator';
 import 'draft-js/dist/Draft.css';
+import ProppableCompositeDraftDecorator from './decorators/ProppableCompositeDraftDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
-function applyStrategy(contentBlock, callback, contentState, highlights) {
+function applyStrategy(contentBlock, callback, contentState, highlights, props = []) {
   let beforeChars = 0;
   let found = false;
   contentState.blockMap.forEach((block) => {
@@ -25,12 +26,12 @@ function applyStrategy(contentBlock, callback, contentState, highlights) {
       }
     }
   });
-  highlights.forEach((highlight) => {
+  highlights.forEach((highlight, index) => {
     const { start, end } = highlight;
     const adjustedStart = start - beforeChars;
     const adjustedEnd = end - beforeChars;
     if (adjustedEnd <= contentBlock.text.length) {
-      callback(adjustedStart, adjustedEnd);
+      callback(adjustedStart, adjustedEnd, props[index]);
     }
   });
 }
@@ -49,12 +50,13 @@ class SapEditor extends React.Component {
       const newText = editorState.getCurrentContent().getPlainText('\n');
       if (newText !== this.text) {
         ast = this.parser.parseShapeAssemblyProgram(newText);
+        console.log(ast);
         setAst(ast);
         doExecute(editorState.getCurrentContent().getPlainText('\n'));
       }
       this.setState({
         editorState: EditorState.set(editorState, {
-          decorator: new CompositeDecorator([
+          decorator: new ProppableCompositeDraftDecorator([
             {
               strategy: makeDefDecoratorStrategy(() => ast, applyStrategy),
               component: DefDecorator,
