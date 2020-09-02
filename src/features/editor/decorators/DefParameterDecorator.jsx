@@ -24,6 +24,7 @@ export const makeDefParameterDecoratorStrategy = (getAst, applyStrategy) => (con
       .map((definition) => definition.declaration.parameterTokens)
       .reduce((tokens, newTokens) => [...tokens, ...newTokens], []);
     const props = ast.definitions
+      .filter((definition) => !definition.isBuiltIn)
       .map((definition) => definition.argumentTypes)
       .reduce((argumentTypes, newArgumentTypes) => [...argumentTypes, ...newArgumentTypes], [])
       .map((argumentType) => ({ argumentType }));
