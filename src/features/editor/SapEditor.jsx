@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Editor, EditorState, RichUtils, ContentState, Modifier } from 'draft-js';
 import './SapEditor.scss';
-import ShapeAssemblyParser from '@dcharatan/shape-assembly-parser';
+import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parser';
 import { execute } from '../executor/executorSlice';
 import DefDecorator, { makeDefDecoratorStrategy } from './decorators/DefDecorator';
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './decorators/ErrorDecorator';
@@ -39,7 +39,32 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
 class SapEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
+    this.state = {
+      editorState: EditorState.createWithContent(
+        ContentState.createFromText(`def fn(a):
+    Cuboid(a, 5, 5, True)
+
+@child_assembly
+def sub_child_assembly(a):
+    cuboid_with_name = Cuboid(2,0.25,0.25,True)
+    fn(0.1)
+
+@child_assembly
+def child_assembly(a):
+    cuboid_with_name = Cuboid(0.25,2,0.25,True)
+    Cuboid(0.25,0.25,2,True)
+    sub_child_bbox = Cuboid(1,1,2,True)
+    sub_child_assembly(sub_child_bbox)
+
+@root_assembly
+def root():
+    bbox = Cuboid(1,1,1,True)
+    child_bbox = Cuboid(1,1,1,True)
+    another_cuboid = Cuboid(1,1,1,True)
+    child_assembly(child_bbox)
+    weird_cuboid = Cuboid(1,1,0.32332332332,True)`)
+      ),
+    };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.text = undefined;
     this.parser = new ShapeAssemblyParser();
@@ -51,8 +76,9 @@ class SapEditor extends React.Component {
       if (newText !== this.text) {
         ast = this.parser.parseShapeAssemblyProgram(newText);
         console.log(ast);
+        console.log(new Transpiler().transpile(ast));
         setAst(ast);
-        doExecute(editorState.getCurrentContent().getPlainText('\n'));
+        doExecute(new Transpiler().transpile(ast));
       }
       this.setState({
         editorState: EditorState.set(editorState, {
