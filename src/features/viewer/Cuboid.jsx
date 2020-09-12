@@ -35,7 +35,7 @@ const Cuboid = ({ cuboid }) => {
         onPointerOver={(e) => onHover(e, true)}
         onPointerOut={(e) => onHover(e, false)}
       >
-        <meshStandardMaterial attach="material" color={hovered ? 'orange' : 'gray'} />
+        <meshStandardMaterial attach="material" color={hovered ? 0x4285f4 : 'gray'} />
       </mesh>
       <lineSegments>
         <edgesGeometry attach="geometry" args={[geometry]} />

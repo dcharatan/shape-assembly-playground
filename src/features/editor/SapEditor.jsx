@@ -143,7 +143,7 @@ def root():
   render() {
     const { editorState } = this.state;
     return (
-      <div className="rounded border p-3 h-100 w-100 overflow-y-scroll">
+      <div className="border-bottom border-left border-right p-3 h-100 w-100 overflow-y-scroll">
         <div className="w-100 h-100">
           <Editor
             editorState={editorState}
