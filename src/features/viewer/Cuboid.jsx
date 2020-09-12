@@ -1,9 +1,9 @@
 import React, { useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import * as THREE from 'three';
-import { selectTranspiledLine, deselectTranspiledLine } from '../editor/editorSlice';
+import { setCuboidHovered, setCuboidNotHovered } from '../editor/editorSlice';
 
-const Cuboid = ({ cuboid, dispatch }) => {
+const Cuboid = ({ cuboid, dispatch, hoveredTranspiledLines }) => {
   const mesh = useRef();
   const [hovered, setHover] = useState(false);
   const onHover = useCallback(
@@ -11,13 +11,14 @@ const Cuboid = ({ cuboid, dispatch }) => {
       e.stopPropagation();
       setHover(value);
       if (value) {
-        dispatch(selectTranspiledLine(cuboid.globalLineIndex));
+        dispatch(setCuboidHovered(cuboid.globalLineIndex));
       } else {
-        dispatch(deselectTranspiledLine(cuboid.globalLineIndex));
+        dispatch(setCuboidNotHovered(cuboid.globalLineIndex));
       }
     },
     [setHover, dispatch, cuboid.globalLineIndex]
   );
+  const selected = hoveredTranspiledLines[cuboid.globalLineIndex] === true;
 
   // Create the cuboid geometry.
   const geometry = new THREE.BoxBufferGeometry(...cuboid.dimensions);
@@ -41,7 +42,7 @@ const Cuboid = ({ cuboid, dispatch }) => {
         onPointerOver={(e) => onHover(e, true)}
         onPointerOut={(e) => onHover(e, false)}
       >
-        <meshStandardMaterial attach="material" color={hovered ? 0x4285f4 : 'gray'} />
+        <meshStandardMaterial attach="material" color={hovered || selected ? 0x4285f4 : 'gray'} />
       </mesh>
       <lineSegments>
         <edgesGeometry attach="geometry" args={[geometry]} />
@@ -63,11 +64,7 @@ Cuboid.propTypes = {
   // This is passed in because it's not available with useDispatch/useSelector here.
   // It's probably because of react-three-fiber.
   dispatch: PropTypes.func.isRequired,
-  selectedLine: PropTypes.number,
-};
-
-Cuboid.defaultProps = {
-  selectedLine: undefined,
+  hoveredTranspiledLines: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
 };
 
 export default Cuboid;

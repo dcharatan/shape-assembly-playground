@@ -30,6 +30,7 @@ const CameraControls = () => {
 const Viewer = () => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
   const selectedLine = useSelector((state) => state.editorSlice.selectedLine);
+  const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
   const dispatch = useDispatch();
 
   let borderColorClass = 'border-primary';
@@ -45,7 +46,13 @@ const Viewer = () => {
       return null;
     }
     return cuboids.map((cuboid) => (
-      <Cuboid cuboid={cuboid} key={uuidv4()} dispatch={dispatch} selectedLine={selectedLine} />
+      <Cuboid
+        cuboid={cuboid}
+        key={uuidv4()}
+        dispatch={dispatch}
+        selectedLine={selectedLine}
+        hoveredTranspiledLines={hoveredTranspiledLines}
+      />
     ));
   };
 

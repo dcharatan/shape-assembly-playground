@@ -141,7 +141,7 @@ class SapEditor extends React.Component {
 
   render() {
     const { editorState } = this.state;
-    const { showingTranspiled, selectedTranspiledLines } = this.props;
+    const { showingTranspiled, hoveredCuboids } = this.props;
 
     // Choose which EditorState should be shown.
     const getEditorState = () => {
@@ -161,17 +161,22 @@ class SapEditor extends React.Component {
 
       // Update the highlights on the transcribed text.
       // This is only done if the highlights have changed.
-      if (selectedTranspiledLines !== this.previousSelectedTranspiledLines) {
+      if (hoveredCuboids !== this.previoushoveredCuboids) {
+        const lineToIndex = new Map();
+        const lines = this.transpiled.split('\n');
+        lines.forEach((line, index) => {
+          lineToIndex.set(line, index);
+        });
         this.transcribedEditorState = EditorState.set(this.transcribedEditorState, {
           decorator: new ProppableCompositeDraftDecorator([
             {
-              strategy: makeLineHighlightDecoratorStrategy(selectedTranspiledLines, this.transpiled, applyStrategy),
+              strategy: makeLineHighlightDecoratorStrategy(hoveredCuboids, lineToIndex),
               component: LineHighlightDecorator,
             },
           ]),
         });
       }
-      this.previousSelectedTranspiledLines = selectedTranspiledLines;
+      this.previoushoveredCuboids = hoveredCuboids;
 
       // Return the EditorState for the transcribed text.
       return this.transcribedEditorState;
@@ -198,12 +203,12 @@ SapEditor.propTypes = {
   doExecute: PropTypes.func.isRequired,
   showingTranspiled: PropTypes.bool.isRequired,
   setAst: PropTypes.func.isRequired,
-  selectedTranspiledLines: PropTypes.arrayOf(PropTypes.number).isRequired,
+  hoveredCuboids: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapState = (state) => ({
   showingTranspiled: state.editorSlice.tab === 'transpiled',
-  selectedTranspiledLines: Object.keys(state.editorSlice.selectedTranspiledLines),
+  hoveredCuboids: Object.keys(state.editorSlice.hoveredCuboids),
 });
 
 const mapDispatch = (dispatch) => ({

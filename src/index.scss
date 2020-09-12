@@ -16,4 +16,8 @@ body,
   overflow-y: scroll;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 @import 'node_modules/bootstrap/scss/bootstrap';
