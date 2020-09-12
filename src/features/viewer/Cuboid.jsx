@@ -5,10 +5,13 @@ import * as THREE from 'three';
 const Cuboid = ({ cuboid }) => {
   const mesh = useRef();
   const [hovered, setHover] = useState(false);
-  const onHover = useCallback((e, value) => {
-    e.stopPropagation();
-    setHover(value);
-  }, [setHover]);
+  const onHover = useCallback(
+    (e, value) => {
+      e.stopPropagation();
+      setHover(value);
+    },
+    [setHover]
+  );
 
   // Create the cuboid geometry.
   const geometry = new THREE.BoxBufferGeometry(...cuboid.dimensions);
@@ -45,7 +48,7 @@ const Cuboid = ({ cuboid }) => {
 Cuboid.propTypes = {
   cuboid: PropTypes.shape({
     position: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    scale: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+    dimensions: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     frontNormal: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     topNormal: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     globalLineIndex: PropTypes.number.isRequired,
