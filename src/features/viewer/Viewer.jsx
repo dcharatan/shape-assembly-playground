@@ -30,8 +30,9 @@ const Viewer = () => {
   return (
     <div className={`rounded border h-100 w-100 ${borderColorClass}`}>
       <Canvas>
-        <ambientLight />
-        <pointLight position={[10, 20, 40]} castShadow={true} />
+        <ambientLight intensity={0.65} />
+        <pointLight position={[10, 20, 40]} intensity={0.85} />
+        <pointLight position={[-10, -20, -40]} intensity={0.65} />
         <CameraControls />
         {cuboids ? cuboids.map((cuboid) => <Cuboid cuboid={cuboid} />) : null}
       </Canvas>
