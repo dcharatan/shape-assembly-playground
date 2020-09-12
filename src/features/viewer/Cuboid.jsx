@@ -11,7 +11,10 @@ const Cuboid = ({ cuboid }) => {
   }, [setHover]);
 
   // Create the cuboid geometry.
-  const newGeometry = new THREE.BoxBufferGeometry(...cuboid.dimensions);
+  const geometry = new THREE.BoxBufferGeometry(...cuboid.dimensions);
+
+  // Create the outline geometry.
+  const outlineGeometry = new THREE.BoxBufferGeometry(...cuboid.dimensions.map((dim) => dim + 0.05));
 
   // Apply the cuboid's transformations to the geometry.
   const translate = new THREE.Matrix4();
@@ -22,17 +25,28 @@ const Cuboid = ({ cuboid }) => {
     new THREE.Vector3(...cuboid.frontNormal),
     new THREE.Vector3(...cuboid.topNormal)
   );
-  newGeometry.applyMatrix4(translate.multiply(rotate));
+  const transformation = translate.multiply(rotate);
+  geometry.applyMatrix4(transformation);
+  outlineGeometry.applyMatrix4(transformation);
 
   return (
-    <mesh
-      ref={mesh}
-      geometry={newGeometry}
-      onPointerOver={(e) => onHover(e, true)}
-      onPointerOut={(e) => onHover(e, false)}
-    >
-      <meshStandardMaterial attach="material" color={hovered ? 'orange' : 'gray'} />
-    </mesh>
+    <>
+      <mesh
+        ref={mesh}
+        geometry={outlineGeometry}
+      >
+        <meshBasicMaterial attach="material" color={'black'} depthWrite={false} depthTest={true} />
+      </mesh>
+      <mesh
+        ref={mesh}
+        geometry={geometry}
+        onPointerOver={(e) => onHover(e, true)}
+        onPointerOut={(e) => onHover(e, false)}
+      >
+        <meshStandardMaterial attach="material" color={hovered ? 'orange' : 'gray'} />
+      </mesh>
+
+    </>
   );
 };
 
