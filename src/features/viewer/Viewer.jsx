@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Canvas, extend, useFrame, useThree } from 'react-three-fiber';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import material from './material';
+import * as THREE from 'three';
 
 extend({ OrbitControls });
 
@@ -19,23 +19,25 @@ const CameraControls = () => {
 
 const Viewer = () => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
-  const loader = new OBJLoader();
-  let geometry;
+  let meshes;
   if (cuboids) {
-    try {
-      geometry = cuboids.map((c) => loader.parse(c.obj));
-    } catch (e) {
-      console.warn(e);
-    }
-  }
-  let meshes = null;
-  if (geometry) {
-    meshes = geometry.map((obj) => {
-      const geometry = obj.children[0].geometry;
-      geometry.computeFaceNormals();
-      geometry.computeVertexNormals();
+    meshes = cuboids.map((cuboid) => {
+      const newGeometry = new THREE.BoxGeometry(...cuboid.dimensions);
+
+      const translate = new THREE.Matrix4();
+      translate.makeTranslation(...cuboid.position);
+
+      const rotate = new THREE.Matrix4();
+      rotate.lookAt(
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(...cuboid.frontNormal),
+        new THREE.Vector3(...cuboid.topNormal)
+      );
+
+      newGeometry.applyMatrix4(translate.multiply(rotate));
+
       return (
-        <mesh geometry={geometry} material={material} />
+        <mesh geometry={newGeometry} material={material} />
       );
     });
   }
