@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DefParameterDecorator = ({ children, argumentType }) => (
-  <span className="text-success">
-    {children}
-    <span className="text-secondary">{`: ${argumentType.name}`}</span>
-  </span>
-);
+const DefParameterDecorator = ({ children }) => <span className="text-success">{children}</span>;
 
 DefParameterDecorator.propTypes = {
   children: PropTypes.node.isRequired,

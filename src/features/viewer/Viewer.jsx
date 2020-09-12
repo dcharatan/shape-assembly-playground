@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Canvas, extend, useFrame, useThree } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Cuboid from './Cuboid';
+import { v4 as uuidv4 } from 'uuid';
 
 extend({ OrbitControls });
 
@@ -44,7 +45,7 @@ const Viewer = () => {
         <pointLight position={[10, 20, 40]} intensity={0.85} />
         <pointLight position={[-10, -20, -40]} intensity={0.65} />
         <CameraControls />
-        {cuboids ? cuboids.map((cuboid) => <Cuboid cuboid={cuboid} />) : null}
+        {cuboids ? cuboids.map((cuboid) => <Cuboid cuboid={cuboid} key={uuidv4()} />) : null}
       </Canvas>
     </div>
   );

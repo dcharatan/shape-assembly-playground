@@ -40,6 +40,7 @@ class SapEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      viewerState: EditorState.createEmpty(),
       editorState: EditorState.createWithContent(
         ContentState.createFromText(`def fn(a):
     Cuboid(a, 5, 5, True)
@@ -74,34 +75,35 @@ def root():
       const { setAst } = this.props;
       const newText = editorState.getCurrentContent().getPlainText('\n');
       if (newText !== this.text) {
+        this.text = newText;
         ast = this.parser.parseShapeAssemblyProgram(newText);
-        console.log(ast);
-        console.log(new Transpiler().transpile(ast));
+        const transpiled = new Transpiler().transpile(ast);
+        this.setState({
+          viewerState: EditorState.createWithContent(ContentState.createFromText(transpiled || '')),
+          editorState: EditorState.set(editorState, {
+            decorator: new ProppableCompositeDraftDecorator([
+              {
+                strategy: makeDefDecoratorStrategy(() => ast, applyStrategy),
+                component: DefDecorator,
+              },
+              {
+                strategy: makeDefParameterDecoratorStrategy(() => ast, applyStrategy),
+                component: DefParameterDecorator,
+              },
+              {
+                strategy: makeErrorDecoratorStrategy(() => ast, applyStrategy),
+                component: ErrorDecorator,
+              },
+              {
+                strategy: makeVariableNameDecoratorStrategy(() => ast, applyStrategy),
+                component: VariableNameDecorator,
+              },
+            ]),
+          }),
+        });
         setAst(ast);
-        doExecute(new Transpiler().transpile(ast));
+        doExecute(transpiled);
       }
-      this.setState({
-        editorState: EditorState.set(editorState, {
-          decorator: new ProppableCompositeDraftDecorator([
-            {
-              strategy: makeDefDecoratorStrategy(() => ast, applyStrategy),
-              component: DefDecorator,
-            },
-            {
-              strategy: makeDefParameterDecoratorStrategy(() => ast, applyStrategy),
-              component: DefParameterDecorator,
-            },
-            {
-              strategy: makeErrorDecoratorStrategy(() => ast, applyStrategy),
-              component: ErrorDecorator,
-            },
-            {
-              strategy: makeVariableNameDecoratorStrategy(() => ast, applyStrategy),
-              component: VariableNameDecorator,
-            },
-          ]),
-        }),
-      });
     };
 
     this.handlePastedText = (text, html, editorState) => {
@@ -141,16 +143,18 @@ def root():
   }
 
   render() {
-    const { editorState } = this.state;
+    const { editorState, viewerState } = this.state;
+    const { showingTranspiled } = this.props;
     return (
       <div className="border-bottom border-left border-right p-3 h-100 w-100 overflow-y-scroll">
         <div className="w-100 h-100">
           <Editor
-            editorState={editorState}
+            editorState={showingTranspiled ? viewerState : editorState}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
             handlePastedText={this.handlePastedText}
             onTab={this.onTab}
+            readOnly={showingTranspiled}
           />
         </div>
       </div>
@@ -160,10 +164,15 @@ def root():
 
 SapEditor.propTypes = {
   doExecute: PropTypes.func.isRequired,
+  showingTranspiled: PropTypes.bool.isRequired,
 };
+
+const mapState = (state) => ({
+  showingTranspiled: state.editorSlice.tab === 'transpiled',
+});
 
 const mapDispatch = (dispatch) => ({
   doExecute: (programText) => dispatch(execute(programText)),
 });
 
-export default connect(null, mapDispatch)(SapEditor);
+export default connect(mapState, mapDispatch)(SapEditor);
