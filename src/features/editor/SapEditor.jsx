@@ -41,30 +41,7 @@ class SapEditor extends React.Component {
     super(props);
     this.state = {
       viewerState: EditorState.createEmpty(),
-      editorState: EditorState.createWithContent(
-        ContentState.createFromText(`def fn(a):
-    Cuboid(a, 5, 5, True)
-
-@child_assembly
-def sub_child_assembly(a):
-    cuboid_with_name = Cuboid(2,0.25,0.25,True)
-    fn(0.1)
-
-@child_assembly
-def child_assembly(a):
-    cuboid_with_name = Cuboid(0.25,2,0.25,True)
-    Cuboid(0.25,0.25,2,True)
-    sub_child_bbox = Cuboid(1,1,2,True)
-    sub_child_assembly(sub_child_bbox)
-
-@root_assembly
-def root():
-    bbox = Cuboid(1,1,1,True)
-    child_bbox = Cuboid(1,1,1,True)
-    another_cuboid = Cuboid(1,1,1,True)
-    child_assembly(child_bbox)
-    weird_cuboid = Cuboid(1,1,0.32332332332,True)`)
-      ),
+      editorState: EditorState.createEmpty(),
     };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.text = undefined;
@@ -79,7 +56,9 @@ def root():
         ast = this.parser.parseShapeAssemblyProgram(newText);
         const transpiled = new Transpiler().transpile(ast);
         this.setState({
-          viewerState: EditorState.createWithContent(ContentState.createFromText(transpiled || '')),
+          viewerState: EditorState.createWithContent(
+            ContentState.createFromText(transpiled || 'Transpilation failed due to errors.')
+          ),
           editorState: EditorState.set(editorState, {
             decorator: new ProppableCompositeDraftDecorator([
               {
@@ -133,6 +112,14 @@ def root():
     };
   }
 
+  componentDidMount() {
+    const initialText = `@root_assembly
+def root():
+    bbox = Cuboid(1,1,1,True)
+    cuboid = Cuboid(1,1,1,True)`;
+    this.onChange(EditorState.createWithContent(ContentState.createFromText(initialText)));
+  }
+
   handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
@@ -165,6 +152,7 @@ def root():
 SapEditor.propTypes = {
   doExecute: PropTypes.func.isRequired,
   showingTranspiled: PropTypes.bool.isRequired,
+  setAst: PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
