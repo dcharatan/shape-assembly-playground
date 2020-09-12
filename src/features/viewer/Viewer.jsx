@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Canvas, extend, useFrame, useThree } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -12,6 +12,16 @@ const CameraControls = () => {
     camera,
     gl: { domElement },
   } = useThree();
+
+  // Set the default camera position.
+  useEffect(() => {
+    camera.position.set(-5, 5, 5);
+    if (controls && controls.target) {
+      controls.target.set(0, 0, 0);
+      controls.update();
+    }
+  }, [camera]);
+
   useFrame(() => controls.current.update());
   return <orbitControls ref={controls} args={[camera, domElement]} />;
 };
