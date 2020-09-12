@@ -5,18 +5,21 @@ const editorSlice = createSlice({
   name: 'editorSlice',
   initialState: {
     tab: 'code',
-    selectedLine: undefined,
+    selectedTranspiledLines: {},
   },
   reducers: {
     setTab(state, { payload }) {
       state.tab = payload;
     },
-    setSelectedLine(state, { payload }) {
-      state.selectedLine = payload;
+    selectTranspiledLine(state, { payload }) {
+      state.selectedTranspiledLines[payload] = true;
+    },
+    deselectTranspiledLine(state, { payload }) {
+      delete state.selectedTranspiledLines[payload];
     },
   },
 });
 
-export const { setTab, setSelectedLine } = editorSlice.actions;
+export const { setTab, selectTranspiledLine, deselectTranspiledLine } = editorSlice.actions;
 
 export default editorSlice.reducer;

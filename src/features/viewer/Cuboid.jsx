@@ -1,9 +1,9 @@
 import React, { useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import * as THREE from 'three';
-import { setSelectedLine } from '../editor/editorSlice';
+import { selectTranspiledLine, deselectTranspiledLine } from '../editor/editorSlice';
 
-const Cuboid = ({ cuboid, dispatch, selectedLine }) => {
+const Cuboid = ({ cuboid, dispatch }) => {
   const mesh = useRef();
   const [hovered, setHover] = useState(false);
   const onHover = useCallback(
@@ -11,12 +11,12 @@ const Cuboid = ({ cuboid, dispatch, selectedLine }) => {
       e.stopPropagation();
       setHover(value);
       if (value) {
-        dispatch(setSelectedLine(cuboid.globalLineIndex));
-      } else if (cuboid.globalLineIndex === selectedLine) {
-        dispatch(setSelectedLine(undefined));
+        dispatch(selectTranspiledLine(cuboid.globalLineIndex));
+      } else {
+        dispatch(deselectTranspiledLine(cuboid.globalLineIndex));
       }
     },
-    [setHover, dispatch, cuboid.globalLineIndex, selectedLine]
+    [setHover, dispatch, cuboid.globalLineIndex]
   );
 
   // Create the cuboid geometry.

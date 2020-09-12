@@ -37,55 +37,24 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
   });
 }
 
+const INITIAL_TEXT = `@root_assembly
+def root():
+    bbox = Cuboid(1,1,1,True)
+    cuboid = Cuboid(1,1,1,True)`;
+
 class SapEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      viewerState: EditorState.createEmpty(),
-      editorState: EditorState.createEmpty(),
+      editorState: EditorState.createWithContent(ContentState.createFromText(INITIAL_TEXT)),
     };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this.text = undefined;
+    this.sourceCode = undefined;
     this.parser = new ShapeAssemblyParser();
-    this.selectedTranspiledLine = undefined;
+    this.viewerEditorStateTextNeedsUpdate = true;
     this.transpiled = '';
 
-    this.onChange = (editorState) => {
-      // eslint-disable-next-line react/prop-types
-      let { ast } = this.props;
-      const { setAst, doExecute, selectedTranspiledLine } = this.props;
-      const newText = editorState.getCurrentContent().getPlainText('\n');
-      if (newText !== this.text) {
-        this.selectedTranspiledLine = selectedTranspiledLine;
-        this.text = newText;
-        ast = this.parser.parseShapeAssemblyProgram(newText);
-        this.transpiled = new Transpiler().transpile(ast);
-        this.setState({
-          editorState: EditorState.set(editorState, {
-            decorator: new ProppableCompositeDraftDecorator([
-              {
-                strategy: makeDefDecoratorStrategy(() => ast, applyStrategy),
-                component: DefDecorator,
-              },
-              {
-                strategy: makeDefParameterDecoratorStrategy(() => ast, applyStrategy),
-                component: DefParameterDecorator,
-              },
-              {
-                strategy: makeErrorDecoratorStrategy(() => ast, applyStrategy),
-                component: ErrorDecorator,
-              },
-              {
-                strategy: makeVariableNameDecoratorStrategy(() => ast, applyStrategy),
-                component: VariableNameDecorator,
-              },
-            ]),
-          }),
-        });
-        setAst(ast);
-        doExecute(this.transpiled);
-      }
-    };
+    this.onChange = (editorState) => this.execute(editorState);
 
     this.handlePastedText = (text, html, editorState) => {
       const pastedBlocks = ContentState.createFromText(text).blockMap;
@@ -115,11 +84,50 @@ class SapEditor extends React.Component {
   }
 
   componentDidMount() {
-    const initialText = `@root_assembly
-def root():
-    bbox = Cuboid(1,1,1,True)
-    cuboid = Cuboid(1,1,1,True)`;
-    this.onChange(EditorState.createWithContent(ContentState.createFromText(initialText)));
+    // Force an editor state update.
+    const { editorState } = this.state;
+    this.execute(editorState);
+  }
+
+  execute(editorState) {
+    const { setAst, doExecute } = this.props;
+    const newSourceCode = editorState.getCurrentContent().getPlainText('\n');
+
+    // Only rerun execution if the source code has changed.
+    if (newSourceCode !== this.sourceCode) {
+      this.sourceCode = newSourceCode;
+      const newAst = this.parser.parseShapeAssemblyProgram(newSourceCode);
+      this.transpiled = new Transpiler().transpile(newAst);
+      this.viewerEditorStateTextNeedsUpdate = true;
+      this.setState({
+        editorState: EditorState.set(editorState, {
+          decorator: new ProppableCompositeDraftDecorator([
+            {
+              strategy: makeDefDecoratorStrategy(() => newAst, applyStrategy),
+              component: DefDecorator,
+            },
+            {
+              strategy: makeDefParameterDecoratorStrategy(() => newAst, applyStrategy),
+              component: DefParameterDecorator,
+            },
+            {
+              strategy: makeErrorDecoratorStrategy(() => newAst, applyStrategy),
+              component: ErrorDecorator,
+            },
+            {
+              strategy: makeVariableNameDecoratorStrategy(() => newAst, applyStrategy),
+              component: VariableNameDecorator,
+            },
+          ]),
+        }),
+      });
+      setAst(newAst);
+      doExecute(this.transpiled);
+    } else {
+      this.setState({
+        editorState,
+      });
+    }
   }
 
   handleKeyCommand(command, editorState) {
@@ -133,27 +141,40 @@ def root():
 
   render() {
     const { editorState } = this.state;
-    const { showingTranspiled } = this.props;
-    const { selectedTranspiledLine } = this.props;
+    const { showingTranspiled, selectedTranspiledLines } = this.props;
 
-    // Show the transpiled state (constructed on the fly) if applicable.
+    // Choose which EditorState should be shown.
     const getEditorState = () => {
+      // Show the
       if (!showingTranspiled) {
         return editorState;
       }
-      return EditorState.set(
-        EditorState.createWithContent(
+
+      // Create a new EditorState for the transcribed text.
+      // This is only done if the transcribed text is requested and has changed.
+      if (this.viewerEditorStateTextNeedsUpdate) {
+        this.viewerEditorStateTextNeedsUpdate = false;
+        this.transcribedEditorState = EditorState.createWithContent(
           ContentState.createFromText(this.transpiled || 'Transpilation failed due to errors.')
-        ),
-        {
+        );
+      }
+
+      // Update the highlights on the transcribed text.
+      // This is only done if the highlights have changed.
+      if (selectedTranspiledLines !== this.previousSelectedTranspiledLines) {
+        this.transcribedEditorState = EditorState.set(this.transcribedEditorState, {
           decorator: new ProppableCompositeDraftDecorator([
             {
-              strategy: makeLineHighlightDecoratorStrategy(selectedTranspiledLine, this.transpiled, applyStrategy),
+              strategy: makeLineHighlightDecoratorStrategy(selectedTranspiledLines, this.transpiled, applyStrategy),
               component: LineHighlightDecorator,
             },
           ]),
-        }
-      );
+        });
+      }
+      this.previousSelectedTranspiledLines = selectedTranspiledLines;
+
+      // Return the EditorState for the transcribed text.
+      return this.transcribedEditorState;
     };
 
     return (
@@ -177,16 +198,12 @@ SapEditor.propTypes = {
   doExecute: PropTypes.func.isRequired,
   showingTranspiled: PropTypes.bool.isRequired,
   setAst: PropTypes.func.isRequired,
-  selectedTranspiledLine: PropTypes.number,
-};
-
-SapEditor.defaultProps = {
-  selectedTranspiledLine: undefined,
+  selectedTranspiledLines: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 const mapState = (state) => ({
   showingTranspiled: state.editorSlice.tab === 'transpiled',
-  selectedTranspiledLine: state.editorSlice.selectedLine,
+  selectedTranspiledLines: Object.keys(state.editorSlice.selectedTranspiledLines),
 });
 
 const mapDispatch = (dispatch) => ({
