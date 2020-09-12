@@ -1134,6 +1134,11 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@dcharatan/shape-assembly-parser@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@dcharatan/shape-assembly-parser/-/shape-assembly-parser-2.0.0.tgz#99b03fc5f9f6b553f67d9fa9e8d172ea265aa4d4"
+  integrity sha512-jDpUZh9knOTaH8Bde2PBlBS404sr6H0y0e+bI1QcbfrWdJIzj2LZwqUAcFXPPk/hbOkGRQ0VR2in0ZgxPnhexA==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"

@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Canvas, extend, useFrame, useThree } from 'react-three-fiber';
-import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import material from './material';
 
 extend({ OrbitControls });
 
@@ -17,30 +18,33 @@ const CameraControls = () => {
 };
 
 const Viewer = () => {
-  const { obj, fetchingObj, errored } = useSelector((state) => state.executorSlice);
-  const loader = new OBJLoader2();
+  const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
+  const loader = new OBJLoader();
   let geometry;
-  if (obj) {
+  if (cuboids) {
     try {
-      geometry = loader.parse(obj);
+      geometry = cuboids.map((c) => loader.parse(c.obj));
     } catch (e) {
       console.warn(e);
     }
   }
-  let mesh = null;
+  let meshes = null;
   if (geometry) {
-    mesh = (
-      <mesh geometry={geometry.children[0].geometry}>
-        <meshStandardMaterial attach="material" color="gray" />
-      </mesh>
-    );
+    meshes = geometry.map((obj) => {
+      const geometry = obj.children[0].geometry;
+      geometry.computeFaceNormals();
+      geometry.computeVertexNormals();
+      return (
+        <mesh geometry={geometry} material={material} />
+      );
+    });
   }
 
   let borderColorClass = 'border-primary';
   if (errored) {
     borderColorClass = 'border-danger';
   }
-  if (fetchingObj) {
+  if (executionInProgress) {
     borderColorClass = 'border-secondary';
   }
 
@@ -48,9 +52,9 @@ const Viewer = () => {
     <div className={`rounded border h-100 w-100 ${borderColorClass}`}>
       <Canvas>
         <ambientLight />
-        <pointLight position={[10, 20, 40]} />
+        <pointLight position={[10, 20, 40]} castShadow={true} />
         <CameraControls />
-        {mesh}
+        {meshes}
       </Canvas>
     </div>
   );
