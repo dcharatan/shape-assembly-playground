@@ -31,6 +31,7 @@ const Viewer = () => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
   const selectedLine = useSelector((state) => state.editorSlice.selectedLine);
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
+  const attachmentMetadata = useSelector((state) => state.executorSlice.attachmentMetadata);
   const dispatch = useDispatch();
 
   let borderColorClass = 'border-primary';
@@ -52,6 +53,7 @@ const Viewer = () => {
         dispatch={dispatch}
         selectedLine={selectedLine}
         hoveredTranspiledLines={hoveredTranspiledLines}
+        attachmentMetadata={attachmentMetadata}
       />
     ));
   };

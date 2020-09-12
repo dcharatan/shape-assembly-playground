@@ -2,8 +2,9 @@ import React, { useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import * as THREE from 'three';
 import { setCuboidHovered, setCuboidNotHovered } from '../editor/editorSlice';
+import calculateHighlight from './calculateHighlight';
 
-const Cuboid = ({ cuboid, dispatch, hoveredTranspiledLines }) => {
+const Cuboid = ({ cuboid, dispatch, hoveredTranspiledLines, attachmentMetadata }) => {
   const mesh = useRef();
   const [hovered, setHover] = useState(false);
   const onHover = useCallback(
@@ -18,7 +19,8 @@ const Cuboid = ({ cuboid, dispatch, hoveredTranspiledLines }) => {
     },
     [setHover, dispatch, cuboid.globalLineIndex]
   );
-  const selected = hoveredTranspiledLines[cuboid.globalLineIndex] === true;
+
+  const selection = calculateHighlight(cuboid.globalLineIndex, hoveredTranspiledLines, attachmentMetadata);
 
   // Create the cuboid geometry.
   const geometry = new THREE.BoxBufferGeometry(...cuboid.dimensions);
@@ -34,6 +36,14 @@ const Cuboid = ({ cuboid, dispatch, hoveredTranspiledLines }) => {
   );
   geometry.applyMatrix4(translate.multiply(rotate));
 
+  // Calculate the cuboid's color.
+  let color = 'gray';
+  if (selection === 'direct' || selection === 'primary' || hovered) {
+    color = 0x4285f4;
+  } else if (selection === 'secondary') {
+    color = 0xf4b400;
+  }
+
   return (
     <>
       <mesh
@@ -42,7 +52,7 @@ const Cuboid = ({ cuboid, dispatch, hoveredTranspiledLines }) => {
         onPointerOver={(e) => onHover(e, true)}
         onPointerOut={(e) => onHover(e, false)}
       >
-        <meshStandardMaterial attach="material" color={hovered || selected ? 0x4285f4 : 'gray'} />
+        <meshStandardMaterial attach="material" color={color} />
       </mesh>
       <lineSegments>
         <edgesGeometry attach="geometry" args={[geometry]} />
@@ -65,6 +75,7 @@ Cuboid.propTypes = {
   // It's probably because of react-three-fiber.
   dispatch: PropTypes.func.isRequired,
   hoveredTranspiledLines: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
+  attachmentMetadata: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string.isRequired).isRequired).isRequired,
 };
 
 export default Cuboid;

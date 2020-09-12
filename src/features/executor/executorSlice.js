@@ -22,8 +22,7 @@ export const execute = createAsyncThunk('execute', async (programText) => {
   const result = await previousExecutionPromise;
 
   if (result.ok) {
-    const json = await result.json();
-    return json.cuboids;
+    return result.json();
   }
   throw new Error('Executor failed.');
 });
@@ -33,6 +32,7 @@ const executorSlice = createSlice({
   initialState: {
     executionInProgress: false,
     cuboids: undefined,
+    attachmentMetadata: undefined,
     errored: false,
   },
   extraReducers: {
@@ -41,7 +41,9 @@ const executorSlice = createSlice({
       state.errored = false;
     },
     [execute.fulfilled]: (state, { payload }) => {
-      state.cuboids = payload;
+      const { cuboids, attachmentMetadata } = payload;
+      state.cuboids = cuboids;
+      state.attachmentMetadata = attachmentMetadata;
       state.executionInProgress = false;
       state.errored = false;
     },

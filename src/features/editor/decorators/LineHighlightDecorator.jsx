@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTranspiledLineHovered, setTranspiledLineNotHovered } from '../editorSlice';
 
 const LineHighlightDecorator = ({ children, index, selected }) => {
   const [hovered, setHovered] = useState(false);
   const dispatch = useDispatch();
+  const attachmentMetadata = useSelector((state) => state.executorSlice.attachmentMetadata);
+
+  // Check if the line is an attachment line.
   const classes = ['cursor-pointer'];
+
   if (selected || hovered) {
-    classes.push(...['bg-primary', 'text-white']);
+    if (attachmentMetadata[index.toString()] !== undefined) {
+      classes.push('bg-success');
+    } else {
+      classes.push('bg-primary');
+    }
+    classes.push('text-white');
   }
 
   const onHover = (newHoveredValue) => {
