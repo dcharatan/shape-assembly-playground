@@ -2,8 +2,7 @@ import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Canvas, extend, useFrame, useThree } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import material from './material';
-import * as THREE from 'three';
+import Cuboid from './Cuboid';
 
 extend({ OrbitControls });
 
@@ -19,28 +18,6 @@ const CameraControls = () => {
 
 const Viewer = () => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
-  let meshes;
-  if (cuboids) {
-    meshes = cuboids.map((cuboid) => {
-      const newGeometry = new THREE.BoxGeometry(...cuboid.dimensions);
-
-      const translate = new THREE.Matrix4();
-      translate.makeTranslation(...cuboid.position);
-
-      const rotate = new THREE.Matrix4();
-      rotate.lookAt(
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(...cuboid.frontNormal),
-        new THREE.Vector3(...cuboid.topNormal)
-      );
-
-      newGeometry.applyMatrix4(translate.multiply(rotate));
-
-      return (
-        <mesh geometry={newGeometry} material={material} />
-      );
-    });
-  }
 
   let borderColorClass = 'border-primary';
   if (errored) {
@@ -56,7 +33,7 @@ const Viewer = () => {
         <ambientLight />
         <pointLight position={[10, 20, 40]} castShadow={true} />
         <CameraControls />
-        {meshes}
+        {cuboids ? cuboids.map((cuboid) => <Cuboid cuboid={cuboid} />) : null}
       </Canvas>
     </div>
   );
