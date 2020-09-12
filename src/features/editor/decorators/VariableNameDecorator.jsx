@@ -9,11 +9,7 @@ VariableNameDecorator.propTypes = {
 
 export default VariableNameDecorator;
 
-export const makeVariableNameDecoratorStrategy = (getAst, applyStrategy) => (
-  contentBlock,
-  callback,
-  contentState
-) => {
+export const makeVariableNameDecoratorStrategy = (getAst, applyStrategy) => (contentBlock, callback, contentState) => {
   const ast = getAst();
   if (ast) {
     const highlights = ast.definitions

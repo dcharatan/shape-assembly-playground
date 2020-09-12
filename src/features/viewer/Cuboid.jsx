@@ -1,16 +1,22 @@
 import React, { useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import * as THREE from 'three';
+import { setSelectedLine } from '../editor/editorSlice';
 
-const Cuboid = ({ cuboid }) => {
+const Cuboid = ({ cuboid, dispatch, selectedLine }) => {
   const mesh = useRef();
   const [hovered, setHover] = useState(false);
   const onHover = useCallback(
     (e, value) => {
       e.stopPropagation();
       setHover(value);
+      if (value) {
+        dispatch(setSelectedLine(cuboid.globalLineIndex));
+      } else if (cuboid.globalLineIndex === selectedLine) {
+        dispatch(setSelectedLine(undefined));
+      }
     },
-    [setHover]
+    [setHover, dispatch, cuboid.globalLineIndex, selectedLine]
   );
 
   // Create the cuboid geometry.
@@ -53,6 +59,15 @@ Cuboid.propTypes = {
     topNormal: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     globalLineIndex: PropTypes.number.isRequired,
   }).isRequired,
+
+  // This is passed in because it's not available with useDispatch/useSelector here.
+  // It's probably because of react-three-fiber.
+  dispatch: PropTypes.func.isRequired,
+  selectedLine: PropTypes.number,
+};
+
+Cuboid.defaultProps = {
+  selectedLine: undefined,
 };
 
 export default Cuboid;

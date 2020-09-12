@@ -11,6 +11,7 @@ import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './deco
 import VariableNameDecorator, { makeVariableNameDecoratorStrategy } from './decorators/VariableNameDecorator';
 import 'draft-js/dist/Draft.css';
 import ProppableCompositeDraftDecorator from './decorators/ProppableCompositeDraftDecorator';
+import LineHighlightDecorator, { makeLineHighlightDecoratorStrategy } from './decorators/LineHighlightDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -46,19 +47,20 @@ class SapEditor extends React.Component {
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.text = undefined;
     this.parser = new ShapeAssemblyParser();
+    this.selectedTranspiledLine = undefined;
+    this.transpiled = '';
 
     this.onChange = (editorState) => {
-      let { ast, doExecute } = this.props;
-      const { setAst } = this.props;
+      // eslint-disable-next-line react/prop-types
+      let { ast } = this.props;
+      const { setAst, doExecute, selectedTranspiledLine } = this.props;
       const newText = editorState.getCurrentContent().getPlainText('\n');
       if (newText !== this.text) {
+        this.selectedTranspiledLine = selectedTranspiledLine;
         this.text = newText;
         ast = this.parser.parseShapeAssemblyProgram(newText);
-        const transpiled = new Transpiler().transpile(ast);
+        this.transpiled = new Transpiler().transpile(ast);
         this.setState({
-          viewerState: EditorState.createWithContent(
-            ContentState.createFromText(transpiled || 'Transpilation failed due to errors.')
-          ),
           editorState: EditorState.set(editorState, {
             decorator: new ProppableCompositeDraftDecorator([
               {
@@ -81,7 +83,7 @@ class SapEditor extends React.Component {
           }),
         });
         setAst(ast);
-        doExecute(transpiled);
+        doExecute(this.transpiled);
       }
     };
 
@@ -130,13 +132,35 @@ def root():
   }
 
   render() {
-    const { editorState, viewerState } = this.state;
+    const { editorState } = this.state;
     const { showingTranspiled } = this.props;
+    const { selectedTranspiledLine } = this.props;
+
+    // Show the transpiled state (constructed on the fly) if applicable.
+    const getEditorState = () => {
+      if (!showingTranspiled) {
+        return editorState;
+      }
+      return EditorState.set(
+        EditorState.createWithContent(
+          ContentState.createFromText(this.transpiled || 'Transpilation failed due to errors.')
+        ),
+        {
+          decorator: new ProppableCompositeDraftDecorator([
+            {
+              strategy: makeLineHighlightDecoratorStrategy(selectedTranspiledLine, this.transpiled, applyStrategy),
+              component: LineHighlightDecorator,
+            },
+          ]),
+        }
+      );
+    };
+
     return (
       <div className="border-bottom border-left border-right p-3 h-100 w-100 overflow-y-scroll">
         <div className="w-100 h-100">
           <Editor
-            editorState={showingTranspiled ? viewerState : editorState}
+            editorState={getEditorState()}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
             handlePastedText={this.handlePastedText}
@@ -153,10 +177,16 @@ SapEditor.propTypes = {
   doExecute: PropTypes.func.isRequired,
   showingTranspiled: PropTypes.bool.isRequired,
   setAst: PropTypes.func.isRequired,
+  selectedTranspiledLine: PropTypes.number,
+};
+
+SapEditor.defaultProps = {
+  selectedTranspiledLine: undefined,
 };
 
 const mapState = (state) => ({
   showingTranspiled: state.editorSlice.tab === 'transpiled',
+  selectedTranspiledLine: state.editorSlice.selectedLine,
 });
 
 const mapDispatch = (dispatch) => ({
