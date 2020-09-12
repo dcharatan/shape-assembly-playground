@@ -13,9 +13,6 @@ const Cuboid = ({ cuboid }) => {
   // Create the cuboid geometry.
   const geometry = new THREE.BoxBufferGeometry(...cuboid.dimensions);
 
-  // Create the outline geometry.
-  const outlineGeometry = new THREE.BoxBufferGeometry(...cuboid.dimensions.map((dim) => dim + 0.05));
-
   // Apply the cuboid's transformations to the geometry.
   const translate = new THREE.Matrix4();
   translate.makeTranslation(...cuboid.position);
@@ -25,18 +22,10 @@ const Cuboid = ({ cuboid }) => {
     new THREE.Vector3(...cuboid.frontNormal),
     new THREE.Vector3(...cuboid.topNormal)
   );
-  const transformation = translate.multiply(rotate);
-  geometry.applyMatrix4(transformation);
-  outlineGeometry.applyMatrix4(transformation);
+  geometry.applyMatrix4(translate.multiply(rotate));
 
   return (
     <>
-      <mesh
-        ref={mesh}
-        geometry={outlineGeometry}
-      >
-        <meshBasicMaterial attach="material" color={'black'} depthWrite={false} depthTest={true} />
-      </mesh>
       <mesh
         ref={mesh}
         geometry={geometry}
@@ -45,7 +34,10 @@ const Cuboid = ({ cuboid }) => {
       >
         <meshStandardMaterial attach="material" color={hovered ? 'orange' : 'gray'} />
       </mesh>
-
+      <lineSegments>
+        <edgesGeometry attach="geometry" args={[geometry]} />
+        <lineBasicMaterial attach="material" color="black" />
+      </lineSegments>
     </>
   );
 };
