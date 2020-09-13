@@ -7,6 +7,7 @@ import EditorArea from './features/editor/EditorArea';
 import ViewerArea from './features/viewer/ViewerArea';
 import rootReducer from './features/redux/rootReducer';
 import NotFound from './features/404/NotFound';
+import ResultPage from './features/result-page/ResultPage';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -21,7 +22,7 @@ const App = () => {
           <SapNavbar />
           <Switch>
             <Route exact path="/result-viewer">
-              Results
+              <ResultPage />
             </Route>
             <Route exact path="/">
               <div className="d-flex flex-grow-1 overflow-y-hidden">
