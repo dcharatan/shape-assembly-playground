@@ -30,7 +30,7 @@ const FileDropper = ({ jsonCallback }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   // Create the center text.
-  const text = isDragActive ? <p>Drop result JSON.</p> : <p>Drop or select result JSON.</p>;
+  const text = isDragActive ? <p>Drop result JSON.</p> : <p>Click here/drag and drop to attach result JSON.</p>;
   return (
     <div className="w-100 h-100 p-3">
       <div {...getRootProps()} className="h-100 w-100 border rounded">
