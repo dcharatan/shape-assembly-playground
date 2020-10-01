@@ -1,21 +1,33 @@
 import React, { useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TransformControls } from 'drei';
-import BaseCuboid from './BaseCuboid';
-import { onCuboidClicked } from '../executor/executorSlice';
+import * as THREE from 'three';
+import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 
-const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
+const EditableCuboid = ({ cuboid, orbitRef }) => {
   const transformRef = useRef();
-  const dispatch = useDispatch();
+  const editingCuboidMode = useSelector((state) => state.executorSlice.editingCuboidMode);
+  const geometryRef = useRef();
 
   // Disable drag for the orbit camera when dragging the transform controls.
   useEffect(() => {
     const controls = transformRef.current;
     if (controls) {
       const callback = (event) => {
+        if (geometryRef.current) {
+          controls.updateMatrixWorld(geometryRef.current);
+        }
         // eslint-disable-next-line no-param-reassign
-        orbitRef.current.enabled = !event.value;
+        const dragging = event.value;
+        orbitRef.current.enabled = !dragging;
+
+        if (!dragging) {
+          if (editingCuboidMode === 'translate') {
+            const newPosition = controls.worldPosition;
+            console.log(`NEW POSITION:`, newPosition);
+          }
+        }
       };
       controls.addEventListener('dragging-changed', callback);
       return () => {
@@ -28,10 +40,22 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
   });
 
   // Wrap the base cuboid in TransformControls.
-  const editingCuboidMode = useSelector((state) => state.executorSlice.editingCuboidMode);
+  const position = new THREE.Vector3();
+  const quaternion = new THREE.Quaternion();
+  const scale = new THREE.Vector3();
+  makeCuboidMatrix(cuboid).decompose(position, quaternion, scale);
+
   return (
-    <TransformControls ref={transformRef} mode={editingCuboidMode}>
-      <BaseCuboid cuboid={cuboid} color="red" onClick={() => dispatch(onCuboidClicked(cuboidIndex))} />
+    <TransformControls
+      ref={transformRef}
+      mode={editingCuboidMode}
+      quaternion={quaternion}
+      position={position}
+      space="local"
+    >
+      <group scale={scale}>
+        <BaseCuboid cuboid={cuboid} color="red" geometryRef={geometryRef} />
+      </group>
     </TransformControls>
   );
 };
@@ -44,7 +68,6 @@ EditableCuboid.propTypes = {
     topNormal: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     globalLineIndex: PropTypes.number.isRequired,
   }).isRequired,
-  cuboidIndex: PropTypes.number.isRequired,
 
   // eslint-disable-next-line react/forbid-prop-types
   orbitRef: PropTypes.any, // It's a ref.

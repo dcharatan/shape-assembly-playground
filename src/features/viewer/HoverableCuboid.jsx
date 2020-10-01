@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import BaseCuboid from './BaseCuboid';
+import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import { setCuboidHovered, setCuboidNotHovered } from '../editor/editorSlice';
 import calculateHighlight from './calculateHighlight';
 import { onCuboidClicked } from '../executor/executorSlice';
+import GroupWithMatrix from './GroupWithMatrix';
 
 const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, cuboidIndex }) => {
   const dispatch = useDispatch();
@@ -32,13 +33,15 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, c
   }
 
   return (
-    <BaseCuboid
-      cuboid={cuboid}
-      color={color}
-      onPointerOver={(e) => onHover(e, true)}
-      onPointerOut={(e) => onHover(e, false)}
-      onClick={() => dispatch(onCuboidClicked(cuboidIndex))}
-    />
+    <GroupWithMatrix matrix={makeCuboidMatrix(cuboid)}>
+      <BaseCuboid
+        cuboid={cuboid}
+        color={color}
+        onPointerOver={(e) => onHover(e, true)}
+        onPointerOut={(e) => onHover(e, false)}
+        onClick={() => dispatch(onCuboidClicked(cuboidIndex))}
+      />
+    </GroupWithMatrix>
   );
 };
 

@@ -32,7 +32,7 @@ const executorSlice = createSlice({
   initialState: {
     // State for 3D editing.
     editingCuboidIndex: undefined,
-    editingCuboidMode: 'translate',
+    editingCuboidMode: 'scale',
 
     executionInProgress: false,
     cuboids: undefined,
@@ -55,6 +55,7 @@ const executorSlice = createSlice({
     [execute.pending]: (state) => {
       state.executionInProgress = true;
       state.errored = false;
+      state.editingCuboidIndex = undefined;
     },
     [execute.fulfilled]: (state, { payload }) => {
       const { cuboids, attachmentMetadata } = payload;
@@ -62,10 +63,12 @@ const executorSlice = createSlice({
       state.attachmentMetadata = attachmentMetadata;
       state.executionInProgress = false;
       state.errored = false;
+      state.editingCuboidIndex = undefined;
     },
     [execute.rejected]: (state) => {
       state.executionInProgress = false;
       state.errored = true;
+      state.editingCuboidIndex = undefined;
     },
   },
 });

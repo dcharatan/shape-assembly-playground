@@ -2,11 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as THREE from 'three';
 
-const BaseCuboid = ({ cuboid, color, onPointerOver, onPointerOut, onClick }) => {
-  // Create the cuboid geometry.
-  const geometry = new THREE.BoxBufferGeometry(...cuboid.dimensions);
-
-  // Apply the cuboid's transformations to the geometry.
+export const makeCuboidMatrix = (cuboid) => {
   const translate = new THREE.Matrix4();
   translate.makeTranslation(...cuboid.position);
   const rotate = new THREE.Matrix4();
@@ -15,11 +11,24 @@ const BaseCuboid = ({ cuboid, color, onPointerOver, onPointerOut, onClick }) => 
     new THREE.Vector3(...cuboid.frontNormal),
     new THREE.Vector3(...cuboid.topNormal)
   );
-  geometry.applyMatrix4(translate.multiply(rotate));
+  const scale = new THREE.Matrix4();
+  scale.makeScale(...cuboid.dimensions);
+  return translate.multiply(rotate.multiply(scale));
+};
 
+const BaseCuboid = ({ color, onPointerOver, onPointerOut, onClick }) => {
+  const geometry = new THREE.BoxBufferGeometry();
   return (
     <group>
-      <mesh geometry={geometry} onPointerOut={onPointerOut} onPointerOver={onPointerOver} onClick={onClick}>
+      <mesh
+        geometry={geometry}
+        onPointerOut={onPointerOut}
+        onPointerOver={onPointerOver}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick(e);
+        }}
+      >
         <meshStandardMaterial attach="material" color={color} />
       </mesh>
       <lineSegments>
@@ -31,13 +40,6 @@ const BaseCuboid = ({ cuboid, color, onPointerOver, onPointerOut, onClick }) => 
 };
 
 BaseCuboid.propTypes = {
-  cuboid: PropTypes.shape({
-    position: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    dimensions: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    frontNormal: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    topNormal: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    globalLineIndex: PropTypes.number.isRequired,
-  }).isRequired,
   color: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onPointerOver: PropTypes.func,
   onPointerOut: PropTypes.func,
