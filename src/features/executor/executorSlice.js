@@ -30,10 +30,26 @@ export const execute = createAsyncThunk('execute', async (programText) => {
 const executorSlice = createSlice({
   name: 'executorSlice',
   initialState: {
+    // State for 3D editing.
+    editingCuboidIndex: undefined,
+    editingCuboidMode: 'translate',
+
     executionInProgress: false,
     cuboids: undefined,
     attachmentMetadata: undefined,
     errored: false,
+  },
+  reducers: {
+    onCuboidClicked: (state, { payload }) => {
+      // If the cuboid is already selected, rotate the editing mode.
+      if (state.editingCuboidIndex === payload) {
+        const modes = ['translate', 'scale', 'rotate'];
+        state.editingCuboidMode = modes[(modes.indexOf(state.editingCuboidMode) + 1) % modes.length];
+      }
+
+      // Make sure the cuboid gets selected.
+      state.editingCuboidIndex = payload;
+    },
   },
   extraReducers: {
     [execute.pending]: (state) => {
@@ -53,5 +69,7 @@ const executorSlice = createSlice({
     },
   },
 });
+
+export const { onCuboidClicked } = executorSlice.actions;
 
 export default executorSlice.reducer;

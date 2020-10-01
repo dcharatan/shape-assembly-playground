@@ -40,7 +40,8 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
 const INITIAL_TEXT = `@root_assembly
 def root():
     bbox = Cuboid(1,1,1,True)
-    cuboid = Cuboid(1,1,1,True)`;
+    cuboid1 = Cuboid(3,1,1,True)
+    cuboid2 = Cuboid(1,3,1,True)`;
 
 class SapEditor extends React.Component {
   constructor(props) {
