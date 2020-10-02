@@ -1,14 +1,18 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { setLastTranspiled } from '../editor/editorSlice';
 
-let controller;
+let executeController;
 let previousExecutionPromise;
 
-export const execute = createAsyncThunk('execute', async (programText) => {
+let optimizeController;
+let previousOptimizationPromise;
+
+export const execute = createAsyncThunk('execute', async (programText, { dispatch }) => {
   if (previousExecutionPromise) {
-    controller.abort();
+    executeController.abort();
   }
-  controller = new AbortController();
+  executeController = new AbortController();
   previousExecutionPromise = fetch('http://localhost:5000', {
     headers: new Headers({
       'content-type': 'application/json',
@@ -17,8 +21,9 @@ export const execute = createAsyncThunk('execute', async (programText) => {
     body: JSON.stringify({
       program: programText,
     }),
-    signal: controller.signal,
+    signal: executeController.signal,
   });
+  dispatch(setLastTranspiled(programText));
   const result = await previousExecutionPromise;
 
   if (result.ok) {
@@ -27,12 +32,41 @@ export const execute = createAsyncThunk('execute', async (programText) => {
   throw new Error('Executor failed.');
 });
 
+export const optimize = createAsyncThunk(
+  'optimize',
+  async ({ modifiedCuboidIndex, modifiedCuboidMatrix }, { getState }) => {
+    if (previousOptimizationPromise) {
+      optimizeController.abort();
+    }
+    optimizeController = new AbortController();
+    const programText = getState().editorSlice.lastTranspiled;
+    previousOptimizationPromise = fetch('http://localhost:5000/optimize', {
+      headers: new Headers({
+        'content-type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify({
+        modifiedCuboidIndex,
+        modifiedCuboidMatrix,
+        program: programText,
+      }),
+      signal: optimizeController.signal,
+    });
+    const result = await previousOptimizationPromise;
+
+    if (result.ok) {
+      return result.json();
+    }
+    throw new Error('Optimizer failed.');
+  }
+);
+
 const executorSlice = createSlice({
   name: 'executorSlice',
   initialState: {
     // State for 3D editing.
     editingCuboidIndex: undefined,
-    editingCuboidMode: 'scale',
+    editingCuboidMode: 'translate',
 
     executionInProgress: false,
     cuboids: undefined,

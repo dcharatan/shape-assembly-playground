@@ -1,14 +1,17 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TransformControls } from 'drei';
 import * as THREE from 'three';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
+import { optimize } from '../executor/executorSlice';
 
-const EditableCuboid = ({ cuboid, orbitRef }) => {
+const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
+  const dispatch = useDispatch();
   const transformRef = useRef();
   const editingCuboidMode = useSelector((state) => state.executorSlice.editingCuboidMode);
   const geometryRef = useRef();
+  const cuboidMatrix = makeCuboidMatrix(cuboid);
 
   // Disable drag for the orbit camera when dragging the transform controls.
   useEffect(() => {
@@ -23,10 +26,15 @@ const EditableCuboid = ({ cuboid, orbitRef }) => {
         orbitRef.current.enabled = !dragging;
 
         if (!dragging) {
-          if (editingCuboidMode === 'translate') {
-            const newPosition = controls.worldPosition;
-            console.log(`NEW POSITION:`, newPosition);
-          }
+          controls.updateMatrixWorld();
+          controls.update();
+          const newMatrix = controls.object.matrix.multiply(cuboidMatrix);
+          dispatch(
+            optimize({
+              modifiedCuboidIndex: cuboidIndex,
+              modifiedCuboidMatrix: newMatrix.elements,
+            })
+          );
         }
       };
       controls.addEventListener('dragging-changed', callback);
@@ -43,7 +51,7 @@ const EditableCuboid = ({ cuboid, orbitRef }) => {
   const position = new THREE.Vector3();
   const quaternion = new THREE.Quaternion();
   const scale = new THREE.Vector3();
-  makeCuboidMatrix(cuboid).decompose(position, quaternion, scale);
+  cuboidMatrix.decompose(position, quaternion, scale);
 
   return (
     <TransformControls
@@ -71,6 +79,7 @@ EditableCuboid.propTypes = {
 
   // eslint-disable-next-line react/forbid-prop-types
   orbitRef: PropTypes.any, // It's a ref.
+  cuboidIndex: PropTypes.number.isRequired,
 };
 
 EditableCuboid.defaultProps = {
