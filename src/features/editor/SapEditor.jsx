@@ -162,7 +162,7 @@ class SapEditor extends React.Component {
 
       // Update the highlights on the transcribed text.
       // This is only done if the highlights have changed.
-      if (hoveredCuboids !== this.previoushoveredCuboids) {
+      if (hoveredCuboids !== this.previoushoveredCuboids && this.transpiled) {
         const lineToIndex = new Map();
         const lines = this.transpiled.split('\n');
         lines.forEach((line, index) => {
