@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Editor, EditorState, RichUtils, ContentState, Modifier } from 'draft-js';
 import './SapEditor.scss';
 import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parser';
-import { execute } from '../executor/executorSlice';
+import { execute, updateExpressions } from '../executor/executorSlice';
 import DefDecorator, { makeDefDecoratorStrategy } from './decorators/DefDecorator';
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './decorators/ErrorDecorator';
 import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './decorators/DefParameterDecorator';
@@ -38,10 +38,9 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
 }
 
 const INITIAL_TEXT = `@root_assembly
-def root():
-    bbox = Cuboid(1,1,1,True)
-    cuboid1 = Cuboid(3,1,1,True)
-    cuboid2 = Cuboid(1,3,1,True)`;
+def root_asm():
+    bbox = Cuboid(1, 1, 1, True)
+    cube = Cuboid(1, 1, 1, True)`;
 
 class SapEditor extends React.Component {
   constructor(props) {
@@ -91,14 +90,18 @@ class SapEditor extends React.Component {
   }
 
   execute(editorState) {
-    const { setAst, doExecute } = this.props;
+    const { setAst, doExecute, doUpdateExpressions } = this.props;
     const newSourceCode = editorState.getCurrentContent().getPlainText('\n');
 
     // Only rerun execution if the source code has changed.
     if (newSourceCode !== this.sourceCode) {
       this.sourceCode = newSourceCode;
       const newAst = this.parser.parseShapeAssemblyProgram(newSourceCode);
-      this.transpiled = new Transpiler().transpile(newAst);
+      const transpileResult = new Transpiler().transpile(newAst);
+      if (transpileResult) {
+        doUpdateExpressions(transpileResult.expressions);
+        this.transpiled = transpileResult.text;
+      }
       this.viewerEditorStateTextNeedsUpdate = true;
       this.setState({
         editorState: EditorState.set(editorState, {
@@ -202,6 +205,7 @@ class SapEditor extends React.Component {
 
 SapEditor.propTypes = {
   doExecute: PropTypes.func.isRequired,
+  doUpdateExpressions: PropTypes.func.isRequired,
   showingTranspiled: PropTypes.bool.isRequired,
   setAst: PropTypes.func.isRequired,
   hoveredCuboids: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -214,6 +218,7 @@ const mapState = (state) => ({
 
 const mapDispatch = (dispatch) => ({
   doExecute: (programText) => dispatch(execute(programText)),
+  doUpdateExpressions: (expressions) => dispatch(updateExpressions(expressions)),
 });
 
 export default connect(mapState, mapDispatch)(SapEditor);

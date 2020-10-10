@@ -40,6 +40,7 @@ export const optimize = createAsyncThunk(
     }
     optimizeController = new AbortController();
     const programText = getState().editorSlice.lastTranspiled;
+    const { expressions } = getState().executorSlice;
     previousOptimizationPromise = fetch('http://localhost:5000/optimize', {
       headers: new Headers({
         'content-type': 'application/json',
@@ -49,6 +50,7 @@ export const optimize = createAsyncThunk(
         modifiedCuboidIndex,
         modifiedCuboidMatrix,
         program: programText,
+        expressions,
       }),
       signal: optimizeController.signal,
     });
@@ -66,7 +68,11 @@ const executorSlice = createSlice({
   initialState: {
     // State for 3D editing.
     editingCuboidIndex: undefined,
-    editingCuboidMode: 'translate',
+    editingCuboidMode: 'scale',
+
+    // This is where the expressions for each transpiled line's arguments are stored.
+    // This allows the optimizer to keep the constraints imposed by Python-like ShapeAssembly's expressions.
+    expressions: undefined,
 
     executionInProgress: false,
     cuboids: undefined,
@@ -83,6 +89,9 @@ const executorSlice = createSlice({
 
       // Make sure the cuboid gets selected.
       state.editingCuboidIndex = payload;
+    },
+    updateExpressions: (state, { payload }) => {
+      state.expressions = payload;
     },
   },
   extraReducers: {
@@ -107,6 +116,6 @@ const executorSlice = createSlice({
   },
 });
 
-export const { onCuboidClicked } = executorSlice.actions;
+export const { onCuboidClicked, updateExpressions } = executorSlice.actions;
 
 export default executorSlice.reducer;
