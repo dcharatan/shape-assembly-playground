@@ -12,6 +12,7 @@ import VariableNameDecorator, { makeVariableNameDecoratorStrategy } from './deco
 import 'draft-js/dist/Draft.css';
 import ProppableCompositeDraftDecorator from './decorators/ProppableCompositeDraftDecorator';
 import LineHighlightDecorator, { makeLineHighlightDecoratorStrategy } from './decorators/LineHighlightDecorator';
+import NonSerializableContext from '../context/NonSerializableContext';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -37,17 +38,10 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
   });
 }
 
-const INITIAL_TEXT = `@root_assembly
-def root_asm():
-    bbox = Cuboid(1, 1, 1, True)
-    cube = Cuboid(1, 1, 1, True)`;
-
 class SapEditor extends React.Component {
+  static contextType = NonSerializableContext;
   constructor(props) {
     super(props);
-    this.state = {
-      editorState: EditorState.createWithContent(ContentState.createFromText(INITIAL_TEXT)),
-    };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.sourceCode = undefined;
     this.parser = new ShapeAssemblyParser();
@@ -77,7 +71,7 @@ class SapEditor extends React.Component {
     };
 
     this.onTab = (event) => {
-      const { editorState } = this.state;
+      const { editorState } = this.context;
       this.onChange(this.insertText('    ', editorState));
       event.preventDefault();
     };
@@ -85,12 +79,12 @@ class SapEditor extends React.Component {
 
   componentDidMount() {
     // Force an editor state update.
-    const { editorState } = this.state;
+    const { editorState } = this.context;
     this.execute(editorState);
   }
 
   execute(editorState) {
-    const { setAst, doExecute, doUpdateExpressions } = this.props;
+    const { doExecute, doUpdateExpressions } = this.props;
     const newSourceCode = editorState.getCurrentContent().getPlainText('\n');
 
     // Only rerun execution if the source code has changed.
@@ -103,34 +97,30 @@ class SapEditor extends React.Component {
         this.transpiled = transpileResult.text;
       }
       this.viewerEditorStateTextNeedsUpdate = true;
-      this.setState({
-        editorState: EditorState.set(editorState, {
-          decorator: new ProppableCompositeDraftDecorator([
-            {
-              strategy: makeDefDecoratorStrategy(() => newAst, applyStrategy),
-              component: DefDecorator,
-            },
-            {
-              strategy: makeDefParameterDecoratorStrategy(() => newAst, applyStrategy),
-              component: DefParameterDecorator,
-            },
-            {
-              strategy: makeErrorDecoratorStrategy(() => newAst, applyStrategy),
-              component: ErrorDecorator,
-            },
-            {
-              strategy: makeVariableNameDecoratorStrategy(() => newAst, applyStrategy),
-              component: VariableNameDecorator,
-            },
-          ]),
-        }),
-      });
-      setAst(newAst);
+      this.context.setEditorState(EditorState.set(editorState, {
+        decorator: new ProppableCompositeDraftDecorator([
+          {
+            strategy: makeDefDecoratorStrategy(() => newAst, applyStrategy),
+            component: DefDecorator,
+          },
+          {
+            strategy: makeDefParameterDecoratorStrategy(() => newAst, applyStrategy),
+            component: DefParameterDecorator,
+          },
+          {
+            strategy: makeErrorDecoratorStrategy(() => newAst, applyStrategy),
+            component: ErrorDecorator,
+          },
+          {
+            strategy: makeVariableNameDecoratorStrategy(() => newAst, applyStrategy),
+            component: VariableNameDecorator,
+          },
+        ]),
+      }));
+      this.context.setAst(newAst);
       doExecute(this.transpiled);
     } else {
-      this.setState({
-        editorState,
-      });
+      this.context.setEditorState(editorState);
     }
   }
 
@@ -144,7 +134,7 @@ class SapEditor extends React.Component {
   }
 
   render() {
-    const { editorState } = this.state;
+    const { editorState } = this.context;
     const { showingTranspiled, hoveredCuboids } = this.props;
 
     // Choose which EditorState should be shown.
@@ -207,7 +197,6 @@ SapEditor.propTypes = {
   doExecute: PropTypes.func.isRequired,
   doUpdateExpressions: PropTypes.func.isRequired,
   showingTranspiled: PropTypes.bool.isRequired,
-  setAst: PropTypes.func.isRequired,
   hoveredCuboids: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 

@@ -1,11 +1,10 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SapEditor from './SapEditor';
 import { setTab } from './editorSlice';
 
-const EditorArea = (props) => {
+const EditorArea = () => {
   const dispatch = useDispatch();
   const tab = useSelector((state) => state.editorSlice.tab);
 
@@ -16,7 +15,7 @@ const EditorArea = (props) => {
         <Tab eventKey="transpiled" title="Transpiled" />
       </Tabs>
       <div className="d-flex flex-grow-1 w-100 overflow-y-hidden">
-        <SapEditor {...props} />
+        <SapEditor />
       </div>
     </div>
   );
