@@ -5,6 +5,7 @@ import { OrbitControls } from 'drei';
 import { v4 as uuidv4 } from 'uuid';
 import HoverableCuboid from './HoverableCuboid';
 import EditableCuboid from './EditableCuboid';
+import NonSerializableContext from '../context/NonSerializableContext';
 
 const Viewer = () => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
@@ -44,19 +45,25 @@ const Viewer = () => {
 
   return (
     <div className={`border h-100 w-100 ${borderColorClass}`}>
-      <ReactReduxContext.Consumer>
-        {({ store }) => (
-          <Canvas>
-            <Provider store={store}>
-              <ambientLight intensity={0.65} />
-              <pointLight position={[10, 20, 40]} intensity={0.85} />
-              <pointLight position={[-10, -20, -40]} intensity={0.65} />
-              <OrbitControls ref={orbitRef} />
-              {getCuboids()}
-            </Provider>
-          </Canvas>
+      <NonSerializableContext.Consumer>
+        {(nonSerializableContext) => (
+          <ReactReduxContext.Consumer>
+            {({ store }) => (
+              <Canvas>
+                <NonSerializableContext.Provider value={nonSerializableContext}>
+                  <Provider store={store}>
+                    <ambientLight intensity={0.65} />
+                    <pointLight position={[10, 20, 40]} intensity={0.85} />
+                    <pointLight position={[-10, -20, -40]} intensity={0.65} />
+                    <OrbitControls ref={orbitRef} />
+                    {getCuboids()}
+                  </Provider>
+                </NonSerializableContext.Provider>
+              </Canvas>
+            )}
+          </ReactReduxContext.Consumer>
         )}
-      </ReactReduxContext.Consumer>
+      </NonSerializableContext.Consumer>
     </div>
   );
 };

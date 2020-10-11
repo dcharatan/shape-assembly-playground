@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TransformControls } from 'drei';
 import * as THREE from 'three';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import { optimize } from '../executor/executorSlice';
+import NonSerializableContext from '../context/NonSerializableContext';
 
 const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
   const editingCuboidMode = useSelector((state) => state.executorSlice.editingCuboidMode);
   const geometryRef = useRef();
   const cuboidMatrix = makeCuboidMatrix(cuboid);
+  const { editorState, setEditorState } = useContext(NonSerializableContext);
 
   // Disable drag for the orbit camera when dragging the transform controls.
   useEffect(() => {
@@ -33,6 +35,8 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
             optimize({
               modifiedCuboidIndex: cuboidIndex,
               modifiedCuboidMatrix: newMatrix.elements,
+              editorState,
+              setEditorState,
             })
           );
         }
