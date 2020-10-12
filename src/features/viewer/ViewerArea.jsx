@@ -1,7 +1,7 @@
 import React from 'react';
 import Viewer from './Viewer';
 
-const EditorArea = () => (
+const ViewerArea = () => (
   <div className="w-100 h-100 d-flex flex-column">
     <div className="d-flex flex-grow-1 w-100">
       <Viewer />
@@ -9,4 +9,4 @@ const EditorArea = () => (
   </div>
 );
 
-export default EditorArea;
+export default ViewerArea;
