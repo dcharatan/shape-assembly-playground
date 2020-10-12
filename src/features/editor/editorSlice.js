@@ -7,7 +7,6 @@ const editorSlice = createSlice({
     tab: 'code',
     hoveredCuboids: {},
     hoveredTranspiledLines: {},
-    lastTranspiled: undefined,
   },
   reducers: {
     setTab(state, { payload }) {
@@ -25,9 +24,6 @@ const editorSlice = createSlice({
     setTranspiledLineNotHovered(state, { payload }) {
       delete state.hoveredTranspiledLines[payload];
     },
-    setLastTranspiled: (state, { payload }) => {
-      state.lastTranspiled = payload;
-    },
   },
 });
 
@@ -37,7 +33,6 @@ export const {
   setCuboidNotHovered,
   setTranspiledLineHovered,
   setTranspiledLineNotHovered,
-  setLastTranspiled,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

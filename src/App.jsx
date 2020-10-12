@@ -16,8 +16,8 @@ const store = configureStore({
 
 const App = () => (
   <BrowserRouter>
-    <NonSerializableContextManager>
-      <Provider store={store}>
+    <Provider store={store}>
+      <NonSerializableContextManager>
         <div className="d-flex flex-column h-100 overflow-y-hidden">
           <SapNavbar />
           <Switch>
@@ -41,8 +41,8 @@ const App = () => (
             </Route>
           </Switch>
         </div>
-      </Provider>
-    </NonSerializableContextManager>
+      </NonSerializableContextManager>
+    </Provider>
   </BrowserRouter>
 );
 

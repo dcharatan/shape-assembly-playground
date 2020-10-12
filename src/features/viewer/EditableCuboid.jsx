@@ -23,8 +23,8 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
         if (geometryRef.current) {
           controls.updateMatrixWorld(geometryRef.current);
         }
-        // eslint-disable-next-line no-param-reassign
         const dragging = event.value;
+        // eslint-disable-next-line no-param-reassign
         orbitRef.current.enabled = !dragging;
 
         if (!dragging) {

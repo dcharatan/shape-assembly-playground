@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ContentState, EditorState } from 'draft-js';
-import { setLastTranspiled } from '../editor/editorSlice';
 
 let executeController;
 let previousExecutionPromise;
@@ -9,11 +8,14 @@ let previousExecutionPromise;
 let optimizeController;
 let previousOptimizationPromise;
 
-export const execute = createAsyncThunk('execute', async (programText, { dispatch }) => {
+export const execute = createAsyncThunk('execute', async (programText) => {
+  // Cancel the last execution.
   if (previousExecutionPromise) {
     executeController.abort();
   }
   executeController = new AbortController();
+
+  // Call the executor.
   previousExecutionPromise = fetch('http://localhost:5000', {
     headers: new Headers({
       'content-type': 'application/json',
@@ -24,9 +26,7 @@ export const execute = createAsyncThunk('execute', async (programText, { dispatc
     }),
     signal: executeController.signal,
   });
-  dispatch(setLastTranspiled(programText));
   const result = await previousExecutionPromise;
-
   if (result.ok) {
     return result.json();
   }
@@ -90,6 +90,7 @@ const executorSlice = createSlice({
     // This is where the expressions for each transpiled line's arguments are stored.
     // This allows the optimizer to keep the constraints imposed by Python-like ShapeAssembly's expressions.
     expressions: undefined,
+    transpiled: undefined,
 
     executionInProgress: false,
     cuboids: undefined,
@@ -107,8 +108,17 @@ const executorSlice = createSlice({
       // Make sure the cuboid gets selected.
       state.editingCuboidIndex = payload;
     },
-    updateExpressions: (state, { payload }) => {
-      state.expressions = payload;
+
+    // Add a set of transpilation results.
+    updateWithTranspilation: (state, { payload }) => {
+      // Reset transpilation-related state if transpilation fails.
+      if (!payload) {
+        state.transpiled = undefined;
+        state.expressions = undefined;
+        return;
+      }
+      state.transpiled = payload.text;
+      state.expressions = payload.expressions;
     },
   },
   extraReducers: {
@@ -133,6 +143,6 @@ const executorSlice = createSlice({
   },
 });
 
-export const { onCuboidClicked, updateExpressions } = executorSlice.actions;
+export const { onCuboidClicked, updateWithTranspilation } = executorSlice.actions;
 
 export default executorSlice.reducer;
