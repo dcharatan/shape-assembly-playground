@@ -53,8 +53,7 @@ export const optimize = createAsyncThunk(
       optimizeController.abort();
     }
     optimizeController = new AbortController();
-    const programText = getState().editorSlice.lastTranspiled;
-    const { expressions } = getState().executorSlice;
+    const { expressions, transpiled } = getState().executorSlice;
     previousOptimizationPromise = fetch('http://localhost:5000/optimize', {
       headers: new Headers({
         'content-type': 'application/json',
@@ -63,7 +62,7 @@ export const optimize = createAsyncThunk(
       body: JSON.stringify({
         modifiedCuboidIndex,
         modifiedCuboidMatrix,
-        program: programText,
+        program: transpiled,
         expressions,
       }),
       signal: optimizeController.signal,
