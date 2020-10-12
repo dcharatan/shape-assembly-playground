@@ -85,6 +85,7 @@ const executorSlice = createSlice({
     // State for 3D editing.
     editingCuboidIndex: undefined,
     editingCuboidMode: 'scale',
+    optimizationInProgress: false,
 
     // This is where the expressions for each transpiled line's arguments are stored.
     // This allows the optimizer to keep the constraints imposed by Python-like ShapeAssembly's expressions.
@@ -138,6 +139,15 @@ const executorSlice = createSlice({
       state.executionInProgress = false;
       state.errored = true;
       state.editingCuboidIndex = undefined;
+    },
+    [optimize.pending]: (state) => {
+      state.optimizationInProgress = true;
+    },
+    [optimize.fulfilled]: (state) => {
+      state.optimizationInProgress = false;
+    },
+    [optimize.rejected]: (state) => {
+      state.optimizationInProgress = false;
     },
   },
 });

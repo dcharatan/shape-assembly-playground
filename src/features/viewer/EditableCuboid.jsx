@@ -11,6 +11,7 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
   const dispatch = useDispatch();
   const transformRef = useRef();
   const editingCuboidMode = useSelector((state) => state.executorSlice.editingCuboidMode);
+  const disabled = useSelector((state) => state.executorSlice.optimizationInProgress);
   const geometryRef = useRef();
   const cuboidMatrix = makeCuboidMatrix(cuboid);
   const { editorState, setEditorState } = useContext(NonSerializableContext);
@@ -64,6 +65,7 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
       quaternion={quaternion}
       position={position}
       space="local"
+      disabled={disabled}
     >
       <group scale={scale}>
         <BaseCuboid cuboid={cuboid} color="red" geometryRef={geometryRef} />

@@ -60,7 +60,7 @@ class SapEditor extends React.Component {
 
   render() {
     const { editorState, setEditorState } = this.context;
-    const { showingTranspiled, hoveredCuboids, transpiled } = this.props;
+    const { showingTranspiled, hoveredCuboids, transpiled, optimizationInProgress } = this.props;
 
     // Choose which EditorState should be shown.
     const getEditorState = () => {
@@ -110,7 +110,7 @@ class SapEditor extends React.Component {
             onChange={setEditorState}
             handlePastedText={this.handlePastedText}
             onTab={this.onTab}
-            readOnly={showingTranspiled}
+            readOnly={showingTranspiled || optimizationInProgress}
           />
         </div>
       </div>
@@ -119,6 +119,7 @@ class SapEditor extends React.Component {
 }
 
 SapEditor.propTypes = {
+  optimizationInProgress: PropTypes.bool.isRequired,
   showingTranspiled: PropTypes.bool.isRequired,
   hoveredCuboids: PropTypes.arrayOf(PropTypes.string).isRequired,
   transpiled: PropTypes.string,
@@ -132,6 +133,7 @@ const mapState = (state) => ({
   showingTranspiled: state.editorSlice.tab === 'transpiled',
   hoveredCuboids: Object.keys(state.editorSlice.hoveredCuboids),
   transpiled: state.executorSlice.transpiled,
+  optimizationInProgress: state.executorSlice.optimizationInProgress,
 });
 
 export default connect(mapState)(SapEditor);
