@@ -52,6 +52,9 @@ export const makeLineHighlightDecoratorStrategy = (hoveredCuboids, lineToIndex) 
   let startIndex = 0;
   text.split('\n').forEach((line) => {
     const index = lineToIndex.get(line);
+    if (!index) {
+      return;
+    }
     callback(startIndex, startIndex + line.length, {
       index,
       selected: selectedLineIndices.has(index.toString()),
