@@ -9,7 +9,6 @@ import LineHighlightDecorator, { makeLineHighlightDecoratorStrategy } from './de
 import NonSerializableContext from '../context/NonSerializableContext';
 
 class SapEditor extends React.Component {
-  static contextType = NonSerializableContext;
   constructor(props) {
     super(props);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
@@ -117,6 +116,8 @@ class SapEditor extends React.Component {
     );
   }
 }
+
+SapEditor.contextType = NonSerializableContext;
 
 SapEditor.propTypes = {
   optimizationInProgress: PropTypes.bool.isRequired,

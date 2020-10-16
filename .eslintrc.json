@@ -1,7 +1,8 @@
 {
   "extends": [
     "airbnb",
-    "prettier"
+    "prettier",
+    "esnext"
   ],
   "plugins": [
     "prettier"
@@ -12,6 +13,9 @@
   "rules": {
     "prettier/prettier": [
       "error"
+    ],
+    "import/no-namespace": [
+      "off"
     ]
   }
 }
