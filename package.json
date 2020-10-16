@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@dcharatan/shape-assembly-parser": "2.0.2",
+    "@dcharatan/shape-assembly-parser": "2.0.6",
     "@nivo/stream": "^0.62.0",
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^4.2.4",
