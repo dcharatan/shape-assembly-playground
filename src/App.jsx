@@ -9,6 +9,7 @@ import rootReducer from './features/redux/rootReducer';
 import NotFound from './features/404/NotFound';
 import ResultPage from './features/result-page/ResultPage';
 import NonSerializableContextManager from './features/context/NonSerializableContextManager';
+import KeypressHandler from './KeypressHandler';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -41,6 +42,7 @@ const App = () => (
             </Route>
           </Switch>
         </div>
+        <KeypressHandler />
       </NonSerializableContextManager>
     </Provider>
   </BrowserRouter>

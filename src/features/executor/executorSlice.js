@@ -141,6 +141,16 @@ const executorSlice = createSlice({
       state.modifiedCuboidMatrix = modifiedCuboidMatrix;
       state.modifiedCuboidIndex = modifiedCuboidIndex;
     },
+
+    // Used to select between 'translate', 'rotate' and 'scale'.
+    setEditingCuboidMode: (state, { payload }) => {
+      state.editingCuboidMode = payload;
+    },
+
+    // De-select editing so that typing into the editor doesn't visibly change the rotation/scale/translation for 3D editing.
+    endCuboidEditing: (state) => {
+      state.editingCuboidIndex = undefined;
+    },
   },
   extraReducers: {
     [execute.pending]: (state) => {
@@ -180,6 +190,12 @@ const executorSlice = createSlice({
   },
 });
 
-export const { onCuboidClicked, updateWithTranspilation, setModifiedCuboidParameters } = executorSlice.actions;
+export const {
+  onCuboidClicked,
+  updateWithTranspilation,
+  setModifiedCuboidParameters,
+  setEditingCuboidMode,
+  endCuboidEditing,
+} = executorSlice.actions;
 
 export default executorSlice.reducer;

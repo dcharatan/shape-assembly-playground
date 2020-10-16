@@ -4,7 +4,7 @@ import { ContentState, EditorState } from 'draft-js';
 import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parser';
 import { useDispatch } from 'react-redux';
 import NonSerializableContext from './NonSerializableContext';
-import { execute, updateWithTranspilation } from '../executor/executorSlice';
+import { endCuboidEditing, execute, updateWithTranspilation } from '../executor/executorSlice';
 import insertDecorators from '../editor/decorators/insertDecorators';
 
 const INITIAL_TEXT = `@root_assembly
@@ -27,6 +27,7 @@ const NonSerializableContextManager = ({ children }) => {
   const update = (newEditorState, forceRefresh) => {
     // Get the new editor text.
     const editorText = newEditorState.getCurrentContent().getPlainText('\n');
+    dispatch(endCuboidEditing());
 
     // Attempt transpilation if the text is different.
     let mostRecentAst = ast;
