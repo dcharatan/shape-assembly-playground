@@ -20,6 +20,11 @@ body,
   cursor: pointer;
 }
 
+canvas {
+  border: none;
+  outline: none;
+}
+
 @import 'node_modules/bootstrap/scss/bootstrap';
 
 h1 {
