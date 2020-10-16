@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import HoverableCuboid from './HoverableCuboid';
 import EditableCuboid from './EditableCuboid';
 import NonSerializableContext from '../context/NonSerializableContext';
+import { getEditabilityEnabled } from '../../environment';
 
 const Viewer = () => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
@@ -27,7 +28,7 @@ const Viewer = () => {
       return null;
     }
     return cuboids.map((cuboid, cuboidIndex) => {
-      if (cuboidIndex === editingCuboidIndex) {
+      if (cuboidIndex === editingCuboidIndex && getEditabilityEnabled()) {
         return <EditableCuboid key={uuidv4()} cuboidIndex={cuboidIndex} orbitRef={orbitRef} cuboid={cuboid} />;
       }
 

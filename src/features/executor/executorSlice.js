@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ContentState, EditorState } from 'draft-js';
+import { getBaseUrl, getEditabilityEnabled } from '../../environment';
 
 let executeController;
 let previousExecutionPromise;
@@ -16,7 +17,7 @@ export const execute = createAsyncThunk('execute', async (programText) => {
   executeController = new AbortController();
 
   // Call the executor.
-  previousExecutionPromise = fetch('http://localhost:5000', {
+  previousExecutionPromise = fetch(getBaseUrl(), {
     headers: new Headers({
       'content-type': 'application/json',
     }),
@@ -66,7 +67,7 @@ export const optimize = createAsyncThunk(
     const rowMajor = colMajorToRowMajor(modifiedCuboidMatrix);
     optimizeController = new AbortController();
     const { expressions, transpiled } = getState().executorSlice;
-    previousOptimizationPromise = fetch('http://localhost:5000/optimize', {
+    previousOptimizationPromise = fetch(`${getBaseUrl()}/optimize`, {
       headers: new Headers({
         'content-type': 'application/json',
       }),
@@ -113,6 +114,11 @@ const executorSlice = createSlice({
   },
   reducers: {
     onCuboidClicked: (state, { payload }) => {
+      // This is disabled if cuboid editability is disabled.
+      if (!getEditabilityEnabled()) {
+        return;
+      }
+
       // If the cuboid is already selected, rotate the editing mode.
       if (state.editingCuboidIndex === payload) {
         const modes = ['translate', 'scale', 'rotate'];
