@@ -42,7 +42,7 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, c
   let matrix;
   if (optimizingThisCuboid) {
     matrix = new THREE.Matrix4();
-    matrix.set(...editingCuboidMatrix);
+    matrix.elements = editingCuboidMatrix;
   } else {
     matrix = makeCuboidMatrix(cuboid);
   }
@@ -50,7 +50,6 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, c
   return (
     <GroupWithMatrix matrix={matrix}>
       <BaseCuboid
-        cuboid={cuboid}
         color={color}
         onPointerOver={(e) => onHover(e, true)}
         onPointerOut={(e) => onHover(e, false)}
@@ -69,7 +68,7 @@ HoverableCuboid.propTypes = {
     globalLineIndex: PropTypes.number.isRequired,
   }).isRequired,
   hoveredTranspiledLines: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
-  attachmentMetadata: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string.isRequired).isRequired).isRequired,
+  attachmentMetadata: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number.isRequired).isRequired).isRequired,
   cuboidIndex: PropTypes.number.isRequired,
 };
 

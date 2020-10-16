@@ -6,11 +6,13 @@ export const makeCuboidMatrix = (cuboid) => {
   const translate = new THREE.Matrix4();
   translate.makeTranslation(...cuboid.position);
   const rotate = new THREE.Matrix4();
-  rotate.lookAt(
-    new THREE.Vector3(0, 0, 0),
-    new THREE.Vector3(...cuboid.frontNormal),
-    new THREE.Vector3(...cuboid.topNormal)
-  );
+
+  const frontNormal = new THREE.Vector3(...cuboid.frontNormal);
+  const topNormal = new THREE.Vector3(...cuboid.topNormal);
+  const rightNormal = new THREE.Vector3();
+  rightNormal.crossVectors(topNormal, frontNormal);
+
+  rotate.makeBasis(rightNormal, topNormal, frontNormal);
   const scale = new THREE.Matrix4();
   scale.makeScale(...cuboid.dimensions);
   return translate.multiply(rotate.multiply(scale));

@@ -29,9 +29,7 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
         orbitRef.current.enabled = !dragging;
 
         if (!dragging) {
-          controls.updateMatrixWorld();
-          controls.update();
-          const newMatrix = controls.object.matrix.multiply(cuboidMatrix);
+          const newMatrix = controls.object.children[0].matrixWorld;
           dispatch(
             setModifiedCuboidParameters({
               modifiedCuboidMatrix: newMatrix.elements,

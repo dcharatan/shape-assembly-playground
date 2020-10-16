@@ -46,12 +46,24 @@ const substitute = (code, parameters) => {
   return modifiedCode;
 };
 
+const colMajorToRowMajor = (colMajor) => {
+  const rowMajor = [];
+  for (let row = 0; row < 4; row += 1) {
+    for (let col = 0; col < 4; col += 1) {
+      const colMajorIndex = col * 4 + row;
+      rowMajor.push(colMajor[colMajorIndex]);
+    }
+  }
+  return rowMajor;
+};
+
 export const optimize = createAsyncThunk(
   'optimize',
   async ({ modifiedCuboidIndex, modifiedCuboidMatrix, editorState, setEditorState }, { getState }) => {
     if (previousOptimizationPromise) {
       optimizeController.abort();
     }
+    const rowMajor = colMajorToRowMajor(modifiedCuboidMatrix);
     optimizeController = new AbortController();
     const { expressions, transpiled } = getState().executorSlice;
     previousOptimizationPromise = fetch('http://localhost:5000/optimize', {
@@ -61,7 +73,7 @@ export const optimize = createAsyncThunk(
       method: 'POST',
       body: JSON.stringify({
         modifiedCuboidIndex,
-        modifiedCuboidMatrix,
+        modifiedCuboidMatrix: rowMajor,
         program: transpiled,
         expressions,
       }),
@@ -157,9 +169,13 @@ const executorSlice = createSlice({
     },
     [optimize.fulfilled]: (state) => {
       state.optimizationInProgress = false;
+      state.modifiedCuboidIndex = undefined;
+      state.modifiedCuboidMatrix = undefined;
     },
     [optimize.rejected]: (state) => {
       state.optimizationInProgress = false;
+      state.modifiedCuboidIndex = undefined;
+      state.modifiedCuboidMatrix = undefined;
     },
   },
 });
