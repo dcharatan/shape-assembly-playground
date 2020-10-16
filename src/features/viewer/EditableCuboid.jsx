@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { TransformControls } from 'drei';
 import * as THREE from 'three';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
-import { optimize } from '../executor/executorSlice';
+import { optimize, setModifiedCuboidParameters } from '../executor/executorSlice';
 import NonSerializableContext from '../context/NonSerializableContext';
 
 const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
@@ -32,6 +32,12 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
           controls.updateMatrixWorld();
           controls.update();
           const newMatrix = controls.object.matrix.multiply(cuboidMatrix);
+          dispatch(
+            setModifiedCuboidParameters({
+              modifiedCuboidMatrix: newMatrix.elements,
+              modifiedCuboidIndex: cuboidIndex,
+            })
+          );
           dispatch(
             optimize({
               modifiedCuboidIndex: cuboidIndex,

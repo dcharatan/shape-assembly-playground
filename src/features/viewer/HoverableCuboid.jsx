@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as THREE from 'three';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import { setCuboidHovered, setCuboidNotHovered } from '../editor/editorSlice';
 import calculateHighlight from './calculateHighlight';
@@ -22,18 +23,32 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, c
     },
     [setHover, dispatch, cuboid.globalLineIndex]
   );
+  const modifiedCuboidIndex = useSelector((state) => state.executorSlice.modifiedCuboidIndex);
+  const editingCuboidMatrix = useSelector((state) => state.executorSlice.modifiedCuboidMatrix);
+  const optimizingThisCuboid = cuboidIndex === modifiedCuboidIndex;
 
   // Calculate the cuboid's color.
   const selection = calculateHighlight(cuboid.globalLineIndex, hoveredTranspiledLines, attachmentMetadata);
   let color = 'gray';
-  if (selection === 'direct' || selection === 'primary' || hovered) {
+  if (optimizingThisCuboid) {
+    color = 0xb603fc;
+  } else if (selection === 'direct' || selection === 'primary' || hovered) {
     color = 0x4285f4;
   } else if (selection === 'secondary') {
     color = 0xf4b400;
   }
 
+  // Use the saved matrix during optimization.
+  let matrix;
+  if (optimizingThisCuboid) {
+    matrix = new THREE.Matrix4();
+    matrix.set(...editingCuboidMatrix);
+  } else {
+    matrix = makeCuboidMatrix(cuboid);
+  }
+
   return (
-    <GroupWithMatrix matrix={makeCuboidMatrix(cuboid)}>
+    <GroupWithMatrix matrix={matrix}>
       <BaseCuboid
         cuboid={cuboid}
         color={color}

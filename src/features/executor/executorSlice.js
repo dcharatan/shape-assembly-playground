@@ -86,6 +86,8 @@ const executorSlice = createSlice({
     editingCuboidIndex: undefined,
     editingCuboidMode: 'scale',
     optimizationInProgress: false,
+    modifiedCuboidMatrix: undefined,
+    modifiedCuboidIndex: undefined,
 
     // This is where the expressions for each transpiled line's arguments are stored.
     // This allows the optimizer to keep the constraints imposed by Python-like ShapeAssembly's expressions.
@@ -120,6 +122,13 @@ const executorSlice = createSlice({
       state.transpiled = payload.text;
       state.expressions = payload.expressions;
     },
+
+    // Used to keep the cuboid from changing during optimization.
+    setModifiedCuboidParameters: (state, { payload }) => {
+      const { modifiedCuboidIndex, modifiedCuboidMatrix } = payload;
+      state.modifiedCuboidMatrix = modifiedCuboidMatrix;
+      state.modifiedCuboidIndex = modifiedCuboidIndex;
+    },
   },
   extraReducers: {
     [execute.pending]: (state) => {
@@ -134,6 +143,8 @@ const executorSlice = createSlice({
       state.executionInProgress = false;
       state.errored = false;
       state.editingCuboidIndex = undefined;
+      state.modifiedCuboidMatrix = undefined;
+      state.modifiedCuboidIndex = undefined;
     },
     [execute.rejected]: (state) => {
       state.executionInProgress = false;
@@ -142,6 +153,7 @@ const executorSlice = createSlice({
     },
     [optimize.pending]: (state) => {
       state.optimizationInProgress = true;
+      state.editingCuboidIndex = undefined;
     },
     [optimize.fulfilled]: (state) => {
       state.optimizationInProgress = false;
@@ -152,6 +164,6 @@ const executorSlice = createSlice({
   },
 });
 
-export const { onCuboidClicked, updateWithTranspilation } = executorSlice.actions;
+export const { onCuboidClicked, updateWithTranspilation, setModifiedCuboidParameters } = executorSlice.actions;
 
 export default executorSlice.reducer;
