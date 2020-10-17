@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SimpleTooltip from '../../../components/SimpleTooltip';
-
-const CHANGE_THRESHOLD = 0.01;
+import { PARAMETER_SUBSTITUTION_THRESHOLD } from '../../executor/executorSlice';
 
 const FloatParameterDecorator = ({ children, oldValue, newValue }) => {
-  if (oldValue === undefined || newValue === undefined || Math.abs(oldValue - newValue) < CHANGE_THRESHOLD) {
+  if (
+    oldValue === undefined ||
+    newValue === undefined ||
+    Math.abs(oldValue - newValue) < PARAMETER_SUBSTITUTION_THRESHOLD
+  ) {
     return children;
   }
 
