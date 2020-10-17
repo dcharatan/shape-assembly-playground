@@ -4,6 +4,7 @@ import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './DefP
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './ErrorDecorator';
 import VariableNameDecorator, { makeVariableNameDecoratorStrategy } from './VariableNameDecorator';
 import ProppableCompositeDraftDecorator from './ProppableCompositeDraftDecorator';
+import FloatParameterDecorator, { makeFloatParameterDecoratorStrategy } from './FloatParameterDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -29,7 +30,7 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
   });
 }
 
-const insertDecorators = (editorState, ast) =>
+const insertDecorators = (editorState, ast, optimizedParameters) =>
   EditorState.set(editorState, {
     decorator: new ProppableCompositeDraftDecorator([
       {
@@ -47,6 +48,10 @@ const insertDecorators = (editorState, ast) =>
       {
         strategy: makeVariableNameDecoratorStrategy(() => ast, applyStrategy),
         component: VariableNameDecorator,
+      },
+      {
+        strategy: makeFloatParameterDecoratorStrategy(optimizedParameters, applyStrategy),
+        component: FloatParameterDecorator,
       },
     ]),
   });

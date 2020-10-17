@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ContentState, EditorState } from 'draft-js';
 import { getBaseUrl, getEditabilityEnabled } from '../../environment';
+import { saveOptimizedParameters } from '../editor/editorSlice';
 
 let executeController;
 let previousExecutionPromise;
@@ -35,16 +36,29 @@ export const execute = createAsyncThunk('execute', async (programText) => {
 });
 
 const substitute = (code, parameters) => {
+  const optimizedParameters = [];
   const sortedParameters = parameters;
   sortedParameters.sort((lhs, rhs) => lhs[0] - rhs[0]);
   let modifiedCode = code;
   let offset = 0;
   sortedParameters.forEach(([start, end, value]) => {
     const substitution = value.toFixed(2);
-    modifiedCode = modifiedCode.slice(0, start + offset) + substitution + modifiedCode.slice(end + offset);
+    const adjustedStart = start + offset;
+
+    // Save information for decorators.
+    const oldValue = parseFloat(modifiedCode.substring(adjustedStart, end + offset));
+    optimizedParameters.push({
+      start: adjustedStart,
+      end: adjustedStart + substitution.length,
+      oldValue,
+      newValue: value,
+    });
+
+    // Do the substitution.
+    modifiedCode = modifiedCode.slice(0, adjustedStart) + substitution + modifiedCode.slice(end + offset);
     offset += substitution.length - (end - start);
   });
-  return modifiedCode;
+  return { modifiedCode, optimizedParameters };
 };
 
 const colMajorToRowMajor = (colMajor) => {
@@ -60,7 +74,7 @@ const colMajorToRowMajor = (colMajor) => {
 
 export const optimize = createAsyncThunk(
   'optimize',
-  async ({ modifiedCuboidIndex, modifiedCuboidMatrix, editorState, setEditorState }, { getState }) => {
+  async ({ modifiedCuboidIndex, modifiedCuboidMatrix, editorState, setEditorState }, { getState, dispatch }) => {
     if (previousOptimizationPromise) {
       optimizeController.abort();
     }
@@ -85,8 +99,9 @@ export const optimize = createAsyncThunk(
     if (result.ok) {
       const code = editorState.getCurrentContent().getPlainText('\n');
       const { parameters } = await result.json();
-      const substitutedCode = substitute(code, parameters);
-      setEditorState(EditorState.createWithContent(ContentState.createFromText(substitutedCode)));
+      const { modifiedCode, optimizedParameters } = substitute(code, parameters);
+      dispatch(saveOptimizedParameters(optimizedParameters));
+      setEditorState(EditorState.createWithContent(ContentState.createFromText(modifiedCode)), { optimizedParameters });
     }
     throw new Error('Optimizer failed.');
   }

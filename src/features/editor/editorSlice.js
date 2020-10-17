@@ -7,6 +7,11 @@ const editorSlice = createSlice({
     tab: 'code',
     hoveredCuboids: {},
     hoveredTranspiledLines: {},
+
+    // Whenever an optimization happens, the changed parameters are stored here. This is used for decorators.
+    // This is a list of the following: { start, end, oldValue, newValue }
+    // start and end are character indices for the highlight; old and new are the old/new parameter values
+    optimizedParameters: undefined,
   },
   reducers: {
     setTab(state, { payload }) {
@@ -24,6 +29,16 @@ const editorSlice = createSlice({
     setTranspiledLineNotHovered(state, { payload }) {
       delete state.hoveredTranspiledLines[payload];
     },
+
+    // This should be called after each optimization so that the post-optimization decorators for diffs can be shown.
+    saveOptimizedParameters: (state, { payload }) => {
+      state.optimizedParameters = payload;
+    },
+
+    // This is used when the optimizer's parameter changes should no longer be shown.
+    resetOptimizedParameters: (state) => {
+      state.optimizedParameters = undefined;
+    },
   },
 });
 
@@ -33,6 +48,8 @@ export const {
   setCuboidNotHovered,
   setTranspiledLineHovered,
   setTranspiledLineNotHovered,
+  saveOptimizedParameters,
+  resetOptimizedParameters,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
