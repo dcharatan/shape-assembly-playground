@@ -4,7 +4,7 @@ import { ContentState, EditorState } from 'draft-js';
 import { getBaseUrl, getEditabilityEnabled } from '../../environment';
 import { saveOptimizedParameters } from '../editor/editorSlice';
 
-export const PARAMETER_SUBSTITUTION_THRESHOLD = 0.01;
+export const PARAMETER_SUBSTITUTION_THRESHOLD = 0.011;
 
 let executeController;
 let previousExecutionPromise;
@@ -46,18 +46,19 @@ const substitute = (code, parameters) => {
   sortedParameters.forEach(([start, end, value]) => {
     const substitution = value.toFixed(2);
     const adjustedStart = start + offset;
-
-    // Save information for decorators.
     const oldValue = parseFloat(modifiedCode.substring(adjustedStart, end + offset));
-    optimizedParameters.push({
-      start: adjustedStart,
-      end: adjustedStart + substitution.length,
-      oldValue,
-      newValue: value,
-    });
 
     // Only do the substitution if the value is bigger.
-    if (Math.abs(oldValue - value) >= PARAMETER_SUBSTITUTION_THRESHOLD) {
+    if (Math.abs(oldValue - parseFloat(substitution)) >= PARAMETER_SUBSTITUTION_THRESHOLD) {
+      // Save information for decorators.
+      optimizedParameters.push({
+        start: adjustedStart,
+        end: adjustedStart + substitution.length,
+        oldValue,
+        newValue: value,
+      });
+
+      // Do the substitution.
       modifiedCode = modifiedCode.slice(0, adjustedStart) + substitution + modifiedCode.slice(end + offset);
       offset += substitution.length - (end - start);
     }
