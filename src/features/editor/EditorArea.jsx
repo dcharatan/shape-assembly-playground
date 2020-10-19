@@ -3,6 +3,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SapEditor from './SapEditor';
 import { setTab } from './editorSlice';
+import Tutorial from '../tutorial/Tutorial';
 
 const EditorArea = () => {
   const dispatch = useDispatch();
@@ -10,6 +11,7 @@ const EditorArea = () => {
 
   return (
     <div className="w-100 h-100 d-flex flex-column">
+      <Tutorial />
       <Tabs activeKey={tab} onSelect={(k) => dispatch(setTab(k))}>
         <Tab eventKey="code" title="Source" />
         <Tab eventKey="transpiled" title="Transpiled" />
