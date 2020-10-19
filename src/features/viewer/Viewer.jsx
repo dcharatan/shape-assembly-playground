@@ -12,6 +12,7 @@ const Viewer = () => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
   const attachmentMetadata = useSelector((state) => state.executorSlice.attachmentMetadata);
+  const transpiled = useSelector((state) => state.executorSlice.transpiled);
   const orbitRef = useRef();
 
   let borderColorClass = 'border-primary';
@@ -28,7 +29,7 @@ const Viewer = () => {
       return null;
     }
     return cuboids.map((cuboid, cuboidIndex) => {
-      if (cuboidIndex === editingCuboidIndex && getEditabilityEnabled()) {
+      if (cuboidIndex === editingCuboidIndex && getEditabilityEnabled() && transpiled) {
         return <EditableCuboid key={uuidv4()} cuboidIndex={cuboidIndex} orbitRef={orbitRef} cuboid={cuboid} />;
       }
 
