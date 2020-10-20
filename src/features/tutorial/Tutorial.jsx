@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from 'react-bootstrap';
+import { Alert, Badge } from 'react-bootstrap';
 
 const Code = ({ children }) => <span style={{ fontFamily: ['Inconsolata', 'monospace'] }}>{children}</span>;
 
@@ -20,6 +20,7 @@ const Tutorial = () => {
   return (
     <Alert variant="secondary" onClose={() => setShow(false)} dismissible>
       <h1 className="mt-2">ShapeAssembly Tutorial</h1>
+      <h2>Text Editing</h2>
       <p>
         ShapeAssembly is a domain-specific language for geometry. The syntax is a simplified version of Python. The two
         basic ShapeAssembly commands are:
@@ -37,6 +38,12 @@ const Tutorial = () => {
           </span>
         </li>
       </ul>
+      <h2>Interactive 3D Editing</h2>
+      <p>
+        Since ShapeAssembly's execution is differentiable with respect to continuous parameters, you can click on
+        cuboids to edit their sizes, orientations and positions directly. Use the T, S and R keys to switch between
+        translation, scaling and rotation.
+      </p>
     </Alert>
   );
 };
