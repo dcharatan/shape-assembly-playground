@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Badge } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 const Code = ({ children }) => <span style={{ fontFamily: ['Inconsolata', 'monospace'] }}>{children}</span>;
 
