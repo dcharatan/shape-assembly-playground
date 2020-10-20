@@ -14,8 +14,8 @@ export const makeVariableNameDecoratorStrategy = (getAst, applyStrategy) => (con
   if (ast) {
     const highlights = ast.definitions
       .reduce((invocations, definition) => [...invocations, ...definition.invocations], [])
-      .filter((invocation) => invocation.assignmentToken)
-      .map((invocation) => invocation.assignmentToken);
+      .map((invocation) => invocation.assignmentTokens)
+      .reduce((allTokens, tokens) => [...allTokens, ...tokens], []);
     applyStrategy(contentBlock, callback, contentState, highlights);
   }
 };

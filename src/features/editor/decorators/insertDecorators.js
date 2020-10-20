@@ -5,6 +5,7 @@ import ErrorDecorator, { makeErrorDecoratorStrategy } from './ErrorDecorator';
 import VariableNameDecorator, { makeVariableNameDecoratorStrategy } from './VariableNameDecorator';
 import ProppableCompositeDraftDecorator from './ProppableCompositeDraftDecorator';
 import FloatParameterDecorator, { makeFloatParameterDecoratorStrategy } from './FloatParameterDecorator';
+import ReturnDecorator, { makeReturnDecoratorStrategy } from './ReturnDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -52,6 +53,10 @@ const insertDecorators = (editorState, ast, optimizedParameters) =>
       {
         strategy: makeFloatParameterDecoratorStrategy(optimizedParameters, applyStrategy),
         component: FloatParameterDecorator,
+      },
+      {
+        strategy: makeReturnDecoratorStrategy(() => ast, applyStrategy),
+        component: ReturnDecorator,
       },
     ]),
   });
