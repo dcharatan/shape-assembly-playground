@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SapEditor from './SapEditor';
 import { setTab } from './editorSlice';
 import Tutorial from '../tutorial/Tutorial';
+import ErrorWarning from '../tutorial/ErrorWarning';
 
 const EditorArea = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const EditorArea = () => {
       <div className="d-flex flex-grow-1 w-100 overflow-y-hidden">
         <SapEditor />
       </div>
+      <ErrorWarning className="mt-3 mb-0" />
     </div>
   );
 };
