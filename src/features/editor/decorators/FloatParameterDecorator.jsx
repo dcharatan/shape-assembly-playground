@@ -21,9 +21,7 @@ const FloatParameterDecorator = ({ children, oldValue, newValue }) => {
   );
   return (
     <SimpleTooltip text={text}>
-      <span style={{ backgroundColor: '#b603fc' }} className="text-white p-1 rounded">
-        {children}
-      </span>
+      <span className="text-white outline-purple">{children}</span>
     </SimpleTooltip>
   );
 };
@@ -47,7 +45,7 @@ export const makeFloatParameterDecoratorStrategy = (optimizedParameters, applySt
   contentState
 ) => {
   if (optimizedParameters) {
-    // The optimized parameters have .start and .end, so they can be passed directly.
+    // The optimized parameters have .start and .end, so they can be passed d2irectly.
     applyStrategy(
       contentBlock,
       callback,

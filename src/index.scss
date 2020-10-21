@@ -27,8 +27,13 @@ canvas {
 
 @import 'node_modules/bootstrap/scss/bootstrap';
 
-.outline-primary-4 {
-  outline:4px solid theme-color("primary");
+.outline-primary {
+  outline: 3px solid theme-color("primary");
+}
+
+.outline-purple {
+  outline: 3px solid #b603fc;
+  background-color: #b603fc;
 }
 
 h1 {

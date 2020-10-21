@@ -22,7 +22,7 @@ const VariableNameDecorator = ({ children, transpiledLineIndex }) => {
     <span
       className={
         hovered || hoveredCuboids[transpiledLineIndex] !== undefined
-          ? 'bg-primary text-white cursor-pointer outline-primary-4'
+          ? 'bg-primary text-white cursor-pointer outline-primary'
           : 'text-success'
       }
       onMouseEnter={() => onHover(true)}
