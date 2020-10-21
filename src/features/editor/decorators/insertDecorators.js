@@ -31,7 +31,7 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
   });
 }
 
-const insertDecorators = (editorState, ast, optimizedParameters) =>
+const insertDecorators = (editorState, ast, optimizedParameters, cuboidMetadata) =>
   EditorState.set(editorState, {
     decorator: new ProppableCompositeDraftDecorator([
       {
@@ -47,7 +47,7 @@ const insertDecorators = (editorState, ast, optimizedParameters) =>
         component: ErrorDecorator,
       },
       {
-        strategy: makeVariableNameDecoratorStrategy(() => ast, applyStrategy),
+        strategy: makeVariableNameDecoratorStrategy(() => ast, cuboidMetadata, applyStrategy),
         component: VariableNameDecorator,
       },
       {

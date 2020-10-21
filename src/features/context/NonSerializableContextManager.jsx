@@ -17,6 +17,7 @@ def root_asm():
 const NonSerializableContextManager = ({ children }) => {
   const dispatch = useDispatch();
   const optimizedParameters = useSelector((state) => state.editorSlice.optimizedParameters);
+  const cuboidMetadata = useSelector((state) => state.executorSlice.cuboidMetadata);
 
   // These are the non-serializable pieces of state that can't go into Redux.
   const [ast, setAst] = useState(undefined);
@@ -32,6 +33,7 @@ const NonSerializableContextManager = ({ children }) => {
     dispatch(endCuboidEditing());
 
     // Attempt transpilation if the text is different.
+    let mostRecentCuboidMetadata = cuboidMetadata;
     let mostRecentAst = ast;
     let mostRecentOptimizedParameters = additionalInformation?.optimizedParameters ?? optimizedParameters;
     if (editorText !== lastEditorText.current || forceRefresh) {
@@ -46,6 +48,7 @@ const NonSerializableContextManager = ({ children }) => {
 
       // Transpile the AST.
       const transpiled = new Transpiler().transpile(mostRecentAst);
+      mostRecentCuboidMetadata = transpiled?.cuboidMetadata ?? cuboidMetadata;
       dispatch(updateWithTranspilation(transpiled));
 
       // If transpilation succeeds, call the executor.
@@ -55,7 +58,9 @@ const NonSerializableContextManager = ({ children }) => {
     }
     lastEditorText.current = editorText;
 
-    setEditorState(insertDecorators(newEditorState, mostRecentAst, mostRecentOptimizedParameters));
+    setEditorState(
+      insertDecorators(newEditorState, mostRecentAst, mostRecentOptimizedParameters, mostRecentCuboidMetadata)
+    );
   };
 
   return (
