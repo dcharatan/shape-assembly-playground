@@ -12,7 +12,7 @@ class SapEditor extends React.Component {
   constructor(props) {
     super(props);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this.viewerEditorStateTextNeedsUpdate = true;
+    this.previousTranspiled = undefined;
 
     this.handlePastedText = (text, html, editorState) => {
       const { setEditorState } = this.context;
@@ -63,15 +63,14 @@ class SapEditor extends React.Component {
 
     // Choose which EditorState should be shown.
     const getEditorState = () => {
-      // Show the
       if (!showingTranspiled) {
         return editorState;
       }
 
       // Create a new EditorState for the transcribed text.
       // This is only done if the transcribed text is requested and has changed.
-      if (this.viewerEditorStateTextNeedsUpdate) {
-        this.viewerEditorStateTextNeedsUpdate = false;
+      if (this.previousTranspiled !== transpiled) {
+        this.previousTranspiled = transpiled;
         this.transcribedEditorState = EditorState.createWithContent(
           ContentState.createFromText(transpiled || 'Transpilation failed due to errors.')
         );
