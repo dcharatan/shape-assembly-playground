@@ -18,6 +18,7 @@ const NonSerializableContextManager = ({ children }) => {
   const dispatch = useDispatch();
   const optimizedParameters = useSelector((state) => state.editorSlice.optimizedParameters);
   const cuboidMetadata = useSelector((state) => state.executorSlice.cuboidMetadata);
+  const liveUpdatesEnabled = useSelector((state) => state.editorSlice.liveUpdatesEnabled);
 
   // These are the non-serializable pieces of state that can't go into Redux.
   const [ast, setAst] = useState(undefined);
@@ -52,7 +53,7 @@ const NonSerializableContextManager = ({ children }) => {
       dispatch(updateWithTranspilation(transpiled));
 
       // If transpilation succeeds, call the executor.
-      if (transpiled && transpiled.text) {
+      if (transpiled && transpiled.text && (liveUpdatesEnabled || forceRefresh)) {
         dispatch(execute(transpiled.text));
       }
     }

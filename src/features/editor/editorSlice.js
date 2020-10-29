@@ -12,6 +12,9 @@ const editorSlice = createSlice({
     // This is a list of the following: { start, end, oldValue, newValue }
     // start and end are character indices for the highlight; old and new are the old/new parameter values
     optimizedParameters: undefined,
+
+    // When this is disabled, the user has to manually trigger a re-render.
+    liveUpdatesEnabled: true,
   },
   reducers: {
     setTab(state, { payload }) {
@@ -39,6 +42,10 @@ const editorSlice = createSlice({
     resetOptimizedParameters: (state) => {
       state.optimizedParameters = undefined;
     },
+
+    setLiveUpdatesEnabled: (state, { payload }) => {
+      state.liveUpdatesEnabled = payload;
+    },
   },
 });
 
@@ -50,6 +57,7 @@ export const {
   setTranspiledLineNotHovered,
   saveOptimizedParameters,
   resetOptimizedParameters,
+  setLiveUpdatesEnabled,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
