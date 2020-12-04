@@ -10,6 +10,7 @@ import NotFound from './features/404/NotFound';
 import ResultPage from './features/result-page/ResultPage';
 import NonSerializableContextManager from './features/context/NonSerializableContextManager';
 import KeypressHandler from './KeypressHandler';
+import Gallery from './features/gallery/Gallery';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -28,8 +29,11 @@ const App = () => (
             <Route exact path="/">
               <div className="d-flex flex-grow-1 overflow-y-hidden">
                 <div className="d-flex flex-row w-100 h-100 p-2 overflow-y-hidden">
-                  <div className="w-50 h-100 p-2 overflow-y-hidden">
-                    <EditorArea />
+                  <div className="w-50 h-100 p-2 overflow-y-hidden d-flex flex-column">
+                    <div className="w-100 d-flex flex-grow-1 overflow-y-hidden">
+                      <EditorArea />
+                    </div>
+                    <Gallery />
                   </div>
                   <div className="w-50 h-100 p-2">
                     <ViewerArea />
