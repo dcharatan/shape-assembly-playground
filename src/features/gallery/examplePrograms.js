@@ -4,6 +4,104 @@ def root_asm():
     cube = Cuboid(1, 1, 1, True)
 `;
 
+export const EXAMPLE_PROGRAM_CHAIR = `@child_assembly
+def assembly_fn_3(bbox):
+    cube0 = Cuboid(0.141, 0.8, 0.14, True)
+    cube1 = Cuboid(0.097, 0.059, 0.418, True)
+    squeeze(cube0, bbox, bbox, top, 0.492, 0.103)
+    attach(cube1, cube0, 0.5, 0.5, 0.0, 0.397, 0.802, 1.0)
+    reflect(cube0, Z)
+
+@child_assembly
+def assembly_fn_2(bbox):
+    cube0 = Cuboid(0.058, 0.732, 0.053, True)
+    cube1 = Cuboid(0.082, 0.792, 0.055, True)
+    cube2 = Cuboid(0.533, 0.078, 0.045, True)
+    attach(cube0, bbox, 0.5, 0.0, 0.5, 0.295, 0.001, 0.554)
+    attach(cube1, bbox, 0.5, 1.0, 0.5, 0.068, 0.992, 0.437)
+    attach(cube1, bbox, 0.5, 0.0, 0.5, 0.062, 0.002, 0.6)
+    attach(cube2, bbox, 0.5, 1.0, 0.5, 0.514, 0.989, 0.446)
+    attach(cube0, cube2, 0.5, 1.0, 0.5, 0.22, 0.32, 0.416)
+    translate(cube0, X, 2, 0.41)
+    reflect(cube1, X)
+
+@child_assembly
+def assembly_fn_1(bbox):
+    bbox_fn_3 = Cuboid(0.147, 0.803, 0.685, True)
+    assembly_fn_3(bbox_fn_3)
+    cube1 = Cuboid(0.418, 0.059, 0.098, True)
+    squeeze(bbox_fn_3, bbox, bbox, top, 0.107, 0.503)
+    attach(cube1, bbox_fn_3, 0.0, 0.5, 0.5, 0.98, 0.8, 0.085)
+    reflect(bbox_fn_3, X)
+    reflect(cube1, Z)
+
+@root_assembly
+def assembly_fn_0():
+    bbox = Cuboid(0.714, 1.665, 0.716, True)
+    bbox_fn_1 = Cuboid(0.68, 0.804, 0.691, True)
+    assembly_fn_1(bbox_fn_1)
+    cube1 = Cuboid(0.714, 0.077, 0.714, True)
+    bbox_fn_2 = Cuboid(0.676, 0.8, 0.073, True)
+    assembly_fn_2(bbox_fn_2)
+    attach(bbox_fn_1, bbox, 0.5, 0.0, 0.5, 0.497, 0.001, 0.498)
+    attach(cube1, bbox_fn_1, 0.499, 0.276, 0.502, 0.5, 1.0, 0.5)
+    squeeze(bbox_fn_2, bbox, cube1, top, 0.5, 0.072)
+`;
+
+export const EXAMPLE_PROGRAM_TABLE = `@child_assembly
+def assembly_fn_2(bbox):
+    cube0 = Cuboid(0.039, 0.82, 0.066, True)
+    cube1 = Cuboid(0.05, 0.066, 0.475, True)
+    cube2 = Cuboid(0.063, 0.886, 0.059, True)
+    attach(cube0, bbox, 0.5, 1.0, 0.5, 0.255, 0.97, 0.348)
+    attach(cube1, bbox, 0.5, 0.0, 0.5, 0.291, 0.0, 0.527)
+    squeeze(cube2, bbox, bbox, top, 0.429, 0.069)
+    attach(cube0, cube1, 0.5, 0.0, 0.5, 0.435, 0.937, 0.309)
+    reflect(cube1, Y)
+
+@child_assembly
+def assembly_fn_1(bbox):
+    bbox_fn_2 = Cuboid(0.09, 0.909, 0.508, True)
+    assembly_fn_2(bbox_fn_2)
+    cube1 = Cuboid(1.262, 0.06, 0.046, True)
+    cube2 = Cuboid(1.261, 0.052, 0.039, True)
+    cube3 = Cuboid(1.385, 0.026, 0.07, True)
+    squeeze(bbox_fn_2, bbox, bbox, top, 0.032, 0.504)
+    attach(cube1, bbox, 0.5, 0.0, 0.5, 0.496, 0.001, 0.071)
+    attach(cube3, bbox, 0.5, 1.0, 0.5, 0.499, 1.0, 0.93)
+    attach(cube1, bbox_fn_2, 0.0, 0.5, 0.5, 0.691, 0.033, 0.061)
+    attach(cube3, bbox_fn_2, 0.0, 0.5, 0.5, 0.046, 0.986, 0.932)
+    attach(cube2, bbox_fn_2, 0.0, 0.5, 0.5, 0.692, 0.246, 0.054)
+    reflect(bbox_fn_2, X)
+    reflect(cube1, Y)
+
+@root_assembly
+def assembly_fn_0():
+    bbox = Cuboid(1.437, 0.945, 0.567, True)
+    bbox_fn_1 = Cuboid(1.397, 0.91, 0.514, True)
+    assembly_fn_1(bbox_fn_1)
+    cube1 = Cuboid(1.437, 0.036, 0.567, True)
+    squeeze(bbox_fn_1, bbox, bbox, top, 0.501, 0.491)
+    attach(cube1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+`;
+
+export const EXAMPLE_PROGRAM_SHELF = `@root_assembly
+def assembly_fn_0():
+    bbox = Cuboid(1.461, 1.463, 0.336, True)
+    cube0 = Cuboid(1.231, 0.032, 0.335, True)
+    cube1 = Cuboid(0.116, 1.459, 0.335, True)
+    cube2 = Cuboid(0.122, 1.457, 0.335, True)
+    cube3 = Cuboid(1.233, 0.057, 0.335, True)
+    attach(cube0, bbox, 0.5, 0.0, 0.5, 0.495, 0.0, 0.5)
+    squeeze(cube1, bbox, bbox, top, 0.04, 0.5)
+    squeeze(cube2, bbox, bbox, top, 0.958, 0.5)
+    attach(cube0, cube1, 0.0, 0.5, 0.5, 0.926, 0.009, 0.5)
+    squeeze(cube3, cube1, cube2, left, 0.332, 0.5)
+    reflect(cube0, Y)
+    translate(cube1, X, 2, 0.628)
+    reflect(cube3, Y)
+`;
+
 export const EXAMPLE_PROGRAM_CHAIR_1 = `@child_assembly
 def back_asm(bbox):
     surface = Cuboid(1.16, 0.64, 0.13, True)
