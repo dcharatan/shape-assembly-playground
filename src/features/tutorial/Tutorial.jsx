@@ -40,9 +40,9 @@ const Tutorial = () => {
       </ul>
       <h2>Interactive 3D Editing</h2>
       <p>
-        Since ShapeAssembly's execution is differentiable with respect to continuous parameters, you can click on
-        cuboids to edit their sizes, orientations and positions directly. Use the T, S and R keys to switch between
-        translation, scaling and rotation.
+        (Temporarily Disabled) Since ShapeAssembly's execution is differentiable with respect to continuous parameters,
+        you can click on cuboids to edit their sizes, orientations and positions directly. Use the T, S and R keys to
+        switch between translation, scaling and rotation.
       </p>
     </Alert>
   );

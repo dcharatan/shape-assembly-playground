@@ -53,7 +53,9 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, c
         color={color}
         onPointerOver={(e) => onHover(e, true)}
         onPointerOut={(e) => onHover(e, false)}
-        onClick={() => dispatch(onCuboidClicked(cuboidIndex))}
+
+        // Temporarily disable cuboid clicks.
+        // onClick={() => dispatch(onCuboidClicked(cuboidIndex))}
       />
     </GroupWithMatrix>
   );
