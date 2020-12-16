@@ -79,7 +79,10 @@ const colMajorToRowMajor = (colMajor) => {
 
 export const optimize = createAsyncThunk(
   'optimize',
-  async ({ modifiedCuboidIndex, modifiedCuboidMatrix, editorState, setEditorState }, { getState, dispatch }) => {
+  async (
+    { modifiedCuboidIndex, modifiedCuboidMatrix, editorState, setEditorState, editingCuboidMode },
+    { getState, dispatch }
+  ) => {
     if (previousOptimizationPromise) {
       optimizeController.abort();
     }
@@ -96,6 +99,7 @@ export const optimize = createAsyncThunk(
         modifiedCuboidMatrix: rowMajor,
         program: transpiled,
         expressions,
+        editingCuboidMode,
       }),
       signal: optimizeController.signal,
     });

@@ -42,6 +42,7 @@ const EditableCuboid = ({ cuboid, cuboidIndex, orbitRef }) => {
               modifiedCuboidMatrix: newMatrix.elements,
               editorState,
               setEditorState,
+              editingCuboidMode,
             })
           );
         }
