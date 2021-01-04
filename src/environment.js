@@ -5,3 +5,6 @@ export const getBaseUrl = () => process.env.REACT_APP_BASE_URL ?? 'http://localh
 
 export const getEditabilityEnabled = () =>
   process.env.REACT_APP_EDITABILITY_ENABLED ? process.env.REACT_APP_EDITABILITY_ENABLED === 'true' : true;
+
+export const getShowTutorial = () =>
+  process.env.REACT_APP_SHOW_TUTORIAL ? process.env.REACT_APP_SHOW_TUTORIAL === 'true' : true;
