@@ -5,14 +5,21 @@ import { editorStateFromText, editorStateToText } from '../editor/draftUtilities
 import { saveOptimizedParameters } from '../editor/editorSlice';
 
 export const PARAMETER_SUBSTITUTION_THRESHOLD = 0.011;
+const MAXIMUM_EXECUTIONS_PER_SECOND = 5;
 
-let mostRecentExecutionTimestamp = 0;
+let mostRecentExecutionRequestTimestamp = 0;
+let mostRecentExecutionCompletionTimestamp = 0;
 let optimizeController;
 let previousOptimizationPromise;
 
 export const execute = createAsyncThunk('execute', async (programText) => {
   // Record the execution request time.
   const timestamp = new Date().getTime();
+  const minimumMilliseconds = 1000 / MAXIMUM_EXECUTIONS_PER_SECOND;
+  if (timestamp < mostRecentExecutionRequestTimestamp + minimumMilliseconds) {
+    return { timestamp: 0 };
+  }
+  mostRecentExecutionRequestTimestamp = timestamp;
 
   // Call the executor.
   const result = await fetch(getBaseUrl(), {
@@ -187,15 +194,15 @@ const executorSlice = createSlice({
       state.editingCuboidIndex = undefined;
     },
     [execute.fulfilled]: (state, { payload }) => {
-      const { json, timestamp } = payload;
+      const { timestamp } = payload;
 
       // Discard the results if they're outdated.
-      if (timestamp < mostRecentExecutionTimestamp) {
+      if (timestamp < mostRecentExecutionCompletionTimestamp) {
         return;
       }
-      mostRecentExecutionTimestamp = timestamp;
+      mostRecentExecutionCompletionTimestamp = timestamp;
 
-      const { cuboids, attachmentMetadata } = json;
+      const { cuboids, attachmentMetadata } = payload.json;
       state.cuboids = cuboids;
       state.attachmentMetadata = attachmentMetadata;
       state.executionInProgress = false;
