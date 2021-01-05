@@ -9,14 +9,23 @@ const MAXIMUM_EXECUTIONS_PER_SECOND = 5;
 
 let mostRecentExecutionRequestTimestamp = 0;
 let mostRecentExecutionCompletionTimestamp = 0;
+let delayedExecution;
 let optimizeController;
 let previousOptimizationPromise;
 
-export const execute = createAsyncThunk('execute', async (programText) => {
+export const execute = createAsyncThunk('execute', async (programText, { dispatch }) => {
   // Record the execution request time.
   const timestamp = new Date().getTime();
+
+  // If the last execution request happened too recently, schedule an execution instead of running it immediately.
+  // Scheduled executions are immediately stopped by the next execution.
+  // They ensure that the most recent code is executed even if it occurs immediately after a different code snapshot.
   const minimumMilliseconds = 1000 / MAXIMUM_EXECUTIONS_PER_SECOND;
+  if (delayedExecution) {
+    clearTimeout(delayedExecution);
+  }
   if (timestamp < mostRecentExecutionRequestTimestamp + minimumMilliseconds) {
+    delayedExecution = setTimeout(() => dispatch(execute(programText)), minimumMilliseconds);
     return { timestamp: 0 };
   }
   mostRecentExecutionRequestTimestamp = timestamp;
