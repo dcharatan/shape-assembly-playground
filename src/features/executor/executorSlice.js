@@ -37,7 +37,8 @@ export const execute = createAsyncThunk('execute', async (programText) => {
   throw new Error('Executor failed.');
 });
 
-const substitute = (code, parameters) => {
+// parameters is a list of [start, end, new value]
+export const substitute = (code, parameters, ignoreThreshold) => {
   const optimizedParameters = [];
   const sortedParameters = parameters;
   sortedParameters.sort((lhs, rhs) => lhs[0] - rhs[0]);
@@ -46,10 +47,11 @@ const substitute = (code, parameters) => {
   sortedParameters.forEach(([start, end, value]) => {
     const substitution = value.toFixed(2);
     const adjustedStart = start + offset;
-    const oldValue = parseFloat(modifiedCode.substring(adjustedStart, end + offset));
+    const oldValueString = modifiedCode.substring(adjustedStart, end + offset);
+    const oldValue = parseFloat(oldValueString);
 
     // Only do the substitution if the value is bigger.
-    if (Math.abs(oldValue - parseFloat(substitution)) >= PARAMETER_SUBSTITUTION_THRESHOLD) {
+    if (Math.abs(oldValue - parseFloat(substitution)) >= PARAMETER_SUBSTITUTION_THRESHOLD || ignoreThreshold) {
       // Save information for decorators.
       optimizedParameters.push({
         start: adjustedStart,

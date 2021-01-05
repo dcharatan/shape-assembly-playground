@@ -7,24 +7,29 @@ import ProppableCompositeDraftDecorator from './ProppableCompositeDraftDecorator
 import FloatParameterDecorator, { makeFloatParameterDecoratorStrategy } from './FloatParameterDecorator';
 import ReturnDecorator, { makeReturnDecoratorStrategy } from './ReturnDecorator';
 
-// The parser gives global character indices, but they have to be converted to per-block character indices.
-// That's done here.
-function applyStrategy(contentBlock, callback, contentState, highlights, props = []) {
-  let beforeChars = 0;
+export const getContentBlockOffset = (contentState, contentBlock) => {
+  let offset = 0;
   let found = false;
   contentState.blockMap.forEach((block) => {
     if (!found) {
       if (block.key === contentBlock.key) {
         found = true;
       } else {
-        beforeChars += block.text.length + 1;
+        offset += block.text.length + 1;
       }
     }
   });
+  return offset;
+};
+
+// The parser gives global character indices, but they have to be converted to per-block character indices.
+// That's done here.
+function applyStrategy(contentBlock, callback, contentState, highlights, props = []) {
+  const offset = getContentBlockOffset(contentState, contentBlock);
   highlights.forEach((highlight, index) => {
     const { start, end } = highlight;
-    const adjustedStart = start - beforeChars;
-    const adjustedEnd = end - beforeChars;
+    const adjustedStart = start - offset;
+    const adjustedEnd = end - offset;
     if (adjustedEnd <= contentBlock.text.length) {
       callback(adjustedStart, adjustedEnd, props[index]);
     }
@@ -51,7 +56,7 @@ const insertDecorators = (editorState, ast, optimizedParameters, cuboidMetadata)
         component: VariableNameDecorator,
       },
       {
-        strategy: makeFloatParameterDecoratorStrategy(optimizedParameters, applyStrategy),
+        strategy: makeFloatParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
         component: FloatParameterDecorator,
       },
       {

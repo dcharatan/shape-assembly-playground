@@ -64,6 +64,13 @@ const NonSerializableContextManager = ({ children }) => {
     );
   };
 
+  // This is used to change the visible cuboids without changing the editor text.
+  const updateCuboidsSilently = (editorText) => {
+    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText);
+    const transpiled = new Transpiler().transpile(silentAst);
+    dispatch(execute(transpiled.text));
+  };
+
   return (
     <NonSerializableContext.Provider
       value={{
@@ -72,6 +79,7 @@ const NonSerializableContextManager = ({ children }) => {
         editorState,
         setEditorState: (newEditorState, additionalInformation) => update(newEditorState, false, additionalInformation),
         forceRefresh: () => update(editorState, true),
+        updateCuboidsSilently,
       }}
     >
       {children}
