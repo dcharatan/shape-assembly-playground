@@ -6,21 +6,16 @@ import { saveOptimizedParameters } from '../editor/editorSlice';
 
 export const PARAMETER_SUBSTITUTION_THRESHOLD = 0.011;
 
-let executeController;
-let previousExecutionPromise;
-
+let mostRecentExecutionTimestamp = 0;
 let optimizeController;
 let previousOptimizationPromise;
 
 export const execute = createAsyncThunk('execute', async (programText) => {
-  // Cancel the last execution.
-  if (previousExecutionPromise) {
-    executeController.abort();
-  }
-  executeController = new AbortController();
+  // Record the execution request time.
+  const timestamp = new Date().getTime();
 
   // Call the executor.
-  previousExecutionPromise = fetch(getBaseUrl(), {
+  const result = await fetch(getBaseUrl(), {
     headers: new Headers({
       'content-type': 'application/json',
     }),
@@ -28,11 +23,9 @@ export const execute = createAsyncThunk('execute', async (programText) => {
     body: JSON.stringify({
       program: programText,
     }),
-    signal: executeController.signal,
   });
-  const result = await previousExecutionPromise;
   if (result.ok) {
-    return result.json();
+    return { json: await result.json(), timestamp };
   }
   throw new Error('Executor failed.');
 });
@@ -194,7 +187,15 @@ const executorSlice = createSlice({
       state.editingCuboidIndex = undefined;
     },
     [execute.fulfilled]: (state, { payload }) => {
-      const { cuboids, attachmentMetadata } = payload;
+      const { json, timestamp } = payload;
+
+      // Discard the results if they're outdated.
+      if (timestamp < mostRecentExecutionTimestamp) {
+        return;
+      }
+      mostRecentExecutionTimestamp = timestamp;
+
+      const { cuboids, attachmentMetadata } = json;
       state.cuboids = cuboids;
       state.attachmentMetadata = attachmentMetadata;
       state.executionInProgress = false;
