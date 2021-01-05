@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { ContentState, EditorState } from 'draft-js';
 import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parser';
 import { useDispatch, useSelector } from 'react-redux';
 import NonSerializableContext from './NonSerializableContext';
 import { endCuboidEditing, execute, updateWithTranspilation } from '../executor/executorSlice';
 import insertDecorators from '../editor/decorators/insertDecorators';
 import { resetOptimizedParameters } from '../editor/editorSlice';
+import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
 
 const INITIAL_TEXT = `@root_assembly
 def root_asm():
@@ -22,15 +22,13 @@ const NonSerializableContextManager = ({ children }) => {
 
   // These are the non-serializable pieces of state that can't go into Redux.
   const [ast, setAst] = useState(undefined);
-  const [editorState, setEditorState] = useState(
-    EditorState.createWithContent(ContentState.createFromText(INITIAL_TEXT))
-  );
+  const [editorState, setEditorState] = useState(editorStateFromText(INITIAL_TEXT));
 
   // This is used to ensure that transpilation only runs when the text actually changes.
   const lastEditorText = useRef(undefined);
   const update = (newEditorState, forceRefresh, additionalInformation) => {
     // Get the new editor text.
-    const editorText = newEditorState.getCurrentContent().getPlainText('\n');
+    const editorText = editorStateToText(newEditorState);
     dispatch(endCuboidEditing());
 
     // Attempt transpilation if the text is different.

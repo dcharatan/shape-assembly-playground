@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { ContentState, EditorState } from 'draft-js';
 import GalleryItem from './GalleryItem';
 import ThumbnailCube from './thumbnails/thumbnail_cube.png';
 import ThumbnailChair from './thumbnails/thumbnail_chair.png';
@@ -12,11 +11,12 @@ import {
   EXAMPLE_PROGRAM_CUBE,
 } from './examplePrograms';
 import NonSerializableContext from '../context/NonSerializableContext';
+import { editorStateFromText } from '../editor/draftUtilities';
 
 const Gallery = () => {
   const context = useContext(NonSerializableContext);
   const onClick = (text) => () => {
-    context.setEditorState(EditorState.createWithContent(ContentState.createFromText(text)));
+    context.setEditorState(editorStateFromText(text));
   };
 
   return (

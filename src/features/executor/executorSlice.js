@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ContentState, EditorState } from 'draft-js';
 import { getBaseUrl, getEditabilityEnabled } from '../../environment';
+import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
 import { saveOptimizedParameters } from '../editor/editorSlice';
 
 export const PARAMETER_SUBSTITUTION_THRESHOLD = 0.011;
@@ -108,11 +108,11 @@ export const optimize = createAsyncThunk(
     const result = await previousOptimizationPromise;
 
     if (result.ok) {
-      const code = editorState.getCurrentContent().getPlainText('\n');
+      const code = editorStateToText(editorState);
       const { parameters } = await result.json();
       const { modifiedCode, optimizedParameters } = substitute(code, parameters);
       dispatch(saveOptimizedParameters(optimizedParameters));
-      setEditorState(EditorState.createWithContent(ContentState.createFromText(modifiedCode)), { optimizedParameters });
+      setEditorState(editorStateFromText(modifiedCode), { optimizedParameters });
     }
     throw new Error('Optimizer failed.');
   }

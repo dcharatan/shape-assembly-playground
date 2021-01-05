@@ -2,14 +2,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useContext } from 'react';
-import Draft, { EditorState, ContentState } from 'draft-js';
+import { ContentBlock, ContentState } from 'draft-js';
 import PropTypes from 'prop-types';
 import { Popover, Overlay, Form } from 'react-bootstrap';
 import SimpleTooltip from '../../../components/SimpleTooltip';
 import { PARAMETER_SUBSTITUTION_THRESHOLD, substitute } from '../../executor/executorSlice';
 import '../../../index.scss';
 import NonSerializableContext from '../../context/NonSerializableContext';
-import { getContentBlockOffset } from './insertDecorators';
+import { editorStateFromText, editorStateToText, getContentBlockOffset } from '../draftUtilities';
 
 const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, contentBlock, contentState }) => {
   const context = useContext(NonSerializableContext);
@@ -21,19 +21,19 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
 
   // If there's no substitution and it's a float, show the parameter slider.
   if (oldValue === undefined || newValue === undefined) {
+    const modifyCodeWithValue = (modifiedValue) => {
+      const text = editorStateToText(context.editorState);
+      const offset = getContentBlockOffset(contentState, contentBlock);
+      const { modifiedCode } = substitute(text, [[start + offset, end + offset, modifiedValue]]);
+      return modifiedCode;
+    };
     const onChangeSlider = (e) => {
       const newSliderValue = parseFloat(e.target.value);
-      const text = context.editorState.getCurrentContent().getPlainText('\n');
-      const offset = getContentBlockOffset(contentState, contentBlock);
-      const { modifiedCode } = substitute(text, [[start + offset, end + offset, value]]);
-      context.updateCuboidsSilently(modifiedCode);
+      context.updateCuboidsSilently(modifyCodeWithValue(newSliderValue));
       setValue(newSliderValue);
     };
     const onExitSlider = () => {
-      const text = context.editorState.getCurrentContent().getPlainText('\n');
-      const offset = getContentBlockOffset(contentState, contentBlock);
-      const { modifiedCode } = substitute(text, [[start + offset, end + offset, value]]);
-      context.setEditorState(EditorState.createWithContent(ContentState.createFromText(modifiedCode)));
+      context.setEditorState(editorStateFromText(modifyCodeWithValue(value)));
     };
     return (
       <>
@@ -92,8 +92,8 @@ FloatParameterDecorator.propTypes = {
   newValue: PropTypes.number,
   start: PropTypes.number.isRequired,
   end: PropTypes.number.isRequired,
-  contentBlock: PropTypes.instanceOf(Draft.ContentBlock),
-  contentState: PropTypes.instanceOf(Draft.ContentState),
+  contentBlock: PropTypes.instanceOf(ContentBlock),
+  contentState: PropTypes.instanceOf(ContentState),
 };
 
 FloatParameterDecorator.defaultProps = {

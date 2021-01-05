@@ -6,21 +6,7 @@ import VariableNameDecorator, { makeVariableNameDecoratorStrategy } from './Vari
 import ProppableCompositeDraftDecorator from './ProppableCompositeDraftDecorator';
 import FloatParameterDecorator, { makeFloatParameterDecoratorStrategy } from './FloatParameterDecorator';
 import ReturnDecorator, { makeReturnDecoratorStrategy } from './ReturnDecorator';
-
-export const getContentBlockOffset = (contentState, contentBlock) => {
-  let offset = 0;
-  let found = false;
-  contentState.blockMap.forEach((block) => {
-    if (!found) {
-      if (block.key === contentBlock.key) {
-        found = true;
-      } else {
-        offset += block.text.length + 1;
-      }
-    }
-  });
-  return offset;
-};
+import { getContentBlockOffset } from '../draftUtilities';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.

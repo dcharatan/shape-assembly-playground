@@ -17,6 +17,12 @@ const Tutorial = () => {
   if (!show) {
     return null;
   }
+
+  const interactiveEditingText =
+    "Since ShapeAssembly's execution is differentiable with respect to continuous parameters, you can click on cuboids to edit their sizes, orientations and positions directly. Use the T, S and R keys to switch between translation, scaling and rotation.";
+  const attachText =
+    ": Attach cuboid1 to cuboid2 by moving cuboid1 such that (x1, y1, z1) in cuboid1's coordinate space is as close to (x2, y2, z2) in cuboid2's coordinate space as possible.";
+
   return (
     <Alert variant="secondary" onClose={() => setShow(false)} dismissible>
       <h1 className="mt-2">ShapeAssembly Tutorial</h1>
@@ -32,18 +38,11 @@ const Tutorial = () => {
         </li>
         <li>
           <Code>attach(cuboid1, cuboid2, x1, y1, z1, x2, y2, z2)</Code>
-          <span>
-            : Attach cuboid1 to cuboid2 by moving cuboid1 such that (x1, y1, z1) in cuboid1's coordinate space is as
-            close to (x2, y2, z2) in cuboid2's coordinate space as possible.
-          </span>
+          <span>{attachText}</span>
         </li>
       </ul>
       <h2>Interactive 3D Editing</h2>
-      <p>
-        Since ShapeAssembly's execution is differentiable with respect to continuous parameters, you can click on
-        cuboids to edit their sizes, orientations and positions directly. Use the T, S and R keys to switch between
-        translation, scaling and rotation.
-      </p>
+      <p>{interactiveEditingText}</p>
     </Alert>
   );
 };
