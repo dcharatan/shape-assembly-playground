@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'react-bootstrap';
+import { getOptimizerDisabled } from '../../environment';
 
 const Code = ({ children }) => <span style={{ fontFamily: ['Inconsolata', 'monospace'] }}>{children}</span>;
 
@@ -41,8 +42,12 @@ const Tutorial = () => {
           <span>{attachText}</span>
         </li>
       </ul>
-      <h2>Interactive 3D Editing</h2>
-      <p>{interactiveEditingText}</p>
+      {getOptimizerDisabled() ? null : (
+        <>
+          <h2>Interactive 3D Editing</h2>
+          <p>{interactiveEditingText}</p>
+        </>
+      )}
     </Alert>
   );
 };

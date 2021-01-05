@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getBaseUrl, getEditabilityEnabled } from '../../environment';
+import { getBaseUrl, getEditabilityEnabled, getOptimizerDisabled } from '../../environment';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
 import { saveOptimizedParameters } from '../editor/editorSlice';
 
@@ -142,7 +142,7 @@ const executorSlice = createSlice({
   reducers: {
     onCuboidClicked: (state, { payload }) => {
       // This is disabled if cuboid editability is disabled.
-      if (!getEditabilityEnabled()) {
+      if (!getEditabilityEnabled() || getOptimizerDisabled()) {
         return;
       }
 

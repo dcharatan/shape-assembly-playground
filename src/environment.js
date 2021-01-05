@@ -8,3 +8,6 @@ export const getEditabilityEnabled = () =>
 
 export const getShowTutorial = () =>
   process.env.REACT_APP_SHOW_TUTORIAL ? process.env.REACT_APP_SHOW_TUTORIAL === 'true' : true;
+
+export const getOptimizerDisabled = () =>
+  process.env.REACT_APP_OPTIMIZER_DISABLED ? process.env.REACT_APP_OPTIMIZER_DISABLED === 'true' : true;
