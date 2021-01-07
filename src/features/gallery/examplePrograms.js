@@ -27,8 +27,7 @@ def assembly_fn_2(bbox):
 
 @child_assembly
 def assembly_fn_1(bbox):
-    bbox_fn_3 = Cuboid(0.147, 0.803, 0.685, True)
-    assembly_fn_3(bbox_fn_3)
+    bbox_fn_3 = assembly_fn_3(0.147, 0.803, 0.685, True)
     cube1 = Cuboid(0.418, 0.059, 0.098, True)
     squeeze(bbox_fn_3, bbox, bbox, top, 0.107, 0.503)
     attach(cube1, bbox_fn_3, 0.0, 0.5, 0.5, 0.98, 0.8, 0.085)
@@ -38,11 +37,9 @@ def assembly_fn_1(bbox):
 @root_assembly
 def assembly_fn_0():
     bbox = Cuboid(0.714, 1.665, 0.716, True)
-    bbox_fn_1 = Cuboid(0.68, 0.804, 0.691, True)
-    assembly_fn_1(bbox_fn_1)
+    bbox_fn_1 = assembly_fn_1(0.68, 0.804, 0.691, True)
     cube1 = Cuboid(0.714, 0.077, 0.714, True)
-    bbox_fn_2 = Cuboid(0.676, 0.8, 0.073, True)
-    assembly_fn_2(bbox_fn_2)
+    bbox_fn_2 = assembly_fn_2(0.676, 0.8, 0.073, True)
     attach(bbox_fn_1, bbox, 0.5, 0.0, 0.5, 0.497, 0.001, 0.498)
     attach(cube1, bbox_fn_1, 0.499, 0.276, 0.502, 0.5, 1.0, 0.5)
     squeeze(bbox_fn_2, bbox, cube1, top, 0.5, 0.072)
@@ -61,8 +58,7 @@ def assembly_fn_2(bbox):
 
 @child_assembly
 def assembly_fn_1(bbox):
-    bbox_fn_2 = Cuboid(0.09, 0.909, 0.508, True)
-    assembly_fn_2(bbox_fn_2)
+    bbox_fn_2 = assembly_fn_2(0.09, 0.909, 0.508, True)
     cube1 = Cuboid(1.262, 0.06, 0.046, True)
     cube2 = Cuboid(1.261, 0.052, 0.039, True)
     cube3 = Cuboid(1.385, 0.026, 0.07, True)
@@ -78,8 +74,7 @@ def assembly_fn_1(bbox):
 @root_assembly
 def assembly_fn_0():
     bbox = Cuboid(1.437, 0.945, 0.567, True)
-    bbox_fn_1 = Cuboid(1.397, 0.91, 0.514, True)
-    assembly_fn_1(bbox_fn_1)
+    bbox_fn_1 = assembly_fn_1(1.397, 0.91, 0.514, True)
     cube1 = Cuboid(1.437, 0.036, 0.567, True)
     squeeze(bbox_fn_1, bbox, bbox, top, 0.501, 0.491)
     attach(cube1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
