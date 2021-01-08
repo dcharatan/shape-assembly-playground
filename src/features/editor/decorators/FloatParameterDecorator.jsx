@@ -15,7 +15,20 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
   const context = useContext(NonSerializableContext);
   const initialValue = parseFloat(children[0].props.text);
   const range = 2 * Math.abs(initialValue);
-  const [show, setShow] = useState(false);
+
+  const offset = getContentBlockOffset(contentState, contentBlock);
+  const adjustedStart = start + offset;
+  const adjustedEnd = end + offset;
+
+  // Figure out if this decorator is selected as a slider.
+  const { selectedParameter, setSelectedParameter } = context;
+  const show = selectedParameter.start === adjustedStart && selectedParameter.end === adjustedEnd;
+  const toggleShow = () => {
+    setSelectedParameter(
+      selectedParameter.start && selectedParameter.end ? {} : { start: adjustedStart, end: adjustedEnd }
+    );
+  };
+
   const [value, setValue] = useState(initialValue);
   const target = useRef(null);
 
@@ -23,8 +36,7 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
   if (oldValue === undefined || newValue === undefined) {
     const modifyCodeWithValue = (modifiedValue) => {
       const text = editorStateToText(context.editorState);
-      const offset = getContentBlockOffset(contentState, contentBlock);
-      const { modifiedCode } = substitute(text, [[start + offset, end + offset, modifiedValue]]);
+      const { modifiedCode } = substitute(text, [[adjustedStart, adjustedEnd, modifiedValue]]);
       return modifiedCode;
     };
     const onChangeSlider = (e) => {
@@ -33,7 +45,9 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
       setValue(newSliderValue);
     };
     const onExitSlider = () => {
-      context.setEditorState(editorStateFromText(modifyCodeWithValue(value)));
+      context.setEditorState(editorStateFromText(modifyCodeWithValue(value)), {
+        doNotTriggerParameterSliderDeselection: true,
+      });
     };
 
     let min = initialValue - range;
@@ -48,7 +62,7 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
       <>
         <span
           ref={target}
-          onClick={() => setShow(!show)}
+          onClick={toggleShow}
           className={`${show ? 'slider-parameter-selected' : ''} rounded slider-parameter cursor-pointer`}
         >
           {show ? value.toFixed(2) : children}

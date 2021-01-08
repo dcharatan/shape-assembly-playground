@@ -23,6 +23,7 @@ const NonSerializableContextManager = ({ children }) => {
   // These are the non-serializable pieces of state that can't go into Redux.
   const [ast, setAst] = useState(undefined);
   const [editorState, setEditorState] = useState(editorStateFromText(INITIAL_TEXT));
+  const [selectedParameter, setSelectedParameter] = useState({});
 
   // This is used to ensure that transpilation only runs when the text actually changes.
   const lastEditorText = useRef(undefined);
@@ -39,6 +40,11 @@ const NonSerializableContextManager = ({ children }) => {
       if (!additionalInformation?.optimizedParameters) {
         dispatch(resetOptimizedParameters());
         mostRecentOptimizedParameters = undefined;
+      }
+
+      // Deselect any parameter sliders.
+      if (!additionalInformation?.doNotTriggerParameterSliderDeselection) {
+        setSelectedParameter({});
       }
 
       // Parse a new AST.
@@ -78,6 +84,8 @@ const NonSerializableContextManager = ({ children }) => {
         setEditorState: (newEditorState, additionalInformation) => update(newEditorState, false, additionalInformation),
         forceRefresh: () => update(editorState, true),
         updateCuboidsSilently,
+        selectedParameter,
+        setSelectedParameter, // The selected parameter is an object containing start and end (the token).
       }}
     >
       {children}
