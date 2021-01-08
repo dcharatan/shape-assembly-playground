@@ -11,7 +11,7 @@ import '../../../index.scss';
 import NonSerializableContext from '../../context/NonSerializableContext';
 import { editorStateFromText, editorStateToText, getContentBlockOffset } from '../draftUtilities';
 
-const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, contentBlock, contentState }) => {
+const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, contentBlock, contentState, type }) => {
   const context = useContext(NonSerializableContext);
   const initialValue = parseFloat(children[0].props.text);
   const range = 2 * Math.abs(initialValue);
@@ -35,6 +35,15 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
     const onExitSlider = () => {
       context.setEditorState(editorStateFromText(modifyCodeWithValue(value)));
     };
+
+    let min = initialValue - range;
+    let max = initialValue + range;
+    if (type === 'attach') {
+      min = 0;
+      max = 1;
+    }
+    min = Math.max(min, 0);
+
     return (
       <>
         <span
@@ -52,8 +61,8 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
                 <Form.Control
                   type="range"
                   custom
-                  min={initialValue - range}
-                  max={initialValue + range}
+                  min={min}
+                  max={max}
                   step={0.01}
                   value={value}
                   onChange={onChangeSlider}
@@ -94,6 +103,7 @@ FloatParameterDecorator.propTypes = {
   end: PropTypes.number.isRequired,
   contentBlock: PropTypes.instanceOf(ContentBlock),
   contentState: PropTypes.instanceOf(ContentState),
+  type: PropTypes.string,
 };
 
 FloatParameterDecorator.defaultProps = {
@@ -101,15 +111,19 @@ FloatParameterDecorator.defaultProps = {
   newValue: undefined,
   contentBlock: undefined,
   contentState: undefined,
+  type: undefined,
 };
 
 export default FloatParameterDecorator;
 
-const gatherFloatParameters = (expressionNode, tokens) => {
+const gatherFloatParameters = (expressionNode, invocation, tokens) => {
   // Parse the token as float. If it's a float (and not an operator, bool, etc.) add it to the list of float parameters.
   const asFloat = parseFloat(expressionNode.token.text);
   if (!Number.isNaN(asFloat)) {
-    tokens.push(expressionNode.token);
+    tokens.push({
+      token: expressionNode.token,
+      type: invocation.definitionToken.text,
+    });
   }
 
   // Handle the children (for operators).
@@ -133,11 +147,11 @@ export const makeFloatParameterDecoratorStrategy = (getAst, optimizedParameters,
   } else {
     // Gather float parameters.
     const ast = getAst();
-    const tokens = [];
+    const floatParameters = [];
     ast.definitions.forEach((definition) => {
       definition.invocations.forEach((invocation) => {
         invocation.argumentExpressions.forEach((argumentExpression) => {
-          gatherFloatParameters(argumentExpression, tokens);
+          gatherFloatParameters(argumentExpression, invocation, floatParameters);
         });
       });
     });
@@ -145,8 +159,8 @@ export const makeFloatParameterDecoratorStrategy = (getAst, optimizedParameters,
       contentBlock,
       callback,
       contentState,
-      tokens,
-      tokens.map(() => ({ contentBlock, contentState }))
+      floatParameters.map((fp) => fp.token),
+      floatParameters.map((fp) => ({ contentBlock, contentState, type: fp.type }))
     );
   }
 };
