@@ -13,6 +13,17 @@ let delayedExecution;
 let optimizeController;
 let previousOptimizationPromise;
 
+export const fetchExecute = (program) =>
+  fetch(getBaseUrl(), {
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+    method: 'POST',
+    body: JSON.stringify({
+      program,
+    }),
+  });
+
 export const execute = createAsyncThunk('execute', async (programText, { dispatch }) => {
   // Record the execution request time.
   const timestamp = new Date().getTime();
@@ -31,15 +42,7 @@ export const execute = createAsyncThunk('execute', async (programText, { dispatc
   mostRecentExecutionRequestTimestamp = timestamp;
 
   // Call the executor.
-  const result = await fetch(getBaseUrl(), {
-    headers: new Headers({
-      'content-type': 'application/json',
-    }),
-    method: 'POST',
-    body: JSON.stringify({
-      program: programText,
-    }),
-  });
+  const result = await fetchExecute(programText);
   if (result.ok) {
     return { json: await result.json(), timestamp };
   }
@@ -206,7 +209,7 @@ const executorSlice = createSlice({
       const { timestamp } = payload;
 
       // Discard the results if they're outdated.
-      if (timestamp < mostRecentExecutionCompletionTimestamp) {
+      if (timestamp < mostRecentExecutionCompletionTimestamp || !payload.json) {
         return;
       }
       mostRecentExecutionCompletionTimestamp = timestamp;

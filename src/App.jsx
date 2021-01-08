@@ -11,6 +11,7 @@ import ResultPage from './features/result-page/ResultPage';
 import NonSerializableContextManager from './features/context/NonSerializableContextManager';
 import KeypressHandler from './KeypressHandler';
 import Gallery from './features/gallery/Gallery';
+import EditingTask from './features/editing-task/EditingTask';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -23,6 +24,9 @@ const App = () => (
         <div className="d-flex flex-column h-100 overflow-y-hidden">
           <SapNavbar />
           <Switch>
+            <Route exact path="/editing-task">
+              <EditingTask />
+            </Route>
             <Route exact path="/result-viewer">
               <ResultPage />
             </Route>

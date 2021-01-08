@@ -37,8 +37,8 @@ const SapNavbar = () => {
           <Nav.Link as={Link} to="/">
             Playground
           </Nav.Link>
-          <Nav.Link as={Link} to="/result-viewer">
-            Result Viewer
+          <Nav.Link as={Link} to="/editing-task">
+            Editing Task
           </Nav.Link>
         </Nav>
         <div>
