@@ -36,7 +36,7 @@ const HoverableCuboidDecorator = ({ children, transpiledLineIndices, color }) =>
   const highlightColor = getColor(selection) ?? 'black';
   const highlighted = hovered || selection;
   return (
-    <HighlightDecorator highlightColor={highlightColor} highlighted={highlighted} color={color} onHover={onHover}>
+    <HighlightDecorator highlightColor={highlightColor} highlighted={!!highlighted} color={color} onHover={onHover}>
       {children}
     </HighlightDecorator>
   );

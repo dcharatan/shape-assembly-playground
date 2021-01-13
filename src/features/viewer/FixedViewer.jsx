@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parser';
 import { Canvas } from 'react-three-fiber';
@@ -6,9 +6,12 @@ import ViewerCore from './ViewerCore';
 import { fetchExecute } from '../executor/executorSlice';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import GroupWithMatrix from './GroupWithMatrix';
+import { registerCamera } from './cameraSync';
 
 const FixedViewer = ({ code }) => {
-  const orbitRef = useRef();
+  const orbitRef = useCallback((camera) => {
+    registerCamera(camera);
+  }, []);
 
   // Call the executor to get the code's result.
   const [cuboids, setCuboids] = useState([]);
@@ -32,7 +35,7 @@ const FixedViewer = ({ code }) => {
       return null;
     }
     return (
-      <GroupWithMatrix matrix={matrix}>
+      <GroupWithMatrix matrix={matrix} key={JSON.stringify(cuboid)}>
         <BaseCuboid color="orange" />
       </GroupWithMatrix>
     );
@@ -40,7 +43,13 @@ const FixedViewer = ({ code }) => {
 
   return (
     <div className="w-100 h-100 border border-secondary">
-      <Canvas>
+      <Canvas
+        orthographic
+        camera={{
+          position: [8, 6, 10],
+          zoom: 150,
+        }}
+      >
         <ViewerCore orbitRef={orbitRef}>{cuboidNodes}</ViewerCore>
       </Canvas>
     </div>
