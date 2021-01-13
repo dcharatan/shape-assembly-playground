@@ -158,7 +158,7 @@ export const makeFloatParameterDecoratorStrategy = (getAst, optimizedParameters,
       optimizedParameters,
       optimizedParameters.map(({ oldValue, newValue }) => ({ oldValue, newValue }))
     );
-  } else {
+  } else if (window.location.pathname.includes('editing-task')) {
     // Gather float parameters.
     const ast = getAst();
     const floatParameters = [];
