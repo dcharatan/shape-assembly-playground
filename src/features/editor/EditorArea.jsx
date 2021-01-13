@@ -8,7 +8,7 @@ import Tutorial from '../tutorial/Tutorial';
 import ErrorWarning from '../tutorial/ErrorWarning';
 import { getShowTutorial } from '../../environment';
 
-const EditorArea = ({ hideTabs, hideTutorial }) => {
+const EditorArea = ({ hideTabs, hideTutorial, disableTextEditing }) => {
   const dispatch = useDispatch();
   const tab = useSelector((state) => state.editorSlice.tab);
 
@@ -24,7 +24,7 @@ const EditorArea = ({ hideTabs, hideTutorial }) => {
       {getShowTutorial() && !hideTutorial ? <Tutorial /> : null}
       {hideTabs ? null : tabs}
       <div className={`d-flex flex-grow-1 w-100 overflow-y-hidden ${hideTabs ? 'border-top' : ''}`}>
-        <SapEditor />
+        <SapEditor disableTextEditing={disableTextEditing} />
       </div>
       <ErrorWarning className="mt-3 mb-0" />
     </div>
@@ -34,11 +34,13 @@ const EditorArea = ({ hideTabs, hideTutorial }) => {
 EditorArea.propTypes = {
   hideTabs: PropTypes.bool,
   hideTutorial: PropTypes.bool,
+  disableTextEditing: PropTypes.bool,
 };
 
 EditorArea.defaultProps = {
   hideTabs: false,
   hideTutorial: false,
+  disableTextEditing: false,
 };
 
 export default EditorArea;

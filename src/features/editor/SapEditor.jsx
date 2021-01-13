@@ -57,7 +57,14 @@ class SapEditor extends React.Component {
 
   render() {
     const { editorState, setEditorState } = this.context;
-    const { showingTranspiled, hoveredCuboids, transpiled, optimizationInProgress, liveUpdatesEnabled } = this.props;
+    const {
+      showingTranspiled,
+      hoveredCuboids,
+      transpiled,
+      optimizationInProgress,
+      liveUpdatesEnabled,
+      disableTextEditing,
+    } = this.props;
 
     // Choose which EditorState should be shown.
     const getEditorState = () => {
@@ -98,7 +105,7 @@ class SapEditor extends React.Component {
             onChange={setEditorState}
             handlePastedText={this.handlePastedText}
             onTab={this.onTab}
-            readOnly={showingTranspiled || optimizationInProgress}
+            readOnly={showingTranspiled || optimizationInProgress || disableTextEditing}
             handleReturn={(e) => {
               // Prevent shift + enter from doing anything when in manual update mode (since this should trigger execution instead).
               if (e.shiftKey && !liveUpdatesEnabled) {
@@ -121,10 +128,12 @@ SapEditor.propTypes = {
   hoveredCuboids: PropTypes.arrayOf(PropTypes.string).isRequired,
   transpiled: PropTypes.string,
   liveUpdatesEnabled: PropTypes.bool.isRequired,
+  disableTextEditing: PropTypes.bool,
 };
 
 SapEditor.defaultProps = {
   transpiled: undefined,
+  disableTextEditing: false,
 };
 
 const mapState = (state) => ({

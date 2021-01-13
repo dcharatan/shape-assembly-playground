@@ -66,7 +66,7 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
           onClick={toggleShow}
           className={`${show ? 'slider-parameter-selected' : ''} rounded slider-parameter cursor-pointer`}
         >
-          {show ? value.toFixed(2) : children}
+          {show ? value : children}
         </span>
         <Overlay target={target.current} show={show} placement="bottom" onExit={onExitSlider}>
           {({ ...props }) => (

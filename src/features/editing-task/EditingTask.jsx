@@ -56,7 +56,7 @@ const EditingTask = () => {
       <div className="d-flex flex-row w-100 h-100 p-2 overflow-y-hidden">
         <div className="w-50 h-100 p-2 overflow-y-hidden d-flex flex-column">
           <div className="w-100 d-flex flex-grow-1 overflow-y-hidden">
-            <EditorArea hideTabs hideTutorial />
+            <EditorArea hideTabs hideTutorial disableTextEditing />
           </div>
         </div>
         <div className="w-50 h-100">

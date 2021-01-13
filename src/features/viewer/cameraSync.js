@@ -3,6 +3,9 @@
 const cameras = [];
 
 export const registerCamera = (camera) => {
+  if (!camera) {
+    return;
+  }
   cameras.push(camera);
   camera.addEventListener('change', (e) => {
     cameras.forEach((c) => {

@@ -16,11 +16,11 @@ const CuboidParameterDecorator = ({ children, token }) => {
   // Get the originals' transpiled line indices.
   const cuboidDeclarationToken = metadata.cuboidUsageMap.get(tokenToKey(token));
   if (cuboidDeclarationToken === undefined) {
-    return null;
+    return children;
   }
   const cuboidLine = metadata.tokenLineMap.get(tokenToKey(cuboidDeclarationToken));
   if (cuboidLine === undefined) {
-    return null;
+    return children;
   }
   const transpiledLineIndices = metadata.invocationLineMap.get(cuboidLine);
 
