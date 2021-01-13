@@ -18,41 +18,53 @@ export const makeCuboidMatrix = (cuboid) => {
   return translate.multiply(rotate.multiply(scale));
 };
 
-const BaseCuboid = ({ color, onPointerOver, onPointerOut, onClick }) => {
+const BaseCuboid = ({ color, wireframeColor, onPointerOver, onPointerOut, onClick, wireframe, invisible }) => {
   const geometry = new THREE.BoxBufferGeometry();
+  const mesh = (
+    <mesh
+      geometry={geometry}
+      onPointerOut={onPointerOut}
+      onPointerOver={onPointerOver}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick(e);
+      }}
+    >
+      <meshStandardMaterial attach="material" color={color} />
+    </mesh>
+  );
+  const lines = (
+    <lineSegments>
+      <edgesGeometry attach="geometry" args={[geometry]} />
+      <lineBasicMaterial attach="material" color={wireframeColor} />
+    </lineSegments>
+  );
   return (
     <group>
-      <mesh
-        geometry={geometry}
-        onPointerOut={onPointerOut}
-        onPointerOver={onPointerOver}
-        onClick={(e) => {
-          e.stopPropagation();
-          onClick(e);
-        }}
-      >
-        <meshStandardMaterial attach="material" color={color} />
-      </mesh>
-      <lineSegments>
-        <edgesGeometry attach="geometry" args={[geometry]} />
-        <lineBasicMaterial attach="material" color="black" />
-      </lineSegments>
+      {wireframe || invisible ? null : mesh}
+      {invisible ? null : lines}
     </group>
   );
 };
 
 BaseCuboid.propTypes = {
   color: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  wireframeColor: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onPointerOver: PropTypes.func,
   onPointerOut: PropTypes.func,
   onClick: PropTypes.func,
+  wireframe: PropTypes.bool,
+  invisible: PropTypes.bool,
 };
 
 BaseCuboid.defaultProps = {
   color: 'gray',
+  wireframeColor: 'black',
   onPointerOver: () => {},
   onPointerOut: () => {},
   onClick: () => {},
+  wireframe: false,
+  invisible: false,
 };
 
 export default BaseCuboid;

@@ -144,11 +144,9 @@ const executorSlice = createSlice({
     // This allows the optimizer to keep the constraints imposed by Python-like ShapeAssembly's expressions.
     expressions: undefined,
     transpiled: undefined,
-    cuboidMetadata: undefined,
 
     executionInProgress: false,
     cuboids: undefined,
-    attachmentMetadata: undefined,
     errored: false,
   },
   reducers: {
@@ -174,12 +172,10 @@ const executorSlice = createSlice({
       if (!payload) {
         state.transpiled = undefined;
         state.expressions = undefined;
-        state.cuboidMetadata = undefined;
         return;
       }
       state.transpiled = payload.text;
       state.expressions = payload.expressions;
-      state.cuboidMetadata = payload.cuboidMetadata;
     },
 
     // Used to keep the cuboid from changing during optimization.
@@ -214,9 +210,8 @@ const executorSlice = createSlice({
       }
       mostRecentExecutionCompletionTimestamp = timestamp;
 
-      const { cuboids, attachmentMetadata } = payload.json;
+      const { cuboids } = payload.json;
       state.cuboids = cuboids;
-      state.attachmentMetadata = attachmentMetadata;
       state.executionInProgress = false;
       state.errored = false;
       state.editingCuboidIndex = undefined;

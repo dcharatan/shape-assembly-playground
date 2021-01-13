@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import * as THREE from 'three';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import { setCuboidHovered, setCuboidNotHovered } from '../editor/editorSlice';
-import calculateHighlight from './calculateHighlight';
 import { onCuboidClicked } from '../executor/executorSlice';
 import GroupWithMatrix from './GroupWithMatrix';
+import { COLOR_DIRECT, COLOR_PRIMARY, COLOR_SECONDARY } from '../../colors';
 
-const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, cuboidIndex }) => {
+const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, cuboidIndex }) => {
   const dispatch = useDispatch();
   const [hovered, setHover] = useState(false);
   const onHover = useCallback(
@@ -16,26 +16,28 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, c
       e.stopPropagation();
       setHover(value);
       if (value) {
-        dispatch(setCuboidHovered(cuboid.globalLineIndex));
+        dispatch(setCuboidHovered(cuboid.lineIndex));
       } else {
-        dispatch(setCuboidNotHovered(cuboid.globalLineIndex));
+        dispatch(setCuboidNotHovered(cuboid.lineIndex));
       }
     },
-    [setHover, dispatch, cuboid.globalLineIndex]
+    [setHover, dispatch, cuboid.lineIndex]
   );
   const modifiedCuboidIndex = useSelector((state) => state.executorSlice.modifiedCuboidIndex);
   const editingCuboidMatrix = useSelector((state) => state.executorSlice.modifiedCuboidMatrix);
   const optimizingThisCuboid = cuboidIndex === modifiedCuboidIndex;
 
   // Calculate the cuboid's color.
-  const selection = calculateHighlight(cuboid.globalLineIndex, hoveredTranspiledLines, attachmentMetadata);
+  const selection = hoveredTranspiledLines[cuboid.lineIndex];
   let color = 'gray';
   if (optimizingThisCuboid) {
     color = 0xb603fc;
-  } else if (selection === 'direct' || selection === 'primary' || hovered) {
-    color = 0x4285f4;
+  } else if (selection === 'direct' || hovered) {
+    color = COLOR_DIRECT;
+  } else if (selection === 'primary') {
+    color = COLOR_PRIMARY;
   } else if (selection === 'secondary') {
-    color = 0xf4b400;
+    color = COLOR_SECONDARY;
   }
 
   // Use the saved matrix during optimization.
@@ -46,11 +48,13 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, c
   } else {
     matrix = makeCuboidMatrix(cuboid);
   }
-
   return (
     <GroupWithMatrix matrix={matrix}>
       <BaseCuboid
         color={color}
+        wireframe={cuboid.isBbox}
+        wireframeColor={cuboid.isBbox ? color : 'black'}
+        invisible={cuboid.isBbox && !selection}
         onPointerOver={(e) => onHover(e, true)}
         onPointerOut={(e) => onHover(e, false)}
         onClick={() => dispatch(onCuboidClicked(cuboidIndex))}
@@ -61,14 +65,15 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, attachmentMetadata, c
 
 HoverableCuboid.propTypes = {
   cuboid: PropTypes.shape({
+    isBbox: PropTypes.bool.isRequired,
     position: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     dimensions: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     frontNormal: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     topNormal: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    globalLineIndex: PropTypes.number.isRequired,
+    lineIndex: PropTypes.number.isRequired,
+    source: PropTypes.string.isRequired,
   }).isRequired,
-  hoveredTranspiledLines: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
-  attachmentMetadata: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number.isRequired).isRequired).isRequired,
+  hoveredTranspiledLines: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
   cuboidIndex: PropTypes.number.isRequired,
 };
 

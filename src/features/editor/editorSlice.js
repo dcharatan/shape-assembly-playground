@@ -10,7 +10,7 @@ const editorSlice = createSlice({
 
     // Whenever an optimization happens, the changed parameters are stored here. This is used for decorators.
     // This is a list of the following: { start, end, oldValue, newValue }
-    // start and end are character indices for the highlight; old and new are the old/new parameter values
+    // start and end are  character indices for the highlight; old and new are the old/new parameter values
     optimizedParameters: undefined,
 
     // When this is disabled, the user has to manually trigger a re-render.
@@ -21,16 +21,18 @@ const editorSlice = createSlice({
       state.tab = payload;
     },
     setCuboidHovered(state, { payload }) {
-      state.hoveredCuboids[payload] = true;
+      state.hoveredCuboids[payload] = 'direct';
     },
     setCuboidNotHovered(state, { payload }) {
       delete state.hoveredCuboids[payload];
     },
-    setTranspiledLineHovered(state, { payload }) {
-      state.hoveredTranspiledLines[payload] = true;
+    setTranspiledLinesHovered(state, { payload }) {
+      state.hoveredTranspiledLines = { ...state.hoveredTranspiledLines, ...payload };
     },
-    setTranspiledLineNotHovered(state, { payload }) {
-      delete state.hoveredTranspiledLines[payload];
+    setTranspiledLinesNotHovered(state, { payload }) {
+      payload.forEach((line) => {
+        delete state.hoveredTranspiledLines[line];
+      });
     },
 
     // This should be called after each optimization so that the post-optimization decorators for diffs can be shown.
@@ -53,8 +55,8 @@ export const {
   setTab,
   setCuboidHovered,
   setCuboidNotHovered,
-  setTranspiledLineHovered,
-  setTranspiledLineNotHovered,
+  setTranspiledLinesHovered,
+  setTranspiledLinesNotHovered,
   saveOptimizedParameters,
   resetOptimizedParameters,
   setLiveUpdatesEnabled,

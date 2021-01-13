@@ -11,7 +11,6 @@ import ViewerCore from './ViewerCore';
 const Viewer = () => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
-  const attachmentMetadata = useSelector((state) => state.executorSlice.attachmentMetadata);
   const transpiled = useSelector((state) => state.executorSlice.transpiled);
   const orbitRef = useRef();
 
@@ -39,7 +38,6 @@ const Viewer = () => {
           cuboidIndex={cuboidIndex}
           cuboid={cuboid}
           hoveredTranspiledLines={hoveredTranspiledLines}
-          attachmentMetadata={attachmentMetadata}
         />
       );
     });

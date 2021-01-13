@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { Editor, EditorState, RichUtils, ContentState, Modifier } from 'draft-js';
 import './SapEditor.scss';
 import 'draft-js/dist/Draft.css';
-import ProppableCompositeDraftDecorator from './decorators/ProppableCompositeDraftDecorator';
-import LineHighlightDecorator, { makeLineHighlightDecoratorStrategy } from './decorators/LineHighlightDecorator';
 import NonSerializableContext from '../context/NonSerializableContext';
 
 class SapEditor extends React.Component {
@@ -83,14 +81,6 @@ class SapEditor extends React.Component {
         const lines = transpiled.split('\n');
         lines.forEach((line, index) => {
           lineToIndex.set(line, index);
-        });
-        this.transcribedEditorState = EditorState.set(this.transcribedEditorState, {
-          decorator: new ProppableCompositeDraftDecorator([
-            {
-              strategy: makeLineHighlightDecoratorStrategy(hoveredCuboids, lineToIndex),
-              component: LineHighlightDecorator,
-            },
-          ]),
         });
       }
       this.previoushoveredCuboids = hoveredCuboids;

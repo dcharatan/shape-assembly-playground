@@ -35,6 +35,10 @@ canvas {
   outline: 3px solid theme-color("primary");
 }
 
+.outline-secondary {
+  outline: 3px solid theme-color("secondary");
+}
+
 .outline-purple {
   outline: 3px solid #b603fc;
   background-color: #b603fc;

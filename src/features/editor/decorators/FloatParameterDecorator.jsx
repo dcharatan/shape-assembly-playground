@@ -10,6 +10,7 @@ import { PARAMETER_SUBSTITUTION_THRESHOLD, substitute } from '../../executor/exe
 import '../../../index.scss';
 import NonSerializableContext from '../../context/NonSerializableContext';
 import { editorStateFromText, editorStateToText, getContentBlockOffset } from '../draftUtilities';
+import { isNumber } from '../../../utilities';
 
 const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, contentBlock, contentState, type }) => {
   const context = useContext(NonSerializableContext);
@@ -132,8 +133,7 @@ export default FloatParameterDecorator;
 
 const gatherFloatParameters = (expressionNode, invocation, tokens) => {
   // Parse the token as float. If it's a float (and not an operator, bool, etc.) add it to the list of float parameters.
-  const asFloat = parseFloat(expressionNode.token.text);
-  if (!Number.isNaN(asFloat)) {
+  if (isNumber(expressionNode.token.text)) {
     tokens.push({
       token: expressionNode.token,
       type: invocation.definitionToken.text,

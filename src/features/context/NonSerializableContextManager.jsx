@@ -17,10 +17,10 @@ def root_asm():
 const NonSerializableContextManager = ({ children }) => {
   const dispatch = useDispatch();
   const optimizedParameters = useSelector((state) => state.editorSlice.optimizedParameters);
-  const cuboidMetadata = useSelector((state) => state.executorSlice.cuboidMetadata);
   const liveUpdatesEnabled = useSelector((state) => state.editorSlice.liveUpdatesEnabled);
 
   // These are the non-serializable pieces of state that can't go into Redux.
+  const [metadata, setMetadata] = useState(undefined);
   const [ast, setAst] = useState(undefined);
   const [editorState, setEditorState] = useState(editorStateFromText(INITIAL_TEXT));
   const [selectedParameter, setSelectedParameter] = useState({});
@@ -33,7 +33,7 @@ const NonSerializableContextManager = ({ children }) => {
     dispatch(endCuboidEditing());
 
     // Attempt transpilation if the text is different.
-    let mostRecentCuboidMetadata = cuboidMetadata;
+    let mostRecentMetadata = metadata;
     let mostRecentAst = ast;
     let mostRecentOptimizedParameters = additionalInformation?.optimizedParameters ?? optimizedParameters;
     if (editorText !== lastEditorText.current || forceRefresh) {
@@ -53,7 +53,11 @@ const NonSerializableContextManager = ({ children }) => {
 
       // Transpile the AST.
       const transpiled = new Transpiler().transpile(mostRecentAst);
-      mostRecentCuboidMetadata = transpiled?.cuboidMetadata ?? cuboidMetadata;
+      mostRecentMetadata = transpiled?.metadata ?? metadata;
+      if (transpiled) {
+        delete transpiled.metadata;
+      }
+      setMetadata(mostRecentMetadata);
       dispatch(updateWithTranspilation(transpiled));
 
       // If transpilation succeeds, call the executor.
@@ -63,9 +67,7 @@ const NonSerializableContextManager = ({ children }) => {
     }
     lastEditorText.current = editorText;
 
-    setEditorState(
-      insertDecorators(newEditorState, mostRecentAst, mostRecentOptimizedParameters, mostRecentCuboidMetadata)
-    );
+    setEditorState(insertDecorators(newEditorState, mostRecentAst, mostRecentOptimizedParameters, mostRecentMetadata));
   };
 
   // This is used to change the visible cuboids without changing the editor text.
@@ -86,6 +88,7 @@ const NonSerializableContextManager = ({ children }) => {
         updateCuboidsSilently,
         selectedParameter,
         setSelectedParameter, // The selected parameter is an object containing start and end (the token).
+        metadata,
       }}
     >
       {children}

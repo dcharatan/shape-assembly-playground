@@ -2,11 +2,15 @@ import { EditorState } from 'draft-js';
 import DefDecorator, { makeDefDecoratorStrategy } from './DefDecorator';
 import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './DefParameterDecorator';
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './ErrorDecorator';
-import VariableNameDecorator, { makeVariableNameDecoratorStrategy } from './VariableNameDecorator';
+import AssignmentDecorator, { makeAssignmentDecoratorStrategy } from './AssignmentDecorator';
 import ProppableCompositeDraftDecorator from './ProppableCompositeDraftDecorator';
 import FloatParameterDecorator, { makeFloatParameterDecoratorStrategy } from './FloatParameterDecorator';
 import ReturnDecorator, { makeReturnDecoratorStrategy } from './ReturnDecorator';
 import { getContentBlockOffset } from '../draftUtilities';
+import InvocationFunctionNameDecorator, {
+  makeInvocationFunctionNameDecorator,
+} from './InvocationFunctionNameDecorator';
+import CuboidParameterDecorator, { makeCuboidParameterDecoratorStrategy } from './CuboidParameterDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -22,7 +26,7 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
   });
 }
 
-const insertDecorators = (editorState, ast, optimizedParameters, cuboidMetadata) =>
+const insertDecorators = (editorState, ast, optimizedParameters, metadata) =>
   EditorState.set(editorState, {
     decorator: new ProppableCompositeDraftDecorator([
       {
@@ -30,7 +34,7 @@ const insertDecorators = (editorState, ast, optimizedParameters, cuboidMetadata)
         component: DefDecorator,
       },
       {
-        strategy: makeDefParameterDecoratorStrategy(() => ast, applyStrategy),
+        strategy: makeDefParameterDecoratorStrategy(() => ast, metadata, applyStrategy),
         component: DefParameterDecorator,
       },
       {
@@ -38,16 +42,24 @@ const insertDecorators = (editorState, ast, optimizedParameters, cuboidMetadata)
         component: ErrorDecorator,
       },
       {
-        strategy: makeVariableNameDecoratorStrategy(() => ast, cuboidMetadata, applyStrategy),
-        component: VariableNameDecorator,
+        strategy: makeAssignmentDecoratorStrategy(() => ast, metadata, applyStrategy),
+        component: AssignmentDecorator,
       },
       {
         strategy: makeFloatParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
         component: FloatParameterDecorator,
       },
       {
+        strategy: makeCuboidParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
+        component: CuboidParameterDecorator,
+      },
+      {
         strategy: makeReturnDecoratorStrategy(() => ast, applyStrategy),
         component: ReturnDecorator,
+      },
+      {
+        strategy: makeInvocationFunctionNameDecorator(() => ast, applyStrategy),
+        component: InvocationFunctionNameDecorator,
       },
     ]),
   });
