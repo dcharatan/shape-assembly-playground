@@ -28,6 +28,9 @@ const FixedViewer = ({ code }) => {
 
   const cuboidNodes = cuboids.map((cuboid) => {
     const matrix = makeCuboidMatrix(cuboid);
+    if (cuboid.isBbox) {
+      return null;
+    }
     return (
       <GroupWithMatrix matrix={matrix}>
         <BaseCuboid color="orange" />
