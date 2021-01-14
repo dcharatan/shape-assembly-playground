@@ -74,7 +74,9 @@ const NonSerializableContextManager = ({ children }) => {
   const updateCuboidsSilently = (editorText) => {
     const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText);
     const transpiled = new Transpiler().transpile(silentAst);
-    dispatch(execute(transpiled.text));
+    if (transpiled && transpiled.text) {
+      dispatch(execute(transpiled.text));
+    }
   };
 
   return (

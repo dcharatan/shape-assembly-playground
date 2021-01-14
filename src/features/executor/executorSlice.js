@@ -50,14 +50,14 @@ export const execute = createAsyncThunk('execute', async (programText, { dispatc
 });
 
 // parameters is a list of [start, end, new value]
-export const substitute = (code, parameters, ignoreThreshold) => {
+export const substitute = (code, parameters, ignoreThreshold, numDecimals = 2) => {
   const optimizedParameters = [];
   const sortedParameters = parameters;
   sortedParameters.sort((lhs, rhs) => lhs[0] - rhs[0]);
   let modifiedCode = code;
   let offset = 0;
   sortedParameters.forEach(([start, end, value]) => {
-    const substitution = value.toFixed(2);
+    const substitution = value.toFixed(numDecimals);
     const adjustedStart = start + offset;
     const oldValueString = modifiedCode.substring(adjustedStart, end + offset);
     const oldValue = parseFloat(oldValueString);

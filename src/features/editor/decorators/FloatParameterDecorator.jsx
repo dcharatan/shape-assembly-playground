@@ -5,6 +5,7 @@ import React, { useState, useRef, useContext } from 'react';
 import { ContentBlock, ContentState } from 'draft-js';
 import PropTypes from 'prop-types';
 import { Popover, Overlay, Form } from 'react-bootstrap';
+import SapType from '@dcharatan/shape-assembly-parser/dist/type/SapType';
 import SimpleTooltip from '../../../components/SimpleTooltip';
 import { PARAMETER_SUBSTITUTION_THRESHOLD, substitute } from '../../executor/executorSlice';
 import '../../../index.scss';
@@ -12,7 +13,18 @@ import NonSerializableContext from '../../context/NonSerializableContext';
 import { editorStateFromText, editorStateToText, getContentBlockOffset } from '../draftUtilities';
 import { isNumber } from '../../../utilities';
 
-const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, contentBlock, contentState, type }) => {
+const FloatParameterDecorator = ({
+  children,
+  oldValue,
+  newValue,
+  start,
+  end,
+  contentBlock,
+  contentState,
+  functionName,
+  type,
+}) => {
+  const isInteger = type && type.name.includes('integer');
   const context = useContext(NonSerializableContext);
   const initialValue = parseFloat(children[0].props.text);
   const range = 2 * Math.abs(initialValue);
@@ -37,7 +49,7 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
   if (oldValue === undefined || newValue === undefined) {
     const modifyCodeWithValue = (modifiedValue) => {
       const text = editorStateToText(context.editorState);
-      const { modifiedCode } = substitute(text, [[adjustedStart, adjustedEnd, modifiedValue]]);
+      const { modifiedCode } = substitute(text, [[adjustedStart, adjustedEnd, modifiedValue]], true, isInteger ? 0 : 2);
       return modifiedCode;
     };
     const onChangeSlider = (e) => {
@@ -53,11 +65,14 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
 
     let min = initialValue - range;
     let max = initialValue + range;
-    if (type === 'attach') {
+    if (functionName === 'attach') {
       min = 0;
       max = 1;
     }
     min = Math.max(min, 0);
+    if (functionName === 'translate' && isInteger) {
+      min = 1;
+    }
 
     return (
       <>
@@ -78,7 +93,7 @@ const FloatParameterDecorator = ({ children, oldValue, newValue, start, end, con
                   custom
                   min={min}
                   max={max}
-                  step={0.01}
+                  step={isInteger ? 1 : 0.01}
                   value={value}
                   onChange={onChangeSlider}
                 />
@@ -118,7 +133,8 @@ FloatParameterDecorator.propTypes = {
   end: PropTypes.number.isRequired,
   contentBlock: PropTypes.instanceOf(ContentBlock),
   contentState: PropTypes.instanceOf(ContentState),
-  type: PropTypes.string,
+  functionName: PropTypes.string,
+  type: PropTypes.instanceOf(SapType),
 };
 
 FloatParameterDecorator.defaultProps = {
@@ -126,22 +142,24 @@ FloatParameterDecorator.defaultProps = {
   newValue: undefined,
   contentBlock: undefined,
   contentState: undefined,
+  functionName: undefined,
   type: undefined,
 };
 
 export default FloatParameterDecorator;
 
-const gatherFloatParameters = (expressionNode, invocation, tokens) => {
+const gatherFloatParameters = (expressionNode, invocation, tokens, index) => {
   // Parse the token as float. If it's a float (and not an operator, bool, etc.) add it to the list of float parameters.
   if (isNumber(expressionNode.token.text)) {
     tokens.push({
       token: expressionNode.token,
-      type: invocation.definitionToken.text,
+      functionName: invocation.definitionToken.text,
+      type: invocation.argumentTypes[index],
     });
   }
 
   // Handle the children (for operators).
-  expressionNode.children.forEach((child) => gatherFloatParameters(child, tokens));
+  expressionNode.children.forEach((child) => gatherFloatParameters(child, invocation, tokens, index));
 };
 
 export const makeFloatParameterDecoratorStrategy = (getAst, optimizedParameters, applyStrategy) => (
@@ -164,8 +182,8 @@ export const makeFloatParameterDecoratorStrategy = (getAst, optimizedParameters,
     const floatParameters = [];
     ast.definitions.forEach((definition) => {
       definition.invocations.forEach((invocation) => {
-        invocation.argumentExpressions.forEach((argumentExpression) => {
-          gatherFloatParameters(argumentExpression, invocation, floatParameters);
+        invocation.argumentExpressions.forEach((argumentExpression, index) => {
+          gatherFloatParameters(argumentExpression, invocation, floatParameters, index);
         });
       });
     });
@@ -174,7 +192,7 @@ export const makeFloatParameterDecoratorStrategy = (getAst, optimizedParameters,
       callback,
       contentState,
       floatParameters.map((fp) => fp.token),
-      floatParameters.map((fp) => ({ contentBlock, contentState, type: fp.type }))
+      floatParameters.map((fp) => ({ contentBlock, contentState, functionName: fp.functionName, type: fp.type }))
     );
   }
 };
