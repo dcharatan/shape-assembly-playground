@@ -19,7 +19,7 @@ const EditingTask = () => {
         </div>
         <div className="w-50 h-100">
           <div className="w-100 h-50 p-2">
-            <ViewerArea />
+            <ViewerArea inEditingTask />
           </div>
           <div className="w-100 h-50 p-2">
             <ViewerArea code={targetCode} />

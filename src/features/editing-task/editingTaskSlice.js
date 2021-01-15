@@ -12,8 +12,12 @@ const editingTaskSlice = createSlice({
     userName: undefined,
     targetCode: INITIAL_CODE,
     currentTaskIndex: 0,
+    wireframeEnabled: false,
   },
   reducers: {
+    toggleWireframe(state) {
+      state.wireframeEnabled = !state.wireframeEnabled;
+    },
     setUserName(state, { payload }) {
       state.userName = payload;
     },
@@ -25,6 +29,6 @@ const editingTaskSlice = createSlice({
   },
 });
 
-export const { setUserName, setTargetCode, setTaskIndex } = editingTaskSlice.actions;
+export const { setUserName, setTargetCode, toggleWireframe } = editingTaskSlice.actions;
 
 export default editingTaskSlice.reducer;

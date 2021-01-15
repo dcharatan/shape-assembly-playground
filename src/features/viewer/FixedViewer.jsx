@@ -1,45 +1,14 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parser';
 import { Canvas } from 'react-three-fiber';
 import ViewerCore from './ViewerCore';
-import { fetchExecute } from '../executor/executorSlice';
-import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
-import GroupWithMatrix from './GroupWithMatrix';
 import { registerCamera } from './cameraSync';
+import CuboidsForCode from './CuboidsForCode';
 
 const FixedViewer = ({ code }) => {
   const orbitRef = useCallback((camera) => {
     registerCamera(camera);
   }, []);
-
-  // Call the executor to get the code's result.
-  const [cuboids, setCuboids] = useState([]);
-  useEffect(() => {
-    const doFetch = async () => {
-      // Transpile the code.
-      const ast = new ShapeAssemblyParser().parseShapeAssemblyProgram(code);
-      const transpiled = new Transpiler().transpile(ast);
-
-      // Call the executor.
-      const result = await fetchExecute(transpiled.text);
-      const json = await result.json();
-      setCuboids(json.cuboids);
-    };
-    doFetch();
-  }, [code]);
-
-  const cuboidNodes = cuboids.map((cuboid) => {
-    const matrix = makeCuboidMatrix(cuboid);
-    if (cuboid.isBbox) {
-      return null;
-    }
-    return (
-      <GroupWithMatrix matrix={matrix} key={JSON.stringify(cuboid)}>
-        <BaseCuboid color="orange" />
-      </GroupWithMatrix>
-    );
-  });
 
   return (
     <div className="w-100 h-100 border border-secondary">
@@ -50,7 +19,9 @@ const FixedViewer = ({ code }) => {
           zoom: 150,
         }}
       >
-        <ViewerCore orbitRef={orbitRef}>{cuboidNodes}</ViewerCore>
+        <ViewerCore orbitRef={orbitRef}>
+          <CuboidsForCode code={code} color="orange" />
+        </ViewerCore>
       </Canvas>
     </div>
   );

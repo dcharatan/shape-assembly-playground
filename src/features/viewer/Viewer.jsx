@@ -1,4 +1,5 @@
 import React, { useRef, useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, ReactReduxContext, Provider } from 'react-redux';
 import { Canvas } from 'react-three-fiber';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,8 +9,9 @@ import NonSerializableContext from '../context/NonSerializableContext';
 import { getEditabilityEnabled } from '../../environment';
 import ViewerCore from './ViewerCore';
 import { registerCamera } from './cameraSync';
+import CuboidsForCode from './CuboidsForCode';
 
-const Viewer = () => {
+const Viewer = ({ inEditingTask }) => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
   const transpiled = useSelector((state) => state.executorSlice.transpiled);
@@ -19,6 +21,10 @@ const Viewer = () => {
     registerCamera(camera);
   }, []);
   const camRef = useRef();
+
+  // For the editing task, handle the wireframe stuff.
+  const wireframeCode = useSelector((state) => state.editingTaskSlice.targetCode);
+  const wireframeEnabled = useSelector((state) => state.editingTaskSlice.wireframeEnabled);
 
   let borderColorClass = 'border-primary';
   if (errored) {
@@ -66,6 +72,14 @@ const Viewer = () => {
                   <Provider store={store}>
                     <ViewerCore camRef={camRef} orbitRef={orbitRefHook}>
                       {getCuboids()}
+                      {wireframeCode && inEditingTask ? (
+                        <CuboidsForCode
+                          code={wireframeCode}
+                          wireframe
+                          wireframeColor="red"
+                          invisible={!wireframeEnabled}
+                        />
+                      ) : null}
                     </ViewerCore>
                   </Provider>
                 </NonSerializableContext.Provider>
@@ -76,6 +90,14 @@ const Viewer = () => {
       </NonSerializableContext.Consumer>
     </div>
   );
+};
+
+Viewer.propTypes = {
+  inEditingTask: PropTypes.bool,
+};
+
+Viewer.defaultProps = {
+  inEditingTask: false,
 };
 
 export default Viewer;

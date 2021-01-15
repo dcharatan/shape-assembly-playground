@@ -9,6 +9,11 @@ const EditingTaskIntro = () => {
   const [name, setName] = useState('');
   const dispatch = useDispatch();
   const { startEditingTask } = useContext(NonSerializableContext);
+  const onSubmit = () => {
+    // Set the username (this makes the modal disappear) and start the editing task.
+    dispatch(setUserName(name));
+    startEditingTask(0);
+  };
   return (
     <Modal show={show}>
       <Modal.Header>
@@ -23,18 +28,15 @@ const EditingTaskIntro = () => {
           placeholder="Name"
           onChange={(e) => setName(e.target.value)}
           value={name}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter' && name !== '') {
+              onSubmit();
+            }
+          }}
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="primary"
-          disabled={name === ''}
-          onClick={() => {
-            // Set the username (this makes the modal disappear) and start the editing task.
-            dispatch(setUserName(name));
-            startEditingTask(0);
-          }}
-        >
+        <Button variant="primary" disabled={name === ''} onClick={onSubmit}>
           Start Task
         </Button>
       </Modal.Footer>
