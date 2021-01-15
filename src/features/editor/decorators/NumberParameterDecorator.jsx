@@ -15,7 +15,7 @@ import NonSerializableContext from '../../context/NonSerializableContext';
 import { editorStateFromText, editorStateToText, getContentBlockOffset } from '../draftUtilities';
 import { isNumber } from '../../../utilities';
 
-const FloatParameterDecorator = ({
+const NumberParameterDecorator = ({
   children,
   oldValue,
   newValue,
@@ -143,7 +143,7 @@ const FloatParameterDecorator = ({
   );
 };
 
-FloatParameterDecorator.propTypes = {
+NumberParameterDecorator.propTypes = {
   children: PropTypes.node.isRequired,
   oldValue: PropTypes.number,
   newValue: PropTypes.number,
@@ -155,7 +155,7 @@ FloatParameterDecorator.propTypes = {
   type: PropTypes.instanceOf(SapType),
 };
 
-FloatParameterDecorator.defaultProps = {
+NumberParameterDecorator.defaultProps = {
   oldValue: undefined,
   newValue: undefined,
   contentBlock: undefined,
@@ -164,7 +164,7 @@ FloatParameterDecorator.defaultProps = {
   type: undefined,
 };
 
-export default FloatParameterDecorator;
+export default NumberParameterDecorator;
 
 const gatherFloatParameters = (expressionNode, invocation, tokens, index) => {
   // Parse the token as float. If it's a float (and not an operator, bool, etc.) add it to the list of float parameters.
@@ -180,7 +180,7 @@ const gatherFloatParameters = (expressionNode, invocation, tokens, index) => {
   expressionNode.children.forEach((child) => gatherFloatParameters(child, invocation, tokens, index));
 };
 
-export const makeFloatParameterDecoratorStrategy = (getAst, optimizedParameters, applyStrategy) => (
+export const makeNumberParameterDecoratorStrategy = (getAst, optimizedParameters, applyStrategy) => (
   contentBlock,
   callback,
   contentState

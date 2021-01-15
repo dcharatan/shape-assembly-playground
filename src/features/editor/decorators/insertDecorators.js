@@ -4,7 +4,7 @@ import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './DefP
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './ErrorDecorator';
 import AssignmentDecorator, { makeAssignmentDecoratorStrategy } from './AssignmentDecorator';
 import ProppableCompositeDraftDecorator from './ProppableCompositeDraftDecorator';
-import FloatParameterDecorator, { makeFloatParameterDecoratorStrategy } from './FloatParameterDecorator';
+import NumberParameterDecorator, { makeNumberParameterDecoratorStrategy } from './NumberParameterDecorator';
 import ReturnDecorator, { makeReturnDecoratorStrategy } from './ReturnDecorator';
 import { getContentBlockOffset } from '../draftUtilities';
 import InvocationFunctionNameDecorator, {
@@ -46,8 +46,8 @@ const insertDecorators = (editorState, ast, optimizedParameters, metadata) =>
         component: AssignmentDecorator,
       },
       {
-        strategy: makeFloatParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
-        component: FloatParameterDecorator,
+        strategy: makeNumberParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
+        component: NumberParameterDecorator,
       },
       {
         strategy: makeCuboidParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
