@@ -6,6 +6,8 @@ import { ContentBlock, ContentState } from 'draft-js';
 import PropTypes from 'prop-types';
 import { Popover, Overlay, Form } from 'react-bootstrap';
 import SapType from '@dcharatan/shape-assembly-parser/dist/type/SapType';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import SimpleTooltip from '../../../components/SimpleTooltip';
 import { PARAMETER_SUBSTITUTION_THRESHOLD, substitute } from '../../executor/executorSlice';
 import '../../../index.scss';
@@ -29,6 +31,9 @@ const FloatParameterDecorator = ({
   const initialValue = parseFloat(children[0].props.text);
   const range = 2 * Math.abs(initialValue);
 
+  const [value, setValue] = useState(initialValue);
+  const target = useRef(null);
+
   const offset = getContentBlockOffset(contentState, contentBlock);
   const adjustedStart = start + offset;
   const adjustedEnd = end + offset;
@@ -37,13 +42,11 @@ const FloatParameterDecorator = ({
   const { selectedParameter, setSelectedParameter } = context;
   const show = selectedParameter.start === adjustedStart && selectedParameter.end === adjustedEnd;
   const toggleShow = () => {
-    setSelectedParameter(
-      selectedParameter.start && selectedParameter.end ? {} : { start: adjustedStart, end: adjustedEnd }
-    );
+    const alreadyShowingSlider = selectedParameter.start && selectedParameter.end;
+    if (!alreadyShowingSlider) {
+      setSelectedParameter({ start: adjustedStart, end: adjustedEnd });
+    }
   };
-
-  const [value, setValue] = useState(initialValue);
-  const target = useRef(null);
 
   // If there's no substitution and it's a float, show the parameter slider.
   if (oldValue === undefined || newValue === undefined) {
@@ -57,10 +60,16 @@ const FloatParameterDecorator = ({
       context.updateCuboidsSilently(modifyCodeWithValue(newSliderValue));
       setValue(newSliderValue);
     };
-    const onExitSlider = () => {
-      context.setEditorState(editorStateFromText(modifyCodeWithValue(value)), {
-        doNotTriggerParameterSliderDeselection: true,
-      });
+    const onExitSlider = (save) => {
+      if (save) {
+        context.setEditorState(editorStateFromText(modifyCodeWithValue(value)), {
+          doNotTriggerParameterSliderDeselection: true,
+        });
+      } else {
+        context.updateCuboidsSilently(modifyCodeWithValue(initialValue));
+        setValue(initialValue);
+      }
+      setSelectedParameter({});
     };
 
     let min = initialValue - range;
@@ -83,10 +92,18 @@ const FloatParameterDecorator = ({
         >
           {show ? value : children}
         </span>
-        <Overlay target={target.current} show={show} placement="bottom" onExit={onExitSlider}>
+        <Overlay target={target.current} show={show} placement="bottom">
           {({ ...props }) => (
             <Popover {...props}>
-              <Popover.Title as="h3">Adjust Parameter</Popover.Title>
+              <Popover.Title as="h3">
+                <div className="d-flex flex-row justify-content-between align-items-center">
+                  <div className="mr-1">Adjust Parameter</div>
+                  <div className="ml-1">
+                    <CheckIcon onClick={() => onExitSlider(true)} className="cursor-pointer" />
+                    <CloseIcon onClick={() => onExitSlider(false)} className="cursor-pointer" />
+                  </div>
+                </div>
+              </Popover.Title>
               <Popover.Content>
                 <Form.Control
                   type="range"

@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@dcharatan/shape-assembly-parser": "4.1.0",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
     "@nivo/stream": "^0.62.0",
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^4.2.4",
