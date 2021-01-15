@@ -1,17 +1,18 @@
 import React, { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, Form } from 'react-bootstrap';
-import { setUserName } from './editingTaskSlice';
+import { setUsername } from './editingTaskSlice';
 import NonSerializableContext from '../context/NonSerializableContext';
 
 const EditingTaskIntro = () => {
-  const show = useSelector((state) => state.editingTaskSlice.userName) === undefined;
+  const username = useSelector((state) => state.editingTaskSlice.username);
+  const show = username === undefined;
   const [name, setName] = useState('');
   const dispatch = useDispatch();
   const { startEditingTask } = useContext(NonSerializableContext);
   const onSubmit = () => {
     // Set the username (this makes the modal disappear) and start the editing task.
-    dispatch(setUserName(name));
+    dispatch(setUsername(name));
     startEditingTask(0);
   };
   return (

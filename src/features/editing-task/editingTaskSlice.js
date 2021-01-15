@@ -9,7 +9,7 @@ def root_asm():
 const editingTaskSlice = createSlice({
   name: 'editingTaskSlice',
   initialState: {
-    userName: undefined,
+    username: undefined,
     targetCode: INITIAL_CODE,
     currentTaskIndex: 0,
     wireframeEnabled: false,
@@ -18,8 +18,8 @@ const editingTaskSlice = createSlice({
     toggleWireframe(state) {
       state.wireframeEnabled = !state.wireframeEnabled;
     },
-    setUserName(state, { payload }) {
-      state.userName = payload;
+    setUsername(state, { payload }) {
+      state.username = payload ? `${payload}_${Date.now()}` : undefined;
     },
     setTargetCode(state, { payload }) {
       const { targetCode, taskIndex } = payload;
@@ -29,6 +29,6 @@ const editingTaskSlice = createSlice({
   },
 });
 
-export const { setUserName, setTargetCode, toggleWireframe } = editingTaskSlice.actions;
+export const { setUsername, setTargetCode, toggleWireframe } = editingTaskSlice.actions;
 
 export default editingTaskSlice.reducer;

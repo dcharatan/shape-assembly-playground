@@ -11,7 +11,7 @@ const CompleteTaskButton = () => {
   const handleClose = () => setShow(false);
   const history = useHistory();
   const taskIndex = useSelector((state) => state.editingTaskSlice.currentTaskIndex);
-  const { startEditingTask } = useContext(NonSerializableContext);
+  const { startEditingTask, saveEditingTask } = useContext(NonSerializableContext);
   return (
     <>
       <Button variant="outline-success" className="m-1" size="sm" onClick={() => setShow(true)}>
@@ -31,6 +31,7 @@ const CompleteTaskButton = () => {
             variant="success"
             onClick={() => {
               handleClose();
+              saveEditingTask();
               if (taskIndex + 1 < editingTasks.length) {
                 startEditingTask(taskIndex + 1);
               } else {

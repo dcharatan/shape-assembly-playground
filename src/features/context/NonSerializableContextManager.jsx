@@ -9,11 +9,25 @@ import { resetOptimizedParameters } from '../editor/editorSlice';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
 import editingTasks from '../editing-task/editingTasks';
 import { setTargetCode } from '../editing-task/editingTaskSlice';
+import { getBaseUrl } from '../../environment';
 
 const INITIAL_TEXT = `@root_assembly
 def root_asm():
     bbox = Cuboid(1, 1, 1, True)
     cube = Cuboid(1, 1, 1, True)`;
+
+export const postActionStack = (username, taskIndex, actionStack) =>
+  fetch(`${getBaseUrl()}/save-editing-task`, {
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+    method: 'POST',
+    body: JSON.stringify({
+      username,
+      actionStack,
+      taskIndex,
+    }),
+  });
 
 // This holds all state that can't go into Redux because it's not serializable.
 const NonSerializableContextManager = ({ children }) => {
@@ -32,6 +46,15 @@ const NonSerializableContextManager = ({ children }) => {
   const redoStack = useRef([]);
   const [undoAvailable, setUndoAvailable] = useState(false);
   const [redoAvailable, setRedoAvailable] = useState(false);
+
+  // This records all states (so do then undo would add 2 states).
+  const actionStack = useRef([]);
+  const pushAction = (editorText) => {
+    actionStack.current.push({
+      editorText,
+      timestamp: Date.now(),
+    });
+  };
 
   // This is used to ensure that transpilation only runs when the text actually changes.
   const lastEditorText = useRef(undefined);
@@ -59,6 +82,7 @@ const NonSerializableContextManager = ({ children }) => {
         // Clear the redo stack (since taking an action means you can't redo).
         redoStack.current = [];
         undoStack.current.push(lastEditorText.current);
+        pushAction(editorText);
         setRedoAvailable(false);
         setUndoAvailable(true);
       }
@@ -100,6 +124,7 @@ const NonSerializableContextManager = ({ children }) => {
     if (!text) {
       return;
     }
+    pushAction(text);
     redoStack.current.push(lastEditorText.current);
     update(editorStateFromText(text), true);
     setRedoAvailable(true);
@@ -110,6 +135,7 @@ const NonSerializableContextManager = ({ children }) => {
     if (!text) {
       return;
     }
+    pushAction(text);
     undoStack.current.push(lastEditorText.current);
     update(editorStateFromText(text), true);
     setRedoAvailable(redoStack.current.length > 0);
@@ -120,10 +146,31 @@ const NonSerializableContextManager = ({ children }) => {
     setRedoAvailable(false);
     undoStack.current = [];
     redoStack.current = [];
+    actionStack.current = [];
   };
 
+  const username = useSelector((state) => state.editingTaskSlice.username);
+  const currentTaskIndex = useSelector((state) => state.editingTaskSlice.currentTaskIndex);
+  const saveEditingTask = async () => {
+    try {
+      const result = await postActionStack(username, currentTaskIndex, actionStack.current);
+      if (!result.ok) {
+        // eslint-disable-next-line no-alert
+        alert('Failed to save this editing task.');
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      // eslint-disable-next-line no-alert
+      alert('Failed to save this editing task.');
+    }
+  };
   const startEditingTask = (index) => {
     resetHistory();
+
+    // Log the initial state.
+    pushAction(editingTasks[index].initial);
+
     update(editorStateFromText(editingTasks[index].initial), true);
     dispatch(
       setTargetCode({
@@ -153,6 +200,7 @@ const NonSerializableContextManager = ({ children }) => {
         undoAvailable,
         redoAvailable,
         startEditingTask,
+        saveEditingTask,
       }}
     >
       {children}
