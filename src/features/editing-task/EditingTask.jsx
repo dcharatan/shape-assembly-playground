@@ -3,6 +3,7 @@ import NonSerializableContext from '../context/NonSerializableContext';
 import { editorStateFromText } from '../editor/draftUtilities';
 import EditorArea from '../editor/EditorArea';
 import ViewerArea from '../viewer/ViewerArea';
+import EditingTaskBar from './EditingTaskBar';
 
 const code = `@child_assembly
 def assembly_fn_3(bbox):
@@ -55,6 +56,7 @@ const EditingTask = () => {
     <div className="d-flex flex-grow-1 overflow-y-hidden">
       <div className="d-flex flex-row w-100 h-100 p-2 overflow-y-hidden">
         <div className="w-50 h-100 p-2 overflow-y-hidden d-flex flex-column">
+          <EditingTaskBar />
           <div className="w-100 d-flex flex-grow-1 overflow-y-hidden">
             <EditorArea hideTabs hideTutorial disableTextEditing />
           </div>

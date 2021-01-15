@@ -64,6 +64,7 @@ const FloatParameterDecorator = ({
       if (save) {
         context.setEditorState(editorStateFromText(modifyCodeWithValue(value)), {
           doNotTriggerParameterSliderDeselection: true,
+          saveToHistory: true,
         });
       } else {
         context.updateCuboidsSilently(modifyCodeWithValue(initialValue));

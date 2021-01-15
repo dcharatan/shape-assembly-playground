@@ -25,6 +25,12 @@ const NonSerializableContextManager = ({ children }) => {
   const [editorState, setEditorState] = useState(editorStateFromText(INITIAL_TEXT));
   const [selectedParameter, setSelectedParameter] = useState({});
 
+  // This handles undo/redo.
+  const undoStack = useRef([]);
+  const redoStack = useRef([]);
+  const [undoAvailable, setUndoAvailable] = useState(false);
+  const [redoAvailable, setRedoAvailable] = useState(false);
+
   // This is used to ensure that transpilation only runs when the text actually changes.
   const lastEditorText = useRef(undefined);
   const update = (newEditorState, forceRefresh, additionalInformation) => {
@@ -45,6 +51,14 @@ const NonSerializableContextManager = ({ children }) => {
       // Deselect any parameter sliders.
       if (!additionalInformation?.doNotTriggerParameterSliderDeselection) {
         setSelectedParameter({});
+      }
+
+      if (additionalInformation?.saveToHistory) {
+        // Clear the redo stack (since taking an action means you can't redo).
+        redoStack.current = [];
+        undoStack.current.push(lastEditorText.current);
+        setRedoAvailable(false);
+        setUndoAvailable(true);
       }
 
       // Parse a new AST.
@@ -79,6 +93,27 @@ const NonSerializableContextManager = ({ children }) => {
     }
   };
 
+  const undoHistory = () => {
+    const text = undoStack.current.pop();
+    if (!text) {
+      return;
+    }
+    redoStack.current.push(lastEditorText.current);
+    update(editorStateFromText(text), true);
+    setRedoAvailable(true);
+    setUndoAvailable(undoStack.current.length > 0);
+  };
+  const redoHistory = () => {
+    const text = redoStack.current.pop();
+    if (!text) {
+      return;
+    }
+    undoStack.current.push(lastEditorText.current);
+    update(editorStateFromText(text), true);
+    setRedoAvailable(redoStack.current.length > 0);
+    setUndoAvailable(true);
+  };
+
   return (
     <NonSerializableContext.Provider
       value={{
@@ -91,6 +126,13 @@ const NonSerializableContextManager = ({ children }) => {
         selectedParameter,
         setSelectedParameter, // The selected parameter is an object containing start and end (the token).
         metadata,
+
+        // These functions are for undo/redo for the parameter sliders.
+        // The text editing interface already has built-in undo/redo and doesn't use this system.
+        undoHistory,
+        redoHistory,
+        undoAvailable,
+        redoAvailable,
       }}
     >
       {children}
