@@ -7,7 +7,7 @@ import NonSerializableContext from '../context/NonSerializableContext';
 const UndoRedo = () => {
   const { undoHistory, redoHistory, undoAvailable, redoAvailable } = useContext(NonSerializableContext);
   return (
-    <div className="d-flex flex-row m-1">
+    <>
       <Button size="sm" variant="outline-secondary" className="m-1" onClick={undoHistory} disabled={!undoAvailable}>
         <UndoIcon className="mr-1" />
         Undo
@@ -16,7 +16,7 @@ const UndoRedo = () => {
         <RedoIcon className="mr-1" />
         Redo
       </Button>
-    </div>
+    </>
   );
 };
 

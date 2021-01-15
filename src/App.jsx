@@ -12,6 +12,7 @@ import NonSerializableContextManager from './features/context/NonSerializableCon
 import KeypressHandler from './KeypressHandler';
 import Gallery from './features/gallery/Gallery';
 import EditingTask from './features/editing-task/EditingTask';
+import EditingTaskThankYou from './features/editing-task/EditingTaskThankYou';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -26,6 +27,9 @@ const App = () => (
           <Switch>
             <Route exact path="/editing-task">
               <EditingTask />
+            </Route>
+            <Route exact path="/editing-task-thank-you">
+              <EditingTaskThankYou />
             </Route>
             <Route exact path="/result-viewer">
               <ResultPage />

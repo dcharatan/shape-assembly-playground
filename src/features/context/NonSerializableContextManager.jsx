@@ -7,6 +7,8 @@ import { endCuboidEditing, execute, updateWithTranspilation } from '../executor/
 import insertDecorators from '../editor/decorators/insertDecorators';
 import { resetOptimizedParameters } from '../editor/editorSlice';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
+import editingTasks from '../editing-task/editingTasks';
+import { setTargetCode } from '../editing-task/editingTaskSlice';
 
 const INITIAL_TEXT = `@root_assembly
 def root_asm():
@@ -113,6 +115,23 @@ const NonSerializableContextManager = ({ children }) => {
     setRedoAvailable(redoStack.current.length > 0);
     setUndoAvailable(true);
   };
+  const resetHistory = () => {
+    setUndoAvailable(false);
+    setRedoAvailable(false);
+    undoStack.current = [];
+    redoStack.current = [];
+  };
+
+  const startEditingTask = (index) => {
+    resetHistory();
+    update(editorStateFromText(editingTasks[index].initial), true);
+    dispatch(
+      setTargetCode({
+        targetCode: editingTasks[index].target,
+        taskIndex: index,
+      })
+    );
+  };
 
   return (
     <NonSerializableContext.Provider
@@ -133,6 +152,7 @@ const NonSerializableContextManager = ({ children }) => {
         redoHistory,
         undoAvailable,
         redoAvailable,
+        startEditingTask,
       }}
     >
       {children}

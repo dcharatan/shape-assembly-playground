@@ -4,6 +4,7 @@ import { Navbar, Nav, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NonSerializableContext from '../context/NonSerializableContext';
+import { setUserName } from '../editing-task/editingTaskSlice';
 import { setLiveUpdatesEnabled } from '../editor/editorSlice';
 
 const SapNavbar = () => {
@@ -37,7 +38,7 @@ const SapNavbar = () => {
           <Nav.Link as={Link} to="/">
             Playground
           </Nav.Link>
-          <Nav.Link as={Link} to="/editing-task">
+          <Nav.Link as={Link} to="/editing-task" onClick={() => dispatch(setUserName(undefined))}>
             Editing Task
           </Nav.Link>
         </Nav>
