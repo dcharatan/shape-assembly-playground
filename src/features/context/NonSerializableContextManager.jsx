@@ -7,7 +7,7 @@ import { endCuboidEditing, execute, updateWithTranspilation } from '../executor/
 import insertDecorators from '../editor/decorators/insertDecorators';
 import { resetOptimizedParameters } from '../editor/editorSlice';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
-import editingTasks from '../editing-task/editingTasks';
+import editingTasks, { PREFIX } from '../editing-task/editingTasks';
 import { setTargetCode } from '../editing-task/editingTaskSlice';
 import { getBaseUrl } from '../../environment';
 
@@ -88,7 +88,7 @@ const NonSerializableContextManager = ({ children }) => {
       }
 
       // Parse a new AST.
-      mostRecentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText);
+      mostRecentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText, PREFIX);
       setAst(mostRecentAst);
 
       // Transpile the AST.
@@ -112,7 +112,7 @@ const NonSerializableContextManager = ({ children }) => {
 
   // This is used to change the visible cuboids without changing the editor text.
   const updateCuboidsSilently = (editorText) => {
-    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText);
+    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText, PREFIX);
     const transpiled = new Transpiler().transpile(silentAst);
     if (transpiled && transpiled.text) {
       dispatch(execute(transpiled.text));

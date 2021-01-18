@@ -13,6 +13,7 @@ export const makeReturnDecoratorStrategy = (getAst, applyStrategy) => (contentBl
   const ast = getAst();
   if (ast) {
     const tokens = ast.definitions
+      .filter((definition) => !definition.isFromPrefix)
       .map((definition) => definition?.returnStatement?.returnToken)
       .filter((token) => !!token);
     applyStrategy(contentBlock, callback, contentState, tokens);

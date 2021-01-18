@@ -14,6 +14,7 @@ export const makeDefDecoratorStrategy = (getAst, applyStrategy) => (contentBlock
   if (ast) {
     const errors = new Set(ast.errors.map((error) => error.token));
     const highlights = ast.definitions
+      .filter((definition) => !definition.isFromPrefix)
       .map((definition) => definition.declaration.nameToken)
       .filter((token) => !errors.has(token));
     applyStrategy(contentBlock, callback, contentState, highlights);

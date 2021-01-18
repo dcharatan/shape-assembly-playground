@@ -3,11 +3,13 @@ const makeAssignmentDecoratorStrategy = (getAst, applyStrategy) => (contentBlock
   if (ast) {
     const highlights = [];
     ast.definitions.forEach((definition) => {
-      definition.invocations.forEach((invocation) => {
-        invocation.assignmentTokens.forEach((assignmentToken) => {
-          highlights.push({ token: assignmentToken });
+      if (!definition.isFromPrefix) {
+        definition.invocations.forEach((invocation) => {
+          invocation.assignmentTokens.forEach((assignmentToken) => {
+            highlights.push({ token: assignmentToken });
+          });
         });
-      });
+      }
     });
     applyStrategy(
       contentBlock,

@@ -59,7 +59,9 @@ export const makeInvocationFunctionNameDecorator = (getAst, applyStrategy) => (
   if (ast) {
     const highlights = [];
     ast.definitions.forEach((definition) => {
-      highlights.push(...definition.invocations.map((invocation) => invocation.definitionToken));
+      if (!definition.isFromPrefix) {
+        highlights.push(...definition.invocations.map((invocation) => invocation.definitionToken));
+      }
     });
     applyStrategy(
       contentBlock,

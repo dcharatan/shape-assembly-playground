@@ -3,10 +3,12 @@ const makeReturnValueDecoratorStrategy = (getAst, applyStrategy) => (contentBloc
   if (ast) {
     const highlights = [];
     ast.definitions.forEach((definition) => {
-      if (definition.returnStatement) {
-        definition.returnStatement.tokens.forEach((token) => {
-          highlights.push({ token });
-        });
+      if (!definition.isFromPrefix) {
+        if (definition.returnStatement) {
+          definition.returnStatement.tokens.forEach((token) => {
+            highlights.push({ token });
+          });
+        }
       }
     });
     applyStrategy(

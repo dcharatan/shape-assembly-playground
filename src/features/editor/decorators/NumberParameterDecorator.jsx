@@ -199,11 +199,13 @@ export const makeNumberParameterDecoratorStrategy = (getAst, optimizedParameters
     const ast = getAst();
     const floatParameters = [];
     ast.definitions.forEach((definition) => {
-      definition.invocations.forEach((invocation) => {
-        invocation.argumentExpressions.forEach((argumentExpression, index) => {
-          gatherFloatParameters(argumentExpression, invocation, floatParameters, index);
+      if (!definition.isFromPrefix) {
+        definition.invocations.forEach((invocation) => {
+          invocation.argumentExpressions.forEach((argumentExpression, index) => {
+            gatherFloatParameters(argumentExpression, invocation, floatParameters, index);
+          });
         });
-      });
+      }
     });
     applyStrategy(
       contentBlock,

@@ -4,13 +4,15 @@ const makeCuboidParameterDecoratorStrategy = (getAst, applyStrategy) => (content
   if (ast) {
     const highlights = [];
     ast.definitions.forEach((definition) => {
-      definition.invocations.forEach((invocation) => {
-        invocation.argumentExpressions.forEach((e, index) => {
-          if (invocation.argumentTypes[index].name === 'block') {
-            highlights.push({ token: e.token, index });
-          }
+      if (!definition.isFromPrefix) {
+        definition.invocations.forEach((invocation) => {
+          invocation.argumentExpressions.forEach((e, index) => {
+            if (invocation.argumentTypes[index].name === 'block') {
+              highlights.push({ token: e.token, index });
+            }
+          });
         });
-      });
+      }
     });
     applyStrategy(
       contentBlock,

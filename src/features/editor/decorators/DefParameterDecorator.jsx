@@ -32,7 +32,7 @@ export const makeDefParameterDecoratorStrategy = (getAst, metadata, applyStrateg
 
     // Find all parameters in function declarations.
     ast.definitions.forEach((definition) => {
-      if (!definition.isBuiltIn) {
+      if (!definition.isBuiltIn && !definition.isFromPrefix) {
         definition.declaration.parameterTokens.forEach((parameterToken, index) => {
           highlights.push(parameterToken);
           props.push({
