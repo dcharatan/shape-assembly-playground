@@ -40,7 +40,7 @@ export const makeAssignmentDecoratorStrategy = (getAst, metadata, applyStrategy)
       contentState,
       highlights,
       highlights.map((highlight) => ({
-        transpiledLineIndices: metadata.tokenToDirectLines.get(tokenToKey(highlight)),
+        transpiledLineIndices: metadata.get(tokenToKey(highlight)).map((x) => x.line),
       }))
     );
   }
