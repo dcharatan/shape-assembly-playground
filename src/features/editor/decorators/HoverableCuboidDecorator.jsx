@@ -9,20 +9,18 @@ import { tokenPropType, tokenToKey } from '../tokenUtilities';
 
 const HoverableCuboidDecorator = ({ children, token }) => {
   const dispatch = useDispatch();
-
-  // Get this cuboid's transpiled lines.
   const { metadata } = useContext(NonSerializableContext);
   const highlights = metadata.get(tokenToKey(token));
-  if (!highlights) {
-    throw new Error('Could not find highlights for cuboid.');
-  }
-  const transpiledLineIndices = highlights.map((h) => h.line);
-  const color = COLOR_SECONDARY;
-
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
   const hoveredCuboids = useSelector((state) => state.editorSlice.hoveredCuboids);
-
   const [hovered, setHovered] = useState(false);
+
+  const color = COLOR_SECONDARY;
+  if (!highlights) {
+    // This happens if a cuboid is in a function that hasn't been called.
+    return <span style={{ color }}>{children}</span>;
+  }
+  const transpiledLineIndices = highlights.map((h) => h.line);
   const onHover = (newHoveredValue) => {
     if (transpiledLineIndices !== undefined) {
       const selection = {};

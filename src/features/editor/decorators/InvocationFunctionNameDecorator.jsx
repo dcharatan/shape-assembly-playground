@@ -9,10 +9,15 @@ const InvocationFunctionNameDecorator = ({ children, token }) => {
   const { metadata } = useContext(NonSerializableContext);
   const [hovered, setHovered] = useState(false);
   const dispatch = useDispatch();
+  const color = '#6c757d';
 
   // Define some helper functions.
   const tokenToKey = (t) => `${t.start}/${t.end}`;
   const highlights = metadata.get(tokenToKey(token));
+  if (!highlights) {
+    // This happens if the function containing this invocation hasn't been called.
+    return <span style={{ color }}>{children}</span>;
+  }
 
   const onHover = (newHoveredValue) => {
     const selection = {};
@@ -28,7 +33,6 @@ const InvocationFunctionNameDecorator = ({ children, token }) => {
     }
   };
 
-  const color = '#6c757d';
   return (
     <HighlightDecorator highlightColor={color} highlighted={hovered} color={color} onHover={onHover}>
       {children}
