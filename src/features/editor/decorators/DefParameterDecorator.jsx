@@ -1,20 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import HoverableCuboidDecorator from './HoverableCuboidDecorator';
-
-import NonSerializableContext from '../../context/NonSerializableContext';
-import { tokenPropType, tokenToKey } from '../tokenUtilities';
+import { tokenPropType } from '../tokenUtilities';
 
 const DefParameterDecorator = ({ children, argumentType, token }) => {
-  const { metadata } = useContext(NonSerializableContext);
   if (argumentType.name === 'block') {
-    // Get the originals' transpiled line indices.
-    const highlights = metadata.get(tokenToKey(token));
-    return (
-      <HoverableCuboidDecorator transpiledLineIndices={highlights.map((h) => h.line)} color="#28a745">
-        {children}
-      </HoverableCuboidDecorator>
-    );
+    return <HoverableCuboidDecorator token={token}>{children}</HoverableCuboidDecorator>;
   }
   return <span style={{ color: '#28a745' }}>{children}</span>;
 };

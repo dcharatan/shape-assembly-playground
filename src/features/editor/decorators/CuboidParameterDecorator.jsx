@@ -1,59 +1,15 @@
-import React, { useState, useContext } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import PropTypes from 'prop-types';
-import NonSerializableContext from '../../context/NonSerializableContext';
-import { setTranspiledLinesHovered, setTranspiledLinesNotHovered } from '../editorSlice';
 import HoverableCuboidDecorator from './HoverableCuboidDecorator';
-import { COLOR_SECONDARY } from '../../../colors';
+import { tokenPropType } from '../tokenUtilities';
 
-const CuboidParameterDecorator = ({ children, token }) => {
-  const { metadata } = useContext(NonSerializableContext);
-  const [hovered, setHovered] = useState(false);
-  const dispatch = useDispatch();
-  const tokenToKey = (t) => `${t.start}/${t.end}`;
-
-  // Get the originals' transpiled line indices.
-  const highlights = metadata.get(tokenToKey(token));
-  if (!highlights) {
-    console.error(token);
-    return children;
-  }
-
-  const onHover = (newHoveredValue) => {
-    // Mark them as selected.
-    const selection = {};
-    highlights.forEach(({ line, variant }) => {
-      selection[line] = variant;
-    });
-
-    setHovered(newHoveredValue);
-    if (newHoveredValue) {
-      dispatch(setTranspiledLinesHovered(selection));
-    } else {
-      dispatch(setTranspiledLinesNotHovered(Object.keys(selection)));
-    }
-  };
-
-  return (
-    <HoverableCuboidDecorator
-      hovered={hovered}
-      onHover={onHover}
-      transpiledLineIndices={highlights.map((h) => h.line)}
-      color={COLOR_SECONDARY}
-    >
-      {children}
-    </HoverableCuboidDecorator>
-  );
-};
+const CuboidParameterDecorator = ({ children, token }) => (
+  <HoverableCuboidDecorator token={token}>{children}</HoverableCuboidDecorator>
+);
 CuboidParameterDecorator.propTypes = {
   children: PropTypes.node.isRequired,
-  token: PropTypes.shape({
-    start: PropTypes.number.isRequired,
-    end: PropTypes.number.isRequired,
-  }).isRequired,
+  token: tokenPropType.isRequired,
 };
-
-CuboidParameterDecorator.defaultProps = {};
 
 export default CuboidParameterDecorator;
 
@@ -72,7 +28,7 @@ export const makeCuboidParameterDecoratorStrategy = (getAst, optimizedParameters
       optimizedParameters.map(({ oldValue, newValue }) => ({ oldValue, newValue }))
     );
   } else {
-    // Gather float parameters.
+    // Gather cuboid parameters.
     const ast = getAst();
     const highlights = [];
     ast.definitions.forEach((definition) => {

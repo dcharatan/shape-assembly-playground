@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setTranspiledLinesHovered, setTranspiledLinesNotHovered } from '../editorSlice';
-import { getColor } from '../../../colors';
+import { COLOR_SECONDARY, getColor } from '../../../colors';
 import HighlightDecorator from './HighlightDecorator';
+import NonSerializableContext from '../../context/NonSerializableContext';
+import { tokenPropType, tokenToKey } from '../tokenUtilities';
 
-const HoverableCuboidDecorator = ({ children, transpiledLineIndices, color }) => {
+const HoverableCuboidDecorator = ({ children, token }) => {
   const dispatch = useDispatch();
+
+  // Get this cuboid's transpiled lines.
+  const { metadata } = useContext(NonSerializableContext);
+  const highlights = metadata.get(tokenToKey(token));
+  if (!highlights) {
+    throw new Error('Could not find highlights for cuboid.');
+  }
+  const transpiledLineIndices = highlights.map((h) => h.line);
+  const color = COLOR_SECONDARY;
+
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
   const hoveredCuboids = useSelector((state) => state.editorSlice.hoveredCuboids);
 
@@ -44,13 +56,7 @@ const HoverableCuboidDecorator = ({ children, transpiledLineIndices, color }) =>
 
 HoverableCuboidDecorator.propTypes = {
   children: PropTypes.node.isRequired,
-  transpiledLineIndices: PropTypes.arrayOf(PropTypes.number.isRequired),
-  color: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.number.isRequired]),
-};
-
-HoverableCuboidDecorator.defaultProps = {
-  transpiledLineIndices: [],
-  color: 'black',
+  token: tokenPropType.isRequired,
 };
 
 export default HoverableCuboidDecorator;
