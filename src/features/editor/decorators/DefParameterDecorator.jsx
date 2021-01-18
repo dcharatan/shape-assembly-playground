@@ -7,7 +7,7 @@ const DefParameterDecorator = ({ children, argumentType, token }) => {
   if (argumentType.name === 'block') {
     return <HoverableCuboidDecorator token={token}>{children}</HoverableCuboidDecorator>;
   }
-  return <span style={{ color: '#28a745' }}>{children}</span>;
+  return children;
 };
 
 DefParameterDecorator.propTypes = {

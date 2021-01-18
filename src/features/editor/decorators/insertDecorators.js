@@ -2,7 +2,7 @@ import { EditorState } from 'draft-js';
 import DefDecorator, { makeDefDecoratorStrategy } from './DefDecorator';
 import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './DefParameterDecorator';
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './ErrorDecorator';
-import AssignmentDecorator, { makeAssignmentDecoratorStrategy } from './AssignmentDecorator';
+import makeAssignmentDecoratorStrategy from './makeAssignmentDecoratorStrategy';
 import ProppableCompositeDraftDecorator from './ProppableCompositeDraftDecorator';
 import NumberParameterDecorator, { makeNumberParameterDecoratorStrategy } from './NumberParameterDecorator';
 import ReturnDecorator, { makeReturnDecoratorStrategy } from './ReturnDecorator';
@@ -10,7 +10,7 @@ import { getContentBlockOffset } from '../draftUtilities';
 import InvocationFunctionNameDecorator, {
   makeInvocationFunctionNameDecorator,
 } from './InvocationFunctionNameDecorator';
-import CuboidParameterDecorator, { makeCuboidParameterDecoratorStrategy } from './CuboidParameterDecorator';
+import makeCuboidParameterDecoratorStrategy from './makeCuboidParameterDecoratorStrategy';
 import makeReturnValueDecoratorStrategy from './makeReturnValueDecorator';
 import HoverableCuboidDecorator from './HoverableCuboidDecorator';
 
@@ -44,16 +44,16 @@ const insertDecorators = (editorState, ast, optimizedParameters, metadata) =>
         component: ErrorDecorator,
       },
       {
-        strategy: makeAssignmentDecoratorStrategy(() => ast, metadata, applyStrategy),
-        component: AssignmentDecorator,
+        strategy: makeAssignmentDecoratorStrategy(() => ast, applyStrategy),
+        component: HoverableCuboidDecorator,
       },
       {
         strategy: makeNumberParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
         component: NumberParameterDecorator,
       },
       {
-        strategy: makeCuboidParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
-        component: CuboidParameterDecorator,
+        strategy: makeCuboidParameterDecoratorStrategy(() => ast, applyStrategy),
+        component: HoverableCuboidDecorator,
       },
       {
         strategy: makeReturnDecoratorStrategy(() => ast, applyStrategy),
