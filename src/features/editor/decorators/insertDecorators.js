@@ -11,6 +11,8 @@ import InvocationFunctionNameDecorator, {
   makeInvocationFunctionNameDecorator,
 } from './InvocationFunctionNameDecorator';
 import CuboidParameterDecorator, { makeCuboidParameterDecoratorStrategy } from './CuboidParameterDecorator';
+import makeReturnValueDecoratorStrategy from './makeReturnValueDecorator';
+import HoverableCuboidDecorator from './HoverableCuboidDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -56,6 +58,10 @@ const insertDecorators = (editorState, ast, optimizedParameters, metadata) =>
       {
         strategy: makeReturnDecoratorStrategy(() => ast, applyStrategy),
         component: ReturnDecorator,
+      },
+      {
+        strategy: makeReturnValueDecoratorStrategy(() => ast, applyStrategy),
+        component: HoverableCuboidDecorator,
       },
       {
         strategy: makeInvocationFunctionNameDecorator(() => ast, applyStrategy),
