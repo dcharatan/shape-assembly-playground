@@ -4,7 +4,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import NonSerializableContext from '../context/NonSerializableContext';
-import editingTasks from './editingTasks';
+import { getEditingTasks } from './getEditingTask';
 
 const CompleteTaskButton = () => {
   const [show, setShow] = useState(false);
@@ -12,6 +12,9 @@ const CompleteTaskButton = () => {
   const history = useHistory();
   const taskIndex = useSelector((state) => state.editingTaskSlice.currentTaskIndex);
   const { startEditingTask, saveEditingTask } = useContext(NonSerializableContext);
+  const studyCondition = useSelector((state) => state.editingTaskSlice.studyCondition);
+  const editingTasks = studyCondition === undefined ? [] : getEditingTasks(studyCondition);
+
   return (
     <>
       <Button variant="outline-success" className="m-1" size="sm" onClick={() => setShow(true)}>

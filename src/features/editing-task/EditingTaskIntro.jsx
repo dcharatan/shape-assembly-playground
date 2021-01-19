@@ -1,19 +1,16 @@
 import React, { useState, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Modal, Form } from 'react-bootstrap';
-import { setUsername } from './editingTaskSlice';
+import { useSelector } from 'react-redux';
+import { Button, Modal, Form, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import NonSerializableContext from '../context/NonSerializableContext';
 
 const EditingTaskIntro = () => {
   const username = useSelector((state) => state.editingTaskSlice.username);
   const show = username === undefined;
   const [name, setName] = useState('');
-  const dispatch = useDispatch();
-  const { startEditingTask } = useContext(NonSerializableContext);
+  const [studyCondition, setStudyCondition] = useState(1);
+  const { startEditingTaskSeries } = useContext(NonSerializableContext);
   const onSubmit = () => {
-    // Set the username (this makes the modal disappear) and start the editing task.
-    dispatch(setUsername(name));
-    startEditingTask(0);
+    startEditingTaskSeries(name, studyCondition);
   };
   return (
     <Modal show={show}>
@@ -37,9 +34,24 @@ const EditingTaskIntro = () => {
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" disabled={name === ''} onClick={onSubmit}>
-          Start Task
-        </Button>
+        <div className="w-100 d-flex flex-row justify-content-between">
+          <ToggleButtonGroup
+            type="radio"
+            name="studyCondition"
+            value={studyCondition}
+            onChange={(x) => setStudyCondition(x)}
+          >
+            <ToggleButton variant="secondary" value={1}>
+              Condition A
+            </ToggleButton>
+            <ToggleButton variant="secondary" value={2}>
+              Condition B
+            </ToggleButton>
+          </ToggleButtonGroup>
+          <Button variant="primary" disabled={name === ''} onClick={onSubmit}>
+            Start Task
+          </Button>
+        </div>
       </Modal.Footer>
     </Modal>
   );

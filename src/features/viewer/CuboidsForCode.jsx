@@ -4,7 +4,7 @@ import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parse
 import { fetchExecute } from '../executor/executorSlice';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import GroupWithMatrix from './GroupWithMatrix';
-import { PREFIX } from '../editing-task/editingTasks';
+import { PREFIX } from '../editing-task/editingTasks.gen';
 
 const CuboidsForCode = ({ code, ...props }) => {
   // Call the executor to get the code's result.
@@ -14,6 +14,9 @@ const CuboidsForCode = ({ code, ...props }) => {
       // Transpile the code.
       const ast = new ShapeAssemblyParser().parseShapeAssemblyProgram(code, PREFIX);
       const transpiled = new Transpiler().transpile(ast);
+      if (!transpiled) {
+        return;
+      }
 
       // Call the executor.
       const result = await fetchExecute(transpiled.text);

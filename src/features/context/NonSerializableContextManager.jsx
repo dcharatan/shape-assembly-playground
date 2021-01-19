@@ -7,9 +7,10 @@ import { endCuboidEditing, execute, updateWithTranspilation } from '../executor/
 import insertDecorators from '../editor/decorators/insertDecorators';
 import { resetOptimizedParameters } from '../editor/editorSlice';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
-import editingTasks, { PREFIX } from '../editing-task/editingTasks';
-import { setTargetCode } from '../editing-task/editingTaskSlice';
+import { PREFIX } from '../editing-task/editingTasks.gen';
+import { setTargetCode, setUsernameAndStudyCondition } from '../editing-task/editingTaskSlice';
 import { getBaseUrl } from '../../environment';
+import { getEditingTask } from '../editing-task/getEditingTask';
 
 const INITIAL_TEXT = `@root_assembly
 def root_asm():
@@ -165,19 +166,30 @@ const NonSerializableContextManager = ({ children }) => {
       alert('Failed to save this editing task.');
     }
   };
-  const startEditingTask = (index) => {
+  const studyCondition = useSelector(state => state.editingTaskSlice.studyCondition);
+  const startEditingTask = (index, studyConditionOverride) => {
     resetHistory();
 
-    // Log the initial state.
-    pushAction(editingTasks[index].initial);
+    const studyConditionAdjusted = studyConditionOverride ?? studyCondition;
+    if (studyConditionAdjusted === undefined) {
+      throw new Error("Study condition was undefined.");
+    }
+    const editingTask = getEditingTask(studyConditionAdjusted, index);
 
-    update(editorStateFromText(editingTasks[index].initial), true);
+    // Log the initial state.
+    pushAction(editingTask.initial);
+
+    update(editorStateFromText(editingTask.initial), true);
     dispatch(
       setTargetCode({
-        targetCode: editingTasks[index].target,
+        targetCode: editingTask.target,
         taskIndex: index,
       })
     );
+  };
+  const startEditingTaskSeries = (username, studyCondition) => {
+    dispatch(setUsernameAndStudyCondition({ username, studyCondition }));
+    startEditingTask(0, studyCondition);
   };
 
   return (
@@ -200,6 +212,7 @@ const NonSerializableContextManager = ({ children }) => {
         undoAvailable,
         redoAvailable,
         startEditingTask,
+        startEditingTaskSeries,
         saveEditingTask,
       }}
     >

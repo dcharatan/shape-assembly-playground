@@ -13,13 +13,21 @@ const editingTaskSlice = createSlice({
     targetCode: INITIAL_CODE,
     currentTaskIndex: 0,
     wireframeEnabled: false,
+    studyCondition: undefined,
   },
   reducers: {
     toggleWireframe(state) {
       state.wireframeEnabled = !state.wireframeEnabled;
     },
-    setUsername(state, { payload }) {
-      state.username = payload ? `${payload}_${Date.now()}` : undefined;
+    setUsernameAndStudyCondition(state, { payload }) {
+      if (payload === undefined) {
+        state.username = undefined;
+        state.studyCondition = undefined;
+      } else {
+        const { username, studyCondition } = payload;
+        state.username = `${username}_${Date.now()}`;
+        state.studyCondition = studyCondition;
+      }
     },
     setTargetCode(state, { payload }) {
       const { targetCode, taskIndex } = payload;
@@ -29,6 +37,6 @@ const editingTaskSlice = createSlice({
   },
 });
 
-export const { setUsername, setTargetCode, toggleWireframe } = editingTaskSlice.actions;
+export const { setUsernameAndStudyCondition, setTargetCode, toggleWireframe } = editingTaskSlice.actions;
 
 export default editingTaskSlice.reducer;

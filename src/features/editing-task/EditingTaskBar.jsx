@@ -3,14 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import UndoRedo from './UndoRedo';
 import CompleteTaskButton from './CompleteTaskButton';
-import editingTasks from './editingTasks';
 import { toggleWireframe } from './editingTaskSlice';
+import { getEditingTasks } from './getEditingTask';
 
 const EditingTaskBar = () => {
   const dispatch = useDispatch();
   const taskIndex = useSelector((state) => state.editingTaskSlice.currentTaskIndex);
   const wireframeEnabled = useSelector((state) => state.editingTaskSlice.wireframeEnabled);
   const text = `${wireframeEnabled ? 'Hide' : 'Show'} Target (Wireframe)`;
+  const studyCondition = useSelector((state) => state.editingTaskSlice.studyCondition);
+  const editingTasks = studyCondition === undefined ? [] : getEditingTasks(studyCondition);
+
   return (
     <div className="w-100 rounded border mb-2 p-2 d-flex flex-row justify-content-between align-items-center">
       <div className="p-2 text-secondary">
