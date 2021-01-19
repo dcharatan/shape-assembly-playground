@@ -13,6 +13,7 @@ import InvocationFunctionNameDecorator, {
 import makeCuboidParameterDecoratorStrategy from './makeCuboidParameterDecoratorStrategy';
 import makeReturnValueDecoratorStrategy from './makeReturnValueDecorator';
 import HoverableCuboidDecorator from './HoverableCuboidDecorator';
+import HiddenDecorator, { makeHiddenDecoratorStrategy } from './HiddenDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -31,6 +32,10 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
 const insertDecorators = (editorState, ast, optimizedParameters, metadata) =>
   EditorState.set(editorState, {
     decorator: new ProppableCompositeDraftDecorator([
+      {
+        strategy: makeHiddenDecoratorStrategy(() => ast, applyStrategy),
+        component: HiddenDecorator,
+      },
       {
         strategy: makeDefDecoratorStrategy(() => ast, applyStrategy),
         component: DefDecorator,

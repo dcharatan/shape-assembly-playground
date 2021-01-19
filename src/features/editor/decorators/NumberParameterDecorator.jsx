@@ -74,7 +74,7 @@ const NumberParameterDecorator = ({
     };
 
     let min = initialValue - range;
-    let max = initialValue + range;
+    let max = Math.max(initialValue + range, 0.15);
     if (functionName === 'attach') {
       min = 0;
       max = 1;
