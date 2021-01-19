@@ -15,6 +15,7 @@ export const registerCamera = (camera) => {
         const r = e.target.object.rotation;
         c.object.rotation.set(r.x, r.y, r.z);
         c.object.zoom = e.target.object.zoom;
+        c.target = e.target.target;
         c.object.updateProjectionMatrix();
       }
     });

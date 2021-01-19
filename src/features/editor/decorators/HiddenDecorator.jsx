@@ -12,7 +12,6 @@ export const makeHiddenDecoratorStrategy = (getAst, applyStrategy) => (contentBl
       if (!definition.isFromPrefix) {
         definition.invocations.forEach((invocation) => {
           const hiddenParameterCount = getHiddenParameterCount(invocation, ast.definitions);
-          console.log(invocation);
           const { start } = invocation.argumentExpressions[0].token;
           const end = invocation.argumentExpressions[hiddenParameterCount].token.start;
           highlights.push({ start, end });
