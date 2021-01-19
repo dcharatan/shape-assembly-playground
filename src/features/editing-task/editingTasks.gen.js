@@ -143,7 +143,7 @@ const baselineInitialTask0 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.75, 1.55, 0.72, True)
     sub_bbox_1 = Cuboid(0.74, 0.74, 0.57, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.6)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.6)
     cuboid_1 = Cuboid(0.75, 0.1, 0.72, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.02, 0.6, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.75, 0.72, 0.26, True)
@@ -164,7 +164,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.75, 0.23, 0.26, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.09, 0.48, 0.11, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.7)
     translate(cuboid_1, X, 4, 0.82)
@@ -183,7 +183,7 @@ const baselineTargetTask0 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.69, 1.61, 0.69, True)
     sub_bbox_1 = Cuboid(0.64, 1.12, 0.53, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.51, 0.0, 0.42)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.51, 1.0, 0.42)
     cuboid_1 = Cuboid(0.69, 0.07, 0.69, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.11, 0.42, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.69, 0.42, 0.07, True)
@@ -204,7 +204,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.69, 0.07, 0.06, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.07, 0.35, 0.06, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.5)
     translate(cuboid_1, X, 6, 0.81)
@@ -265,7 +265,7 @@ const baselineInitialTask1 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.71, 1.01, True)
     sub_bbox_1 = Cuboid(0.79, 0.58, 1.01, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.79, 0.28, 1.01, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.01, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.79, 0.85, 0.22, True)
@@ -289,7 +289,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.16, 0.11, 0.76, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.16, 0.24, 0.16, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.9)
 
@@ -299,7 +299,7 @@ const baselineTargetTask1 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.06, 1.37, 1.07, True)
     sub_bbox_1 = Cuboid(1.05, 0.39, 1.07, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(1.06, 0.34, 1.07, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(1.06, 0.64, 0.31, True)
@@ -323,7 +323,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.13, 0.1, 0.74, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.11, 0.17, 0.11, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.42, 0.89)
 
@@ -377,7 +377,7 @@ const baselineInitialTask2 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.05, 1.64, 1.06, True)
     sub_bbox_1 = Cuboid(1.05, 0.89, 0.44, True)
-    attach(sub_bbox_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.21)
+    attach(sub_bbox_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.21)
     cuboid_1 = Cuboid(0.98, 0.19, 1.06, True)
     attach(cuboid_1, sub_bbox_1, 0.51, 1.0, 0.21, 0.5, 0.0, 0.5)
     sub_bbox_2 = Cuboid(0.97, 0.56, 0.76, True)
@@ -388,7 +388,7 @@ def make_root_assembly():
 @child_assembly
 def make_subassembly_1(bbox):
     cuboid_0 = Cuboid(1.05, 0.12, 0.44, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.1, 0.77, 0.1, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.62)
     cuboid_2 = Cuboid(0.1, 0.77, 0.1, True)
@@ -410,7 +410,7 @@ const baselineTargetTask2 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.67, 1.72, 0.59, True)
     sub_bbox_1 = Cuboid(0.67, 1.04, 0.26, True)
-    attach(sub_bbox_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.22)
+    attach(sub_bbox_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.22)
     cuboid_1 = Cuboid(0.63, 0.12, 0.57, True)
     attach(cuboid_1, sub_bbox_1, 0.51, 0.98, 0.19, 0.5, 0.0, 0.5)
     sub_bbox_2 = Cuboid(0.62, 0.56, 0.42, True)
@@ -421,7 +421,7 @@ def make_root_assembly():
 @child_assembly
 def make_subassembly_1(bbox):
     cuboid_0 = Cuboid(0.67, 0.37, 0.26, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.06, 0.68, 0.06, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.65)
     cuboid_2 = Cuboid(0.06, 0.68, 0.06, True)
@@ -505,14 +505,14 @@ const baselineInitialTask3 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.14, 1.39, 1.28, True)
     sub_bbox_1 = Cuboid(1.11, 0.23, 1.1, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.51)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.51)
     sub_bbox_2 = Cuboid(1.14, 0.51, 1.12, True)
     attach(sub_bbox_2, sub_bbox_1, 0.5, 0.04, 0.45, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.13, 0.74, 1.21, True)
     attach(cuboid_2, sub_bbox_2, 1.0, 0.5, 0.5, 0.12, 0.95, 0.46)
     reflect(cuboid_2, X)
     cuboid_3 = Cuboid(0.88, 0.99, 0.42, False)
-    attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.16)
+    attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.16)
     attach(cuboid_3, cuboid_2, 0.0, 0.5, 0.5, 0.94, 0.71, 0.19)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
@@ -520,17 +520,17 @@ def make_root_assembly():
 @child_assembly
 def make_subassembly_1(bbox):
     cuboid_0 = Cuboid(0.09, 0.2, 0.14, False)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.03, 0.04, 1.0, 0.05)
-    attach(cuboid_0, bbox, 0.49, 0.0, 0.96, 0.04, 0.0, 0.12)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.03, 0.04, 0.0, 0.05)
+    attach(cuboid_0, bbox, 0.49, 0.0, 0.96, 0.04, 1.0, 0.12)
     reflect(cuboid_0, X)
     cuboid_1 = Cuboid(0.09, 0.15, 0.15, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.04, 0.99, 0.93)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.04, 0.01, 0.93)
     reflect(cuboid_1, X)
 
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(1.14, 0.12, 1.08, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.48)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.48)
     cuboid_1 = Cuboid(0.88, 0.39, 0.86, True)
     squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.63)
 
@@ -540,14 +540,14 @@ const baselineTargetTask3 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.4, 1.28, 1.16, True)
     sub_bbox_1 = Cuboid(1.37, 0.21, 1.01, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.51)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.51)
     sub_bbox_2 = Cuboid(1.4, 0.47, 1.02, True)
     attach(sub_bbox_2, sub_bbox_1, 0.5, 0.04, 0.46, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.12, 0.71, 1.09, True)
     attach(cuboid_2, sub_bbox_2, 0.01, 0.19, 0.53, 0.0, 0.5, 0.5)
     reflect(cuboid_2, X)
     cuboid_3 = Cuboid(1.16, 0.91, 0.38, False)
-    attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.16)
+    attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.16)
     attach(cuboid_3, cuboid_2, 0.0, 0.5, 0.5, 1.0, 0.7, 0.18)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
@@ -555,17 +555,17 @@ def make_root_assembly():
 @child_assembly
 def make_subassembly_1(bbox):
     cuboid_0 = Cuboid(0.08, 0.18, 0.13, False)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.02, 0.03, 1.0, 0.05)
-    attach(cuboid_0, bbox, 0.49, 0.0, 0.97, 0.03, 0.0, 0.12)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.02, 0.03, 0.0, 0.05)
+    attach(cuboid_0, bbox, 0.49, 0.0, 0.97, 0.03, 1.0, 0.12)
     reflect(cuboid_0, X)
     cuboid_1 = Cuboid(0.08, 0.14, 0.14, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.03, 0.99, 0.93)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.03, 0.01, 0.93)
     reflect(cuboid_1, X)
 
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(1.4, 0.11, 0.99, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.48)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.48)
     cuboid_1 = Cuboid(1.16, 0.36, 0.8, True)
     squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.62)
 
@@ -621,7 +621,7 @@ const baselineInitialTask4 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.75, 0.36, True)
     sub_bbox_1 = Cuboid(0.78, 0.67, 0.35, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.48)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.48)
     cuboid_1 = Cuboid(0.79, 0.14, 0.36, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.04, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.79, 0.95, 0.08, True)
@@ -645,9 +645,9 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.13, 0.13, 0.27, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.48)
     cuboid_1 = Cuboid(0.15, 0.2, 0.07, False)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.85)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.85)
     attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.53, 0.31, 0.88)
 
 `;
@@ -656,7 +656,7 @@ const baselineTargetTask4 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.86, 1.71, 0.89, True)
     sub_bbox_1 = Cuboid(0.86, 0.43, 0.86, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.48)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.48)
     cuboid_1 = Cuboid(0.86, 0.14, 0.89, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.02, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.86, 1.14, 0.11, True)
@@ -680,9 +680,9 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.1, 0.12, 0.73, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.47)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.47)
     cuboid_1 = Cuboid(0.11, 0.33, 0.12, False)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.92)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.92)
     attach(cuboid_1, cuboid_0, 0.44, 0.93, 0.85, 0.5, 0.5, 1.0)
 
 `;
@@ -737,7 +737,7 @@ const baselineInitialTask5 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.4, 1.21, True)
     sub_bbox_1 = Cuboid(0.85, 0.62, 0.85, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.52, 0.0, 0.57)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.52, 1.0, 0.57)
     cuboid_1 = Cuboid(1.03, 0.15, 1.21, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.02, 0.57, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(1.03, 0.64, 0.38, True)
@@ -757,7 +757,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(1.03, 0.17, 0.38, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.08, 0.46, 0.08, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.76)
     reflect(cuboid_1, X)
@@ -771,7 +771,7 @@ const baselineTargetTask5 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.74, 1.73, 0.93, True)
     sub_bbox_1 = Cuboid(0.67, 0.53, 0.81, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.54)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.54)
     cuboid_1 = Cuboid(0.67, 0.13, 0.93, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.54, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.74, 1.07, 0.29, True)
@@ -791,7 +791,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.74, 0.13, 0.29, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.05, 0.95, 0.05, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.11, 0.6)
     reflect(cuboid_1, X)
@@ -853,7 +853,7 @@ const baselineInitialTask6 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.69, 1.84, 0.69, True)
     sub_bbox_1 = Cuboid(0.69, 0.72, 0.69, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.69, 0.12, 0.69, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.05, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.69, 1.0, 0.08, True)
@@ -873,9 +873,9 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.68, 0.23, 0.07, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.42)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.42)
     cuboid_1 = Cuboid(0.14, 0.81, 0.08, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.1, 0.0, 0.5)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.1, 1.0, 0.5)
     attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.1, 0.17, 0.6)
     reflect(cuboid_1, X)
     cuboid_2 = Cuboid(0.41, 0.1, 0.04, True)
@@ -888,7 +888,7 @@ const baselineTargetTask6 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.71, 1.65, 0.71, True)
     sub_bbox_1 = Cuboid(0.7, 0.66, 0.7, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.71, 0.11, 0.71, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.71, 0.89, 0.06, True)
@@ -908,9 +908,9 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.7, 0.26, 0.05, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.49)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.49)
     cuboid_1 = Cuboid(0.1, 0.66, 0.05, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.07, 0.0, 0.5)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.07, 1.0, 0.5)
     attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.07, 0.11, 0.5)
     reflect(cuboid_1, X)
     cuboid_2 = Cuboid(0.51, 0.05, 0.05, True)
@@ -971,7 +971,7 @@ const baselineInitialTask7 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.6, 1.76, 0.6, True)
     sub_bbox_1 = Cuboid(0.59, 0.65, 0.59, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.6, 0.16, 0.6, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.6, 0.96, 0.1, True)
@@ -1001,7 +1001,7 @@ const baselineTargetTask7 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.89, 1.65, 0.88, True)
     sub_bbox_1 = Cuboid(0.89, 0.85, 0.88, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.89, 0.09, 0.88, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.06, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.89, 0.71, 0.11, True)
@@ -1067,14 +1067,14 @@ const baselineInitialTask8 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.16, 1.32, 1.25, True)
     sub_bbox_1 = Cuboid(1.14, 0.13, 1.02, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.57)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.57)
     cuboid_1 = Cuboid(0.2, 0.91, 0.88, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.5, 0.08, 1.0, 0.58)
     reflect(cuboid_1, X)
     cuboid_2 = Cuboid(0.82, 0.56, 0.86, True)
     attach(cuboid_2, cuboid_1, 0.0, 0.5, 0.5, 0.82, 0.33, 0.52)
     cuboid_3 = Cuboid(1.1, 1.17, 0.3, False)
-    attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.12)
+    attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.12)
     attach(cuboid_3, cuboid_1, 0.07, 0.38, 0.8, 0.5, 0.5, 0.0)
     make_subassembly_1(sub_bbox_1)
 
@@ -1093,14 +1093,14 @@ const baselineTargetTask8 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.22, 1.21, 1.44, True)
     sub_bbox_1 = Cuboid(1.22, 0.09, 1.14, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.15, 0.99, 1.35, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.5, 0.06, 0.99, 0.51)
     reflect(cuboid_1, X)
     cuboid_2 = Cuboid(0.94, 0.2, 1.18, True)
     attach(cuboid_2, cuboid_1, 0.0, 0.5, 0.5, 0.95, 0.22, 0.56)
     cuboid_3 = Cuboid(0.93, 1.01, 0.32, False)
-    attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.11)
+    attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.11)
     attach(cuboid_3, cuboid_1, 0.0, 0.5, 0.5, 0.97, 0.6, 0.11)
     make_subassembly_1(sub_bbox_1)
 
@@ -1163,7 +1163,7 @@ const baselineInitialTask9 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.87, 1.53, 1.05, True)
     sub_bbox_1 = Cuboid(0.84, 0.42, 1.01, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.51)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.51)
     cuboid_1 = Cuboid(0.87, 0.45, 1.05, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.87, 0.66, 0.29, True)
@@ -1183,7 +1183,7 @@ def make_subassembly_2(bbox):
     squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.02)
     reflect(cuboid_0, Z)
     cuboid_1 = Cuboid(0.05, 0.04, 0.93, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.05, 0.93)
 
 `;
@@ -1192,7 +1192,7 @@ const baselineTargetTask9 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.83, 1.56, 0.78, True)
     sub_bbox_1 = Cuboid(0.83, 0.7, 0.78, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.83, 0.11, 0.78, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.22, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.83, 0.77, 0.08, True)
@@ -1212,7 +1212,7 @@ def make_subassembly_2(bbox):
     squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.06)
     reflect(cuboid_0, Z)
     cuboid_1 = Cuboid(0.07, 0.08, 0.58, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.48, 0.0, 0.49)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.48, 1.0, 0.49)
     attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.46, 0.06, 0.94)
 
 `;
@@ -1263,7 +1263,7 @@ const baselineInitialTask10 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.34, 1.15, 1.19, True)
     sub_bbox_1 = Cuboid(1.13, 0.08, 0.94, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(1.34, 0.64, 1.19, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(1.15, 0.42, 0.32, True)
@@ -1283,7 +1283,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(1.15, 0.32, 0.31, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.08, 0.11, 0.08, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.5)
     reflect(cuboid_1, X)
@@ -1294,7 +1294,7 @@ const baselineTargetTask10 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.82, 1.65, 0.82, True)
     sub_bbox_1 = Cuboid(0.73, 0.71, 0.63, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.49, 0.0, 0.51)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.49, 1.0, 0.51)
     cuboid_1 = Cuboid(0.82, 0.09, 0.82, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.51, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.75, 0.85, 0.14, True)
@@ -1314,7 +1314,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.75, 0.19, 0.14, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.08, 0.65, 0.1, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.15, 0.44)
     reflect(cuboid_1, X)
@@ -1375,9 +1375,9 @@ const baselineInitialTask11 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.89, 1.64, 0.9, True)
     sub_bbox_1 = Cuboid(0.89, 0.61, 0.9, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.89, 1.0, 0.23, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.14)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.14)
     cuboid_2 = Cuboid(0.23, 0.67, 0.7, True)
     attach(cuboid_2, sub_bbox_1, 0.5, 0.0, 0.5, 0.14, 0.96, 0.61)
     attach(cuboid_2, cuboid_1, 0.5, 0.5, 0.0, 0.13, 0.28, 0.83)
@@ -1400,10 +1400,10 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.88, 0.07, 0.86, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.49)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.49)
     cuboid_1 = Cuboid(0.43, 0.15, 0.66, True)
     attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.5, 0.41, 0.64)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.63)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.63)
 
 `;
 
@@ -1411,9 +1411,9 @@ const baselineTargetTask11 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.34, 1.25, 1.31, True)
     sub_bbox_1 = Cuboid(1.1, 0.22, 1.24, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.49, 0.0, 0.48)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.49, 1.0, 0.48)
     cuboid_1 = Cuboid(1.04, 1.04, 0.17, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.06)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.06)
     cuboid_2 = Cuboid(0.23, 0.78, 1.28, True)
     attach(cuboid_2, sub_bbox_1, 0.5, 0.0, 0.5, 0.0, 0.98, 0.52)
     attach(cuboid_2, cuboid_1, 0.64, 0.66, 0.06, 0.0, 0.5, 0.5)
@@ -1436,10 +1436,10 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.97, 0.25, 1.15, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.51, 0.0, 0.49)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.51, 1.0, 0.49)
     cuboid_1 = Cuboid(0.99, 0.12, 1.14, True)
     attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.5, 0.75, 0.52)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.51)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.51)
 
 `;
 
@@ -1485,9 +1485,9 @@ const baselineInitialTask12 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.15, 1.78, 0.64, True)
     sub_bbox_1 = Cuboid(1.15, 0.64, 0.63, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.51)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.51)
     cuboid_1 = Cuboid(1.14, 1.14, 0.06, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.04)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.04)
     cuboid_2 = Cuboid(1.14, 0.07, 0.62, True)
     attach(cuboid_2, cuboid_1, 0.5, 0.5, 0.0, 0.5, 0.02, 0.4)
     attach(cuboid_2, sub_bbox_1, 0.5, 0.27, 0.49, 0.5, 1.0, 0.5)
@@ -1512,9 +1512,9 @@ const baselineTargetTask12 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.94, 1.24, 0.95, True)
     sub_bbox_1 = Cuboid(0.94, 0.59, 0.95, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.94, 0.67, 0.12, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.07)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.07)
     cuboid_2 = Cuboid(0.94, 0.2, 0.82, True)
     attach(cuboid_2, cuboid_1, 0.5, 0.5, 0.0, 0.5, 0.17, 1.0)
     attach(cuboid_2, sub_bbox_1, 0.5, 0.08, 0.42, 0.5, 1.0, 0.5)
@@ -1581,7 +1581,7 @@ const baselineInitialTask13 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.48, 1.04, True)
     sub_bbox_1 = Cuboid(1.02, 0.88, 0.24, True)
-    attach(sub_bbox_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.11)
+    attach(sub_bbox_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.11)
     cuboid_1 = Cuboid(1.02, 0.1, 1.02, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.5, 0.0, 0.5, 0.0, 0.1)
     sub_bbox_2 = Cuboid(1.03, 0.55, 1.01, True)
@@ -1592,7 +1592,7 @@ def make_root_assembly():
 @child_assembly
 def make_subassembly_1(bbox):
     cuboid_0 = Cuboid(1.02, 0.14, 0.24, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.2, 0.71, 0.19, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.49)
     translate(cuboid_1, X, 2, 0.81)
@@ -1612,7 +1612,7 @@ const baselineTargetTask13 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.58, 1.75, 0.69, True)
     sub_bbox_1 = Cuboid(0.56, 1.03, 0.24, True)
-    attach(sub_bbox_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.32)
+    attach(sub_bbox_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.32)
     cuboid_1 = Cuboid(0.56, 0.07, 0.69, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 1.0, 0.5, 0.47, 0.0, 1.0)
     sub_bbox_2 = Cuboid(0.56, 0.65, 0.49, True)
@@ -1623,7 +1623,7 @@ def make_root_assembly():
 @child_assembly
 def make_subassembly_1(bbox):
     cuboid_0 = Cuboid(0.56, 0.2, 0.24, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.04, 0.83, 0.04, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.14, 0.47)
     translate(cuboid_1, X, 3, 0.66)
@@ -1695,7 +1695,7 @@ const baselineInitialTask14 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.95, 1.63, 0.93, True)
     sub_bbox_1 = Cuboid(0.77, 0.66, 0.63, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.57)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.57)
     sub_bbox_2 = Cuboid(0.93, 0.21, 0.93, True)
     attach(sub_bbox_2, sub_bbox_1, 0.5, 0.02, 0.57, 0.5, 1.0, 0.5)
     sub_bbox_3 = Cuboid(0.95, 0.76, 0.29, True)
@@ -1716,14 +1716,14 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.93, 0.02, 0.93, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.92, 0.19, 0.92, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
 
 @child_assembly
 def make_subassembly_3(bbox):
     cuboid_0 = Cuboid(0.95, 0.45, 0.29, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.1, 0.31, 0.11, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.16, 0.51)
     translate(cuboid_1, X, 3, 0.67)
@@ -1734,7 +1734,7 @@ const baselineTargetTask14 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.6, 1.7, 0.71, True)
     sub_bbox_1 = Cuboid(0.53, 0.64, 0.61, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.54, 0.0, 0.56)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.54, 1.0, 0.56)
     sub_bbox_2 = Cuboid(0.58, 0.1, 0.71, True)
     attach(sub_bbox_2, sub_bbox_1, 0.5, 0.02, 0.56, 0.5, 1.0, 0.5)
     sub_bbox_3 = Cuboid(0.58, 0.97, 0.17, True)
@@ -1755,14 +1755,14 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.58, 0.04, 0.71, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.58, 0.07, 0.71, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
 
 @child_assembly
 def make_subassembly_3(bbox):
     cuboid_0 = Cuboid(0.58, 0.27, 0.17, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.05, 0.7, 0.05, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.12, 0.68)
     translate(cuboid_1, X, 4, 0.77)
@@ -1817,7 +1817,7 @@ const baselineInitialTask15 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.05, 1.57, 0.91, True)
     sub_bbox_1 = Cuboid(1.04, 0.4, 0.76, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.58)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.58)
     cuboid_1 = Cuboid(1.05, 0.12, 0.91, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.58, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(1.05, 1.06, 0.33, True)
@@ -1837,7 +1837,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(1.05, 0.28, 0.33, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.12, 0.78, 0.12, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.11, 0.62)
     cuboid_2 = Cuboid(0.12, 0.78, 0.12, True)
@@ -1850,7 +1850,7 @@ const baselineTargetTask15 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.71, 1.63, 0.85, True)
     sub_bbox_1 = Cuboid(0.55, 0.7, 0.64, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.52, 0.0, 0.58)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.52, 1.0, 0.58)
     cuboid_1 = Cuboid(0.68, 0.11, 0.83, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.57, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.7, 0.82, 0.29, True)
@@ -1870,7 +1870,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.7, 0.17, 0.29, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.05, 0.66, 0.05, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.19, 0.7)
     cuboid_2 = Cuboid(0.05, 0.66, 0.05, True)
@@ -1945,12 +1945,12 @@ const baselineInitialTask16 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.83, 1.6, 0.74, True)
     sub_bbox_1 = Cuboid(0.74, 1.0, 0.74, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.51, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.51, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.74, 0.18, 0.74, True)
     attach(sub_bbox_2, sub_bbox_1, 0.5, 0.04, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.83, 0.47, 0.08, True)
     attach(cuboid_2, sub_bbox_2, 0.5, 0.0, 0.5, 0.5, 0.72, 0.05)
-    attach(cuboid_2, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.05)
+    attach(cuboid_2, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.05)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
 
@@ -1967,7 +1967,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.74, 0.02, 0.74, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.74, 0.16, 0.74, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
 
@@ -1985,12 +1985,12 @@ const baselineTargetTask16 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.67, 1.67, 0.54, True)
     sub_bbox_1 = Cuboid(0.67, 1.21, 0.54, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.51)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.51)
     sub_bbox_2 = Cuboid(0.67, 0.11, 0.54, True)
     attach(sub_bbox_2, sub_bbox_1, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.67, 0.38, 0.07, True)
     attach(cuboid_2, sub_bbox_2, 0.5, 0.0, 0.5, 0.5, 0.75, 0.05)
-    attach(cuboid_2, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.06)
+    attach(cuboid_2, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.06)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
 
@@ -2007,7 +2007,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.67, 0.05, 0.54, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.67, 0.06, 0.54, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
 
@@ -2057,7 +2057,7 @@ const baselineInitialTask17 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.33, 1.57, 1.35, True)
     sub_bbox_1 = Cuboid(1.05, 0.59, 1.1, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.51, 0.0, 0.47)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.51, 1.0, 0.47)
     cuboid_1 = Cuboid(1.33, 0.14, 1.35, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.09, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(1.33, 0.84, 0.05, True)
@@ -2083,7 +2083,7 @@ const baselineTargetTask17 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.71, 1.83, 0.68, True)
     sub_bbox_1 = Cuboid(0.68, 0.67, 0.68, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.48, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.48, 1.0, 0.5)
     cuboid_1 = Cuboid(0.71, 0.22, 0.68, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.01, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.71, 0.95, 0.24, True)
@@ -2155,7 +2155,7 @@ const baselineInitialTask18 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.76, 1.6, 0.68, True)
     sub_bbox_1 = Cuboid(0.66, 0.83, 0.65, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.68, 0.13, 0.68, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.05, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.76, 0.64, 0.16, True)
@@ -2175,9 +2175,9 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.76, 0.08, 0.15, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.52)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.52)
     cuboid_1 = Cuboid(0.12, 0.58, 0.1, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.15, 0.0, 0.31)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.15, 1.0, 0.31)
     attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.15, 0.23, 0.29)
     translate(cuboid_1, X, 3, 0.69)
 
@@ -2187,7 +2187,7 @@ const baselineTargetTask18 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.88, 1.63, 0.87, True)
     sub_bbox_1 = Cuboid(0.88, 0.6, 0.82, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.87, 0.13, 0.87, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.81, 0.91, 0.08, True)
@@ -2207,9 +2207,9 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.8, 0.07, 0.07, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.43)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.43)
     cuboid_1 = Cuboid(0.23, 0.88, 0.08, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.14, 0.0, 0.5)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.14, 1.0, 0.5)
     attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.14, 0.57, 0.58)
     translate(cuboid_1, X, 2, 0.72)
 
@@ -2269,7 +2269,7 @@ const baselineInitialTask19 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.61, 1.55, 0.61, True)
     sub_bbox_1 = Cuboid(0.61, 1.08, 0.61, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.61, 0.24, 0.61, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.61, 0.24, 0.11, True)
@@ -2300,7 +2300,7 @@ const baselineTargetTask19 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.66, 1.42, 0.71, True)
     sub_bbox_1 = Cuboid(0.61, 0.79, 0.68, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.66, 0.37, 0.71, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.01, 0.5, 0.5, 1.0, 0.5)
     cuboid_2 = Cuboid(0.66, 0.26, 0.13, True)
@@ -2371,7 +2371,7 @@ const baselineInitialTask20 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.65, 1.59, 0.65, True)
     sub_bbox_1 = Cuboid(0.65, 0.75, 0.65, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.65, 0.18, 0.65, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.65, 0.67, 0.07, True)
@@ -2391,7 +2391,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.65, 0.23, 0.08, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.38, 0.44, 0.07, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.49, 0.5)
     cuboid_2 = Cuboid(0.08, 0.44, 0.07, True)
@@ -2404,7 +2404,7 @@ const baselineTargetTask20 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.69, 0.78, True)
     sub_bbox_1 = Cuboid(0.78, 0.57, 0.78, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.79, 0.21, 0.78, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.01, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.79, 0.93, 0.14, True)
@@ -2424,7 +2424,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.79, 0.39, 0.14, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.27, 0.54, 0.14, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.49, 0.5)
     cuboid_2 = Cuboid(0.07, 0.54, 0.14, True)
@@ -2481,7 +2481,7 @@ const baselineInitialTask21 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.81, 1.67, 0.89, True)
     sub_bbox_1 = Cuboid(0.8, 0.6, 0.89, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.81, 0.14, 0.89, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.81, 0.93, 0.12, True)
@@ -2501,9 +2501,9 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.8, 0.29, 0.12, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.8, 0.31, 0.11, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.48)
     cuboid_2 = Cuboid(0.11, 0.33, 0.11, True)
     squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.06, 0.49)
     translate(cuboid_2, X, 3, 0.82)
@@ -2514,7 +2514,7 @@ const baselineTargetTask21 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.8, 0.77, True)
     sub_bbox_1 = Cuboid(0.67, 0.59, 0.76, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.53, 0.0, 0.51)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.53, 1.0, 0.51)
     cuboid_1 = Cuboid(0.79, 0.24, 0.77, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.01, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.79, 0.97, 0.12, True)
@@ -2534,9 +2534,9 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.78, 0.07, 0.12, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.79, 0.28, 0.12, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.48)
     cuboid_2 = Cuboid(0.12, 0.63, 0.12, True)
     squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.08, 0.49)
     translate(cuboid_2, X, 4, 0.85)
@@ -2585,7 +2585,7 @@ const baselineInitialTask22 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.63, 1.66, 0.63, True)
     sub_bbox_1 = Cuboid(0.63, 0.61, 0.63, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.63, 0.18, 0.63, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.15, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.63, 0.91, 0.1, True)
@@ -2605,7 +2605,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.63, 0.18, 0.1, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.15, 0.72, 0.1, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.12, 0.49)
     reflect(cuboid_1, X)
@@ -2616,7 +2616,7 @@ const baselineTargetTask22 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.68, 1.47, 0.91, True)
     sub_bbox_1 = Cuboid(0.68, 0.62, 0.87, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.52)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.52)
     cuboid_1 = Cuboid(0.68, 0.19, 0.91, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.02, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.68, 0.66, 0.14, True)
@@ -2636,7 +2636,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.67, 0.62, 0.14, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.03, 0.03, 0.03, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.3, 0.53)
     reflect(cuboid_1, X)
@@ -2689,7 +2689,7 @@ const baselineInitialTask23 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.63, 0.92, True)
     sub_bbox_1 = Cuboid(0.99, 0.64, 0.81, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.48, 0.0, 0.56)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.48, 1.0, 0.56)
     cuboid_1 = Cuboid(0.99, 0.1, 0.92, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.56, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(1.03, 0.89, 0.35, True)
@@ -2709,7 +2709,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(1.03, 0.11, 0.35, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.09, 0.78, 0.09, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.15, 0.53)
     translate(cuboid_1, X, 2, 0.7)
@@ -2720,7 +2720,7 @@ const baselineTargetTask23 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.82, 1.5, 0.8, True)
     sub_bbox_1 = Cuboid(0.58, 0.57, 0.54, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.57)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.57)
     cuboid_1 = Cuboid(0.66, 0.18, 0.77, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.01, 0.55, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.82, 0.75, 0.41, True)
@@ -2740,7 +2740,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.82, 0.19, 0.41, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.09, 0.56, 0.07, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.23, 0.47)
     translate(cuboid_1, X, 4, 0.55)
@@ -2789,7 +2789,7 @@ const baselineInitialTask24 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.73, 1.38, 0.98, True)
     sub_bbox_1 = Cuboid(0.67, 0.64, 0.85, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.48, 0.0, 0.54)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.48, 1.0, 0.54)
     cuboid_1 = Cuboid(0.73, 0.08, 0.98, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.73, 0.66, 0.23, True)
@@ -2809,7 +2809,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.71, 0.12, 0.23, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.03, 0.55, 0.03, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.61)
     translate(cuboid_1, X, 9, 0.79)
@@ -2820,7 +2820,7 @@ const baselineTargetTask24 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.96, 1.65, 0.9, True)
     sub_bbox_1 = Cuboid(0.94, 0.66, 0.87, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.96, 0.13, 0.9, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.19, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.96, 0.89, 0.13, True)
@@ -2840,7 +2840,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.93, 0.57, 0.13, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5)
     cuboid_1 = Cuboid(0.23, 0.31, 0.1, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.2, 0.47)
     translate(cuboid_1, X, 2, 0.6)
@@ -2893,7 +2893,7 @@ const baselineInitialTask25 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.77, 1.65, 0.84, True)
     sub_bbox_1 = Cuboid(0.77, 0.4, 0.84, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.77, 0.3, 0.84, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.77, 0.95, 0.15, True)
@@ -2913,7 +2913,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.77, 0.16, 0.15, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     reflect(cuboid_0, Y)
     cuboid_1 = Cuboid(0.18, 0.63, 0.14, True)
     attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.12, 0.99, 0.46)
@@ -2925,7 +2925,7 @@ const baselineTargetTask25 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.75, 1.68, 0.75, True)
     sub_bbox_1 = Cuboid(0.75, 0.47, 0.75, True)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     cuboid_1 = Cuboid(0.75, 0.09, 0.75, True)
     attach(cuboid_1, sub_bbox_1, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     sub_bbox_2 = Cuboid(0.75, 1.12, 0.1, True)
@@ -2945,7 +2945,7 @@ def make_subassembly_1(bbox):
 @child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = Cuboid(0.75, 0.12, 0.1, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 1.0, 0.5)
     reflect(cuboid_0, Y)
     cuboid_1 = Cuboid(0.1, 0.9, 0.1, True)
     attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.07, 0.97, 0.5)

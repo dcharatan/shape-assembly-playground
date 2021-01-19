@@ -13,7 +13,7 @@ const CuboidsForCode = ({ code, ...props }) => {
     const doFetch = async () => {
       // Transpile the code.
       const ast = new ShapeAssemblyParser().parseShapeAssemblyProgram(code, PREFIX);
-      const transpiled = new Transpiler().transpile(ast);
+      const transpiled = new Transpiler().transpile(ast, { doBboxAttachPostprocessing: true });
       if (!transpiled) {
         return;
       }

@@ -93,7 +93,7 @@ const NonSerializableContextManager = ({ children }) => {
       setAst(mostRecentAst);
 
       // Transpile the AST.
-      const transpiled = new Transpiler().transpile(mostRecentAst);
+      const transpiled = new Transpiler().transpile(mostRecentAst, { doBboxAttachPostprocessing: true });
       mostRecentMetadata = transpiled?.metadata ?? metadata;
       if (transpiled) {
         delete transpiled.metadata;
@@ -114,7 +114,7 @@ const NonSerializableContextManager = ({ children }) => {
   // This is used to change the visible cuboids without changing the editor text.
   const updateCuboidsSilently = (editorText) => {
     const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText, PREFIX);
-    const transpiled = new Transpiler().transpile(silentAst);
+    const transpiled = new Transpiler().transpile(silentAst, { doBboxAttachPostprocessing: true });
     if (transpiled && transpiled.text) {
       dispatch(execute(transpiled.text));
     }
@@ -166,13 +166,13 @@ const NonSerializableContextManager = ({ children }) => {
       alert('Failed to save this editing task.');
     }
   };
-  const studyCondition = useSelector(state => state.editingTaskSlice.studyCondition);
+  const studyCondition = useSelector((state) => state.editingTaskSlice.studyCondition);
   const startEditingTask = (index, studyConditionOverride) => {
     resetHistory();
 
     const studyConditionAdjusted = studyConditionOverride ?? studyCondition;
     if (studyConditionAdjusted === undefined) {
-      throw new Error("Study condition was undefined.");
+      throw new Error('Study condition was undefined.');
     }
     const editingTask = getEditingTask(studyConditionAdjusted, index);
 
