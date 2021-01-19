@@ -73,17 +73,15 @@ def abstraction_18(f_bb_x, f_bb_z, i_bbox, f_var_0, f_var_1, f_var_2, f_var_3, f
     cuboid_1 = abstraction_8(i_bbox, f_var_1, f_var_2, f_var_3, cuboid_0, f_var_4, f_var_5)
     return cuboid_0, cuboid_1`;
 
-const abstractedInitialTask0 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = abstraction_13(0.74, bbox, 0.06, 0.06, 0.48, 0.05)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.05, 0.04, 0.48, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.62, 0.25, 0.76)
-
-@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.75, 0.26, bbox, 0.23, 0.09, 0.48, 0.11, 0.09, 0.7)
-    translate(cuboid_1, X, 4, 0.82)
+const abstractedInitialTask0 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.75, 1.55, 0.72, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.74, 0.74, 0.57, True, 0.5, 0.6)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1 = abstraction_9(0.75, 0.1, 0.72, sub_bbox_1, 0.02, 0.6)
+    sub_bbox_2 = Cuboid(0.75, 0.72, 0.26, True)
+    make_subassembly_2(sub_bbox_2)
+    squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.18)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -94,29 +92,29 @@ def make_subassembly_1(bbox):
     attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.93, 0.25, 0.22)
     reflect(cuboid_1, Z)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.75, 1.55, 0.72, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.74, 0.74, 0.57, True, 0.5, 0.6)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1 = abstraction_9(0.75, 0.1, 0.72, sub_bbox_1, 0.02, 0.6)
-    sub_bbox_2 = Cuboid(0.75, 0.72, 0.26, True)
-    make_subassembly_2(sub_bbox_2)
-    squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.18)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.75, 0.26, bbox, 0.23, 0.09, 0.48, 0.11, 0.09, 0.7)
+    translate(cuboid_1, X, 4, 0.82)
+
+@child_assembly
+def make_subassembly_3(bbox):
+    cuboid_0 = abstraction_13(0.74, bbox, 0.06, 0.06, 0.48, 0.05)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.05, 0.04, 0.48, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.62, 0.25, 0.76)
 
 `;
 
-const abstractedTargetTask0 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = abstraction_13(1.12, bbox, 0.09, 0.08, 0.5, 0.08)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.07, 0.08, 0.37, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.4, 0.37, 0.98)
-
-@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.69, 0.06, bbox, 0.07, 0.07, 0.35, 0.07, 0.09, 0.5)
-    translate(cuboid_1, X, 6, 0.81)
+const abstractedTargetTask0 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.69, 1.61, 0.69, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.64, 1.12, 0.53, True, 0.51, 0.42)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1 = abstraction_9(0.69, 0.07, 0.69, sub_bbox_1, 0.11, 0.42)
+    sub_bbox_2 = Cuboid(0.69, 0.42, 0.07, True)
+    make_subassembly_2(sub_bbox_2)
+    squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.09)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -127,45 +125,21 @@ def make_subassembly_1(bbox):
     attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.99, 0.37, 0.07)
     reflect(cuboid_1, Z)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.69, 1.61, 0.69, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.64, 1.12, 0.53, True, 0.51, 0.42)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1 = abstraction_9(0.69, 0.07, 0.69, sub_bbox_1, 0.11, 0.42)
-    sub_bbox_2 = Cuboid(0.69, 0.42, 0.07, True)
-    make_subassembly_2(sub_bbox_2)
-    squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.09)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.69, 0.06, bbox, 0.07, 0.07, 0.35, 0.07, 0.09, 0.5)
+    translate(cuboid_1, X, 6, 0.81)
+
+@child_assembly
+def make_subassembly_3(bbox):
+    cuboid_0 = abstraction_13(1.12, bbox, 0.09, 0.08, 0.5, 0.08)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.07, 0.08, 0.37, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.4, 0.37, 0.98)
 
 `;
 
-const baselineInitialTask0 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = Cuboid(0.06, 0.74, 0.06, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.48, 0.05)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.05, 0.04, 0.48, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.62, 0.25, 0.76)
-
-@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.75, 0.23, 0.26, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.09, 0.48, 0.11, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.7)
-    translate(cuboid_1, X, 4, 0.82)
-
-@child_assembly
-def make_subassembly_1(bbox):
-    sub_bbox_3 = Cuboid(0.07, 0.74, 0.57, True)
-    make_subassembly_3(sub_bbox_3)
-    squeeze(sub_bbox_3, bbox, bbox, bot, 0.04, 0.5)
-    reflect(sub_bbox_3, X)
-    cuboid_1 = Cuboid(0.61, 0.04, 0.05, True)
-    attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.93, 0.25, 0.22)
-    reflect(cuboid_1, Z)
-
-@root_assembly
+const baselineInitialTask0 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.75, 1.55, 0.72, True)
     sub_bbox_1 = Cuboid(0.74, 0.74, 0.57, True)
@@ -177,35 +151,35 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.18)
 
-`;
-
-const baselineTargetTask0 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = Cuboid(0.09, 1.12, 0.08, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.08)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.07, 0.08, 0.37, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.4, 0.37, 0.98)
+@child_assembly
+def make_subassembly_1(bbox):
+    sub_bbox_3 = Cuboid(0.07, 0.74, 0.57, True)
+    make_subassembly_3(sub_bbox_3)
+    squeeze(sub_bbox_3, bbox, bbox, bot, 0.04, 0.5)
+    reflect(sub_bbox_3, X)
+    cuboid_1 = Cuboid(0.61, 0.04, 0.05, True)
+    attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.93, 0.25, 0.22)
+    reflect(cuboid_1, Z)
 
 @child_assembly
 def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.69, 0.07, 0.06, True)
+    cuboid_0 = Cuboid(0.75, 0.23, 0.26, True)
     attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.07, 0.35, 0.06, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.5)
-    translate(cuboid_1, X, 6, 0.81)
+    cuboid_1 = Cuboid(0.09, 0.48, 0.11, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.7)
+    translate(cuboid_1, X, 4, 0.82)
 
 @child_assembly
-def make_subassembly_1(bbox):
-    sub_bbox_3 = Cuboid(0.09, 1.12, 0.53, True)
-    make_subassembly_3(sub_bbox_3)
-    squeeze(sub_bbox_3, bbox, bbox, bot, 0.07, 0.5)
-    reflect(sub_bbox_3, X)
-    cuboid_1 = Cuboid(0.45, 0.08, 0.07, True)
-    attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.99, 0.37, 0.07)
-    reflect(cuboid_1, Z)
+def make_subassembly_3(bbox):
+    cuboid_0 = Cuboid(0.06, 0.74, 0.06, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.48, 0.05)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.05, 0.04, 0.48, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.62, 0.25, 0.76)
 
-@root_assembly
+`;
+
+const baselineTargetTask0 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.69, 1.61, 0.69, True)
     sub_bbox_1 = Cuboid(0.64, 1.12, 0.53, True)
@@ -217,17 +191,35 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.09)
 
-`;
-
-const abstractedInitialTask1 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.16, 0.76, bbox, 0.11, 0.16, 0.24, 0.16, 0.5, 0.9)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.58, bbox, 0.21, True, 0.11)
+    sub_bbox_3 = Cuboid(0.09, 1.12, 0.53, True)
+    make_subassembly_3(sub_bbox_3)
+    squeeze(sub_bbox_3, bbox, bbox, bot, 0.07, 0.5)
+    reflect(sub_bbox_3, X)
+    cuboid_1 = Cuboid(0.45, 0.08, 0.07, True)
+    attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.99, 0.37, 0.07)
+    reflect(cuboid_1, Z)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.69, 0.07, 0.06, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.07, 0.35, 0.06, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.5)
+    translate(cuboid_1, X, 6, 0.81)
+
+@child_assembly
+def make_subassembly_3(bbox):
+    cuboid_0 = Cuboid(0.09, 1.12, 0.08, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.08)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.07, 0.08, 0.37, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.4, 0.37, 0.98)
+
+`;
+
+const abstractedInitialTask1 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.71, 1.01, True)
     sub_bbox_1 = abstraction_14(bbox, 0.79, 0.58, 1.01, True, 0.5, 0.5)
@@ -238,17 +230,17 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.5, 0.5, 0.0, 0.12, 0.2, 0.99)
     reflect(sub_bbox_2, X)
 
-`;
-
-const abstractedTargetTask1 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.13, 0.74, bbox, 0.1, 0.11, 0.17, 0.11, 0.42, 0.89)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.39, bbox, 0.22, True, 0.1)
+    cuboid_0, cuboid_1 = abstraction_12(0.58, bbox, 0.21, True, 0.11)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.16, 0.76, bbox, 0.11, 0.16, 0.24, 0.16, 0.5, 0.9)
+
+`;
+
+const abstractedTargetTask1 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.06, 1.37, 1.07, True)
     sub_bbox_1 = abstraction_14(bbox, 1.05, 0.39, 1.07, True, 0.5, 0.5)
@@ -259,25 +251,17 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.5, 0.5, 0.0, 0.06, 0.22, 1.0)
     reflect(sub_bbox_2, X)
 
-`;
-
-const baselineInitialTask1 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.16, 0.11, 0.76, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.16, 0.24, 0.16, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.9)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.21, 0.58, 0.21, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.126, 0.11)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1995, 0.58, 0.1995, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.1197, 0.89)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.39, bbox, 0.22, True, 0.1)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.13, 0.74, bbox, 0.1, 0.11, 0.17, 0.11, 0.42, 0.89)
+
+`;
+
+const baselineInitialTask1 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.71, 1.01, True)
     sub_bbox_1 = Cuboid(0.79, 0.58, 1.01, True)
@@ -293,25 +277,25 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.5, 0.5, 0.0, 0.12, 0.2, 0.99)
     reflect(sub_bbox_2, X)
 
-`;
-
-const baselineTargetTask1 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.13, 0.1, 0.74, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.11, 0.17, 0.11, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.42, 0.89)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.22, 0.39, 0.22, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.132, 0.1)
+    cuboid_0 = Cuboid(0.21, 0.58, 0.21, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.126, 0.11)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.209, 0.39, 0.209, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.1254, 0.9)
+    cuboid_1 = Cuboid(0.1995, 0.58, 0.1995, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.1197, 0.89)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.16, 0.11, 0.76, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.16, 0.24, 0.16, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.9)
+
+`;
+
+const baselineTargetTask1 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.06, 1.37, 1.07, True)
     sub_bbox_1 = Cuboid(1.05, 0.39, 1.07, True)
@@ -327,19 +311,25 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.5, 0.5, 0.0, 0.06, 0.22, 1.0)
     reflect(sub_bbox_2, X)
 
-`;
-
-const abstractedInitialTask2 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.56, bbox, 0.17, True, 0.12)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(1.05, 0.44, bbox, 0.12, 0.1, 0.77, 0.1, 0.1, 0.62)
-    cuboid_2 = abstraction_8(bbox, 0.1, 0.77, 0.1, cuboid_0, 0.25, 0.47)
-    translate(cuboid_2, X, 3, 0.63)
+    cuboid_0 = Cuboid(0.22, 0.39, 0.22, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.132, 0.1)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.209, 0.39, 0.209, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.1254, 0.9)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.13, 0.1, 0.74, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.11, 0.17, 0.11, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.42, 0.89)
+
+`;
+
+const abstractedInitialTask2 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.05, 1.64, 1.06, True)
     sub_bbox_1 = abstraction_15(bbox, 1.05, 0.89, 0.44, True, 0.21)
@@ -349,19 +339,19 @@ def make_root_assembly():
     sub_bbox_2 = abstraction_8(bbox, 0.97, 0.56, 0.76, cuboid_1, 0.49, 0.64)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const abstractedTargetTask2 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.56, bbox, 0.07, True, 0.08)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.67, 0.26, bbox, 0.37, 0.06, 0.68, 0.06, 0.1, 0.65)
-    cuboid_2 = abstraction_8(bbox, 0.06, 0.68, 0.06, cuboid_0, 0.22, 0.49)
-    translate(cuboid_2, X, 5, 0.67)
+    cuboid_0, cuboid_1 = abstraction_18(1.05, 0.44, bbox, 0.12, 0.1, 0.77, 0.1, 0.1, 0.62)
+    cuboid_2 = abstraction_8(bbox, 0.1, 0.77, 0.1, cuboid_0, 0.25, 0.47)
+    translate(cuboid_2, X, 3, 0.63)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.56, bbox, 0.17, True, 0.12)
+
+`;
+
+const abstractedTargetTask2 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.67, 1.72, 0.59, True)
     sub_bbox_1 = abstraction_15(bbox, 0.67, 1.04, 0.26, True, 0.22)
@@ -371,28 +361,19 @@ def make_root_assembly():
     sub_bbox_2 = abstraction_8(bbox, 0.62, 0.56, 0.42, cuboid_1, 0.49, 0.63)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const baselineInitialTask2 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.17, 0.56, 0.17, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.102, 0.12)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1615, 0.56, 0.1615, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0969, 0.88)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(1.05, 0.12, 0.44, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.1, 0.77, 0.1, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.62)
-    cuboid_2 = Cuboid(0.1, 0.77, 0.1, True)
-    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.25, 0.47)
-    translate(cuboid_2, X, 3, 0.63)
+    cuboid_0, cuboid_1 = abstraction_18(0.67, 0.26, bbox, 0.37, 0.06, 0.68, 0.06, 0.1, 0.65)
+    cuboid_2 = abstraction_8(bbox, 0.06, 0.68, 0.06, cuboid_0, 0.22, 0.49)
+    translate(cuboid_2, X, 5, 0.67)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.56, bbox, 0.07, True, 0.08)
+
+`;
+
+const baselineInitialTask2 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.05, 1.64, 1.06, True)
     sub_bbox_1 = Cuboid(1.05, 0.89, 0.44, True)
@@ -404,28 +385,28 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, bbox, cuboid_1, bot, 0.49, 0.64)
 
-`;
-
-const baselineTargetTask2 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.07, 0.56, 0.07, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.042, 0.08)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.0665, 0.56, 0.0665, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0399, 0.92)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.67, 0.37, 0.26, True)
+    cuboid_0 = Cuboid(1.05, 0.12, 0.44, True)
     attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.06, 0.68, 0.06, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.65)
-    cuboid_2 = Cuboid(0.06, 0.68, 0.06, True)
-    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.22, 0.49)
-    translate(cuboid_2, X, 5, 0.67)
+    cuboid_1 = Cuboid(0.1, 0.77, 0.1, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.62)
+    cuboid_2 = Cuboid(0.1, 0.77, 0.1, True)
+    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.25, 0.47)
+    translate(cuboid_2, X, 3, 0.63)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.17, 0.56, 0.17, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.102, 0.12)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.1615, 0.56, 0.1615, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0969, 0.88)
+    reflect(cuboid_1, X)
+
+`;
+
+const baselineTargetTask2 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.67, 1.72, 0.59, True)
     sub_bbox_1 = Cuboid(0.67, 1.04, 0.26, True)
@@ -437,25 +418,28 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, bbox, cuboid_1, bot, 0.49, 0.63)
 
-`;
-
-const abstractedInitialTask3 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_14(bbox, 1.14, 0.12, 1.08, True, 0.5, 0.48)
-    cuboid_1 = Cuboid(0.88, 0.39, 0.86, True)
-    squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.63)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.09, 0.2, 0.14, False)
-    abstraction_10(cuboid_0, bbox, 0.03, 0.04, 0.0, 0.05)
-    attach(cuboid_0, bbox, 0.49, 0.0, 0.96, 0.04, 1.0, 0.12)
+    cuboid_0 = Cuboid(0.67, 0.37, 0.26, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.06, 0.68, 0.06, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.65)
+    cuboid_2 = Cuboid(0.06, 0.68, 0.06, True)
+    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.22, 0.49)
+    translate(cuboid_2, X, 5, 0.67)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.07, 0.56, 0.07, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.042, 0.08)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.09, 0.15, 0.15, True)
-    abstraction_10(cuboid_1, bbox, 0.5, 0.04, 0.01, 0.93)
+    cuboid_1 = Cuboid(0.0665, 0.56, 0.0665, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0399, 0.92)
     reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const abstractedInitialTask3 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.14, 1.39, 1.28, True)
     sub_bbox_1 = abstraction_14(bbox, 1.11, 0.23, 1.1, True, 0.5, 0.51)
@@ -468,25 +452,25 @@ def make_root_assembly():
     cuboid_3 = abstraction_15(bbox, 0.88, 0.99, 0.42, False, 0.16)
     attach(cuboid_3, cuboid_2, 0.0, 0.5, 0.5, 0.94, 0.71, 0.19)
 
-`;
-
-const abstractedTargetTask3 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_14(bbox, 1.4, 0.11, 0.99, True, 0.5, 0.48)
-    cuboid_1 = Cuboid(1.16, 0.36, 0.8, True)
-    squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.62)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.08, 0.18, 0.13, False)
-    abstraction_10(cuboid_0, bbox, 0.02, 0.03, 0.0, 0.05)
-    attach(cuboid_0, bbox, 0.49, 0.0, 0.97, 0.03, 1.0, 0.12)
+    cuboid_0 = Cuboid(0.09, 0.2, 0.14, False)
+    abstraction_10(cuboid_0, bbox, 0.03, 0.04, 0.0, 0.05)
+    attach(cuboid_0, bbox, 0.49, 0.0, 0.96, 0.04, 1.0, 0.12)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.08, 0.14, 0.14, True)
-    abstraction_10(cuboid_1, bbox, 0.5, 0.03, 0.01, 0.93)
+    cuboid_1 = Cuboid(0.09, 0.15, 0.15, True)
+    abstraction_10(cuboid_1, bbox, 0.5, 0.04, 0.01, 0.93)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_14(bbox, 1.14, 0.12, 1.08, True, 0.5, 0.48)
+    cuboid_1 = Cuboid(0.88, 0.39, 0.86, True)
+    squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.63)
+
+`;
+
+const abstractedTargetTask3 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.4, 1.28, 1.16, True)
     sub_bbox_1 = abstraction_14(bbox, 1.37, 0.21, 1.01, True, 0.5, 0.51)
@@ -499,26 +483,25 @@ def make_root_assembly():
     cuboid_3 = abstraction_15(bbox, 1.16, 0.91, 0.38, False, 0.16)
     attach(cuboid_3, cuboid_2, 0.0, 0.5, 0.5, 1.0, 0.7, 0.18)
 
-`;
-
-const baselineInitialTask3 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(1.14, 0.12, 1.08, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.48)
-    cuboid_1 = Cuboid(0.88, 0.39, 0.86, True)
-    squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.63)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.09, 0.2, 0.14, False)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.03, 0.04, 1.0, 0.05)
-    attach(cuboid_0, bbox, 0.49, 0.0, 0.96, 0.04, 0.0, 0.12)
+    cuboid_0 = Cuboid(0.08, 0.18, 0.13, False)
+    abstraction_10(cuboid_0, bbox, 0.02, 0.03, 0.0, 0.05)
+    attach(cuboid_0, bbox, 0.49, 0.0, 0.97, 0.03, 1.0, 0.12)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.09, 0.15, 0.15, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.04, 0.99, 0.93)
+    cuboid_1 = Cuboid(0.08, 0.14, 0.14, True)
+    abstraction_10(cuboid_1, bbox, 0.5, 0.03, 0.01, 0.93)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_14(bbox, 1.4, 0.11, 0.99, True, 0.5, 0.48)
+    cuboid_1 = Cuboid(1.16, 0.36, 0.8, True)
+    squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.62)
+
+`;
+
+const baselineInitialTask3 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.14, 1.39, 1.28, True)
     sub_bbox_1 = Cuboid(1.11, 0.23, 1.1, True)
@@ -534,26 +517,26 @@ def make_root_assembly():
     attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.16)
     attach(cuboid_3, cuboid_2, 0.0, 0.5, 0.5, 0.94, 0.71, 0.19)
 
-`;
-
-const baselineTargetTask3 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(1.4, 0.11, 0.99, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.48)
-    cuboid_1 = Cuboid(1.16, 0.36, 0.8, True)
-    squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.62)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.08, 0.18, 0.13, False)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.02, 0.03, 1.0, 0.05)
-    attach(cuboid_0, bbox, 0.49, 0.0, 0.97, 0.03, 0.0, 0.12)
+    cuboid_0 = Cuboid(0.09, 0.2, 0.14, False)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.03, 0.04, 1.0, 0.05)
+    attach(cuboid_0, bbox, 0.49, 0.0, 0.96, 0.04, 0.0, 0.12)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.08, 0.14, 0.14, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.03, 0.99, 0.93)
+    cuboid_1 = Cuboid(0.09, 0.15, 0.15, True)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.04, 0.99, 0.93)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(1.14, 0.12, 1.08, True)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.48)
+    cuboid_1 = Cuboid(0.88, 0.39, 0.86, True)
+    squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.63)
+
+`;
+
+const baselineTargetTask3 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.4, 1.28, 1.16, True)
     sub_bbox_1 = Cuboid(1.37, 0.21, 1.01, True)
@@ -569,19 +552,26 @@ def make_root_assembly():
     attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.16)
     attach(cuboid_3, cuboid_2, 0.0, 0.5, 0.5, 1.0, 0.7, 0.18)
 
-`;
-
-const abstractedInitialTask4 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_15(bbox, 0.13, 0.13, 0.27, True, 0.48)
-    cuboid_1 = abstraction_14(bbox, 0.15, 0.2, 0.07, False, 0.5, 0.85)
-    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.53, 0.31, 0.88)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.67, bbox, 0.1, True, 0.1)
+    cuboid_0 = Cuboid(0.08, 0.18, 0.13, False)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.02, 0.03, 1.0, 0.05)
+    attach(cuboid_0, bbox, 0.49, 0.0, 0.97, 0.03, 0.0, 0.12)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.08, 0.14, 0.14, True)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.03, 0.99, 0.93)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(1.4, 0.11, 0.99, True)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.48)
+    cuboid_1 = Cuboid(1.16, 0.36, 0.8, True)
+    squeeze(cuboid_1, cuboid_0, bbox, bot, 0.5, 0.62)
+
+`;
+
+const abstractedInitialTask4 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.75, 0.36, True)
     sub_bbox_1 = abstraction_14(bbox, 0.78, 0.67, 0.35, True, 0.5, 0.48)
@@ -592,19 +582,19 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.5, 0.5, 0.0, 0.11, 0.15, 0.96)
     reflect(sub_bbox_2, X)
 
-`;
-
-const abstractedTargetTask4 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_15(bbox, 0.1, 0.12, 0.73, True, 0.47)
-    cuboid_1 = abstraction_14(bbox, 0.11, 0.33, 0.12, False, 0.5, 0.92)
-    attach(cuboid_1, cuboid_0, 0.44, 0.93, 0.85, 0.5, 0.5, 1.0)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.43, bbox, 0.11, True, 0.06)
+    cuboid_0, cuboid_1 = abstraction_12(0.67, bbox, 0.1, True, 0.1)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_15(bbox, 0.13, 0.13, 0.27, True, 0.48)
+    cuboid_1 = abstraction_14(bbox, 0.15, 0.2, 0.07, False, 0.5, 0.85)
+    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.53, 0.31, 0.88)
+
+`;
+
+const abstractedTargetTask4 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.86, 1.71, 0.89, True)
     sub_bbox_1 = abstraction_14(bbox, 0.86, 0.43, 0.86, True, 0.5, 0.48)
@@ -615,26 +605,19 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.5, 0.5, 0.0, 0.06, 0.13, 0.96)
     reflect(sub_bbox_2, X)
 
-`;
-
-const baselineInitialTask4 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.13, 0.13, 0.27, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
-    cuboid_1 = Cuboid(0.15, 0.2, 0.07, False)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.85)
-    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.53, 0.31, 0.88)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.1, 0.67, 0.1, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.1)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.095, 0.67, 0.095, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.9)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.43, bbox, 0.11, True, 0.06)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_15(bbox, 0.1, 0.12, 0.73, True, 0.47)
+    cuboid_1 = abstraction_14(bbox, 0.11, 0.33, 0.12, False, 0.5, 0.92)
+    attach(cuboid_1, cuboid_0, 0.44, 0.93, 0.85, 0.5, 0.5, 1.0)
+
+`;
+
+const baselineInitialTask4 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.75, 0.36, True)
     sub_bbox_1 = Cuboid(0.78, 0.67, 0.35, True)
@@ -650,26 +633,26 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.5, 0.5, 0.0, 0.11, 0.15, 0.96)
     reflect(sub_bbox_2, X)
 
-`;
-
-const baselineTargetTask4 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.1, 0.12, 0.73, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.47)
-    cuboid_1 = Cuboid(0.11, 0.33, 0.12, False)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.92)
-    attach(cuboid_1, cuboid_0, 0.44, 0.93, 0.85, 0.5, 0.5, 1.0)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.11, 0.43, 0.11, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.06)
+    cuboid_0 = Cuboid(0.1, 0.67, 0.1, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.1)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1045, 0.43, 0.1045, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.94)
+    cuboid_1 = Cuboid(0.095, 0.67, 0.095, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.9)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.13, 0.13, 0.27, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
+    cuboid_1 = Cuboid(0.15, 0.2, 0.07, False)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.85)
+    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.53, 0.31, 0.88)
+
+`;
+
+const baselineTargetTask4 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.86, 1.71, 0.89, True)
     sub_bbox_1 = Cuboid(0.86, 0.43, 0.86, True)
@@ -685,20 +668,26 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.5, 0.5, 0.0, 0.06, 0.13, 0.96)
     reflect(sub_bbox_2, X)
 
-`;
-
-const abstractedInitialTask5 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(1.03, 0.38, bbox, 0.17, 0.08, 0.46, 0.08, 0.09, 0.76)
-    reflect(cuboid_1, X)
-    cuboid_2 = abstraction_8(bbox, 0.08, 0.46, 0.08, cuboid_0, 0.22, 0.49)
-    translate(cuboid_2, X, 4, 0.57)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.62, bbox, 0.11, True, 0.06)
+    cuboid_0 = Cuboid(0.11, 0.43, 0.11, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.06)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.1045, 0.43, 0.1045, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.94)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.1, 0.12, 0.73, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.47)
+    cuboid_1 = Cuboid(0.11, 0.33, 0.12, False)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.92)
+    attach(cuboid_1, cuboid_0, 0.44, 0.93, 0.85, 0.5, 0.5, 1.0)
+
+`;
+
+const abstractedInitialTask5 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.4, 1.21, True)
     sub_bbox_1 = abstraction_14(bbox, 0.85, 0.62, 0.85, True, 0.52, 0.57)
@@ -708,20 +697,20 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.16)
 
-`;
-
-const abstractedTargetTask5 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.74, 0.29, bbox, 0.13, 0.05, 0.95, 0.05, 0.11, 0.6)
-    reflect(cuboid_1, X)
-    cuboid_2 = abstraction_8(bbox, 0.05, 0.95, 0.05, cuboid_0, 0.23, 0.43)
-    translate(cuboid_2, X, 3, 0.49)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.53, bbox, 0.11, True, 0.04)
+    cuboid_0, cuboid_1 = abstraction_12(0.62, bbox, 0.11, True, 0.06)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(1.03, 0.38, bbox, 0.17, 0.08, 0.46, 0.08, 0.09, 0.76)
+    reflect(cuboid_1, X)
+    cuboid_2 = abstraction_8(bbox, 0.08, 0.46, 0.08, cuboid_0, 0.22, 0.49)
+    translate(cuboid_2, X, 4, 0.57)
+
+`;
+
+const abstractedTargetTask5 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.74, 1.73, 0.93, True)
     sub_bbox_1 = abstraction_14(bbox, 0.67, 0.53, 0.81, True, 0.5, 0.54)
@@ -731,29 +720,20 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.51, 0.16)
 
-`;
-
-const baselineInitialTask5 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(1.03, 0.17, 0.38, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.08, 0.46, 0.08, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.76)
-    reflect(cuboid_1, X)
-    cuboid_2 = Cuboid(0.08, 0.46, 0.08, True)
-    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.22, 0.49)
-    translate(cuboid_2, X, 4, 0.57)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.11, 0.62, 0.11, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.06)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1045, 0.62, 0.1045, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.94)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.53, bbox, 0.11, True, 0.04)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.74, 0.29, bbox, 0.13, 0.05, 0.95, 0.05, 0.11, 0.6)
+    reflect(cuboid_1, X)
+    cuboid_2 = abstraction_8(bbox, 0.05, 0.95, 0.05, cuboid_0, 0.23, 0.43)
+    translate(cuboid_2, X, 3, 0.49)
+
+`;
+
+const baselineInitialTask5 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.4, 1.21, True)
     sub_bbox_1 = Cuboid(0.85, 0.62, 0.85, True)
@@ -765,29 +745,29 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.16)
 
-`;
-
-const baselineTargetTask5 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.74, 0.13, 0.29, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.05, 0.95, 0.05, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.11, 0.6)
-    reflect(cuboid_1, X)
-    cuboid_2 = Cuboid(0.05, 0.95, 0.05, True)
-    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.23, 0.43)
-    translate(cuboid_2, X, 3, 0.49)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.11, 0.53, 0.11, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.04)
+    cuboid_0 = Cuboid(0.11, 0.62, 0.11, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.06)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1045, 0.53, 0.1045, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.96)
+    cuboid_1 = Cuboid(0.1045, 0.62, 0.1045, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.94)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(1.03, 0.17, 0.38, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.08, 0.46, 0.08, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.76)
+    reflect(cuboid_1, X)
+    cuboid_2 = Cuboid(0.08, 0.46, 0.08, True)
+    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.22, 0.49)
+    translate(cuboid_2, X, 4, 0.57)
+
+`;
+
+const baselineTargetTask5 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.74, 1.73, 0.93, True)
     sub_bbox_1 = Cuboid(0.67, 0.53, 0.81, True)
@@ -799,9 +779,41 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.51, 0.16)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.11, 0.53, 0.11, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.04)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.1045, 0.53, 0.1045, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.96)
+    reflect(cuboid_1, X)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.74, 0.13, 0.29, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.05, 0.95, 0.05, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.11, 0.6)
+    reflect(cuboid_1, X)
+    cuboid_2 = Cuboid(0.05, 0.95, 0.05, True)
+    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.23, 0.43)
+    translate(cuboid_2, X, 3, 0.49)
+
 `;
 
-const abstractedInitialTask6 = `@child_assembly
+const abstractedInitialTask6 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.69, 1.84, 0.69, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.69, 0.72, 0.69, True, 0.5, 0.5)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1,sub_bbox_2 = abstraction_6(0.69, 0.69, bbox, 0.12, sub_bbox_1, 0.05, 1.0, 0.08, 0.06)
+    make_subassembly_2(sub_bbox_2)
+
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.72, bbox, 0.09, True, 0.06)
+
+@child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = abstraction_15(bbox, 0.68, 0.23, 0.07, True, 0.42)
     cuboid_1 = abstraction_14(bbox, 0.14, 0.81, 0.08, True, 0.1, 0.5)
@@ -811,21 +823,21 @@ def make_subassembly_2(bbox):
     attach(cuboid_2, cuboid_1, 0.0, 0.5, 0.5, 0.99, 0.36, 0.4)
     translate(cuboid_2, Y, 2, 0.35)
 
-@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.72, bbox, 0.09, True, 0.06)
-
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.69, 1.84, 0.69, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.69, 0.72, 0.69, True, 0.5, 0.5)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1,sub_bbox_2 = abstraction_6(0.69, 0.69, bbox, 0.12, sub_bbox_1, 0.05, 1.0, 0.08, 0.06)
-    make_subassembly_2(sub_bbox_2)
-
 `;
 
-const abstractedTargetTask6 = `@child_assembly
+const abstractedTargetTask6 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.71, 1.65, 0.71, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.7, 0.66, 0.7, True, 0.5, 0.5)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1,sub_bbox_2 = abstraction_6(0.71, 0.71, bbox, 0.11, sub_bbox_1, 0.03, 0.89, 0.06, 0.04)
+    make_subassembly_2(sub_bbox_2)
+
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.66, bbox, 0.06, True, 0.05)
+
+@child_assembly
 def make_subassembly_2(bbox):
     cuboid_0 = abstraction_15(bbox, 0.7, 0.26, 0.05, True, 0.49)
     cuboid_1 = abstraction_14(bbox, 0.1, 0.66, 0.06, True, 0.07, 0.5)
@@ -835,42 +847,9 @@ def make_subassembly_2(bbox):
     attach(cuboid_2, cuboid_1, 0.0, 0.5, 0.5, 1.0, 0.23, 0.48)
     translate(cuboid_2, Y, 2, 0.4)
 
-@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.66, bbox, 0.06, True, 0.05)
-
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.71, 1.65, 0.71, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.7, 0.66, 0.7, True, 0.5, 0.5)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1,sub_bbox_2 = abstraction_6(0.71, 0.71, bbox, 0.11, sub_bbox_1, 0.03, 0.89, 0.06, 0.04)
-    make_subassembly_2(sub_bbox_2)
-
 `;
 
-const baselineInitialTask6 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.68, 0.23, 0.07, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.42)
-    cuboid_1 = Cuboid(0.14, 0.81, 0.08, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.1, 0.0, 0.5)
-    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.1, 0.17, 0.6)
-    reflect(cuboid_1, X)
-    cuboid_2 = Cuboid(0.41, 0.1, 0.04, True)
-    attach(cuboid_2, cuboid_1, 0.0, 0.5, 0.5, 0.99, 0.36, 0.4)
-    translate(cuboid_2, Y, 2, 0.35)
-
-@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.09, 0.72, 0.09, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.054, 0.06)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.0855, 0.72, 0.0855, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0513, 0.94)
-    reflect(cuboid_1, X)
-
-@root_assembly
+const baselineInitialTask6 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.69, 1.84, 0.69, True)
     sub_bbox_1 = Cuboid(0.69, 0.72, 0.69, True)
@@ -882,30 +861,30 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.06)
 
-`;
-
-const baselineTargetTask6 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.7, 0.26, 0.05, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.49)
-    cuboid_1 = Cuboid(0.1, 0.66, 0.05, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.07, 0.0, 0.5)
-    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.07, 0.11, 0.5)
-    reflect(cuboid_1, X)
-    cuboid_2 = Cuboid(0.51, 0.05, 0.05, True)
-    attach(cuboid_2, cuboid_1, 0.0, 0.5, 0.5, 1.0, 0.23, 0.48)
-    translate(cuboid_2, Y, 2, 0.4)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.06, 0.66, 0.06, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.036, 0.05)
+    cuboid_0 = Cuboid(0.09, 0.72, 0.09, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.054, 0.06)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.057, 0.66, 0.057, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0342, 0.95)
+    cuboid_1 = Cuboid(0.0855, 0.72, 0.0855, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0513, 0.94)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.68, 0.23, 0.07, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.42)
+    cuboid_1 = Cuboid(0.14, 0.81, 0.08, True)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.1, 0.0, 0.5)
+    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.1, 0.17, 0.6)
+    reflect(cuboid_1, X)
+    cuboid_2 = Cuboid(0.41, 0.1, 0.04, True)
+    attach(cuboid_2, cuboid_1, 0.0, 0.5, 0.5, 0.99, 0.36, 0.4)
+    translate(cuboid_2, Y, 2, 0.35)
+
+`;
+
+const baselineTargetTask6 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.71, 1.65, 0.71, True)
     sub_bbox_1 = Cuboid(0.7, 0.66, 0.7, True)
@@ -917,14 +896,35 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.04)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.06, 0.66, 0.06, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.036, 0.05)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.057, 0.66, 0.057, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0342, 0.95)
+    reflect(cuboid_1, X)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.7, 0.26, 0.05, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.49)
+    cuboid_1 = Cuboid(0.1, 0.66, 0.05, True)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.07, 0.0, 0.5)
+    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.07, 0.11, 0.5)
+    reflect(cuboid_1, X)
+    cuboid_2 = Cuboid(0.51, 0.05, 0.05, True)
+    attach(cuboid_2, cuboid_1, 0.0, 0.5, 0.5, 1.0, 0.23, 0.48)
+    translate(cuboid_2, Y, 2, 0.4)
+
 `;
 
-const abstractedInitialTask7 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_13(0.65, bbox, 0.1, 0.11, 0.5, 0.09)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.1, 0.07, 0.44, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.52, 0.24, 0.67)
+const abstractedInitialTask7 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.6, 1.76, 0.6, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.59, 0.65, 0.59, True, 0.5, 0.5)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1, cuboid_2 = abstraction_6(0.6, 0.6, bbox, 0.16, sub_bbox_1, 0.03, 0.96, 0.1, 0.09)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -934,21 +934,21 @@ def make_subassembly_1(bbox):
     cuboid_1 = Cuboid(0.37, 0.06, 0.06, True)
     attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 1.0, 0.24, 0.51)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.6, 1.76, 0.6, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.59, 0.65, 0.59, True, 0.5, 0.5)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1, cuboid_2 = abstraction_6(0.6, 0.6, bbox, 0.16, sub_bbox_1, 0.03, 0.96, 0.1, 0.09)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_13(0.65, bbox, 0.1, 0.11, 0.5, 0.09)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.1, 0.07, 0.44, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.52, 0.24, 0.67)
 
 `;
 
-const abstractedTargetTask7 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_13(0.85, bbox, 0.11, 0.13, 0.41, 0.08)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.13, 0.13, 0.66, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.64, 0.58, 0.84)
+const abstractedTargetTask7 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.89, 1.65, 0.88, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.89, 0.85, 0.88, True, 0.5, 0.5)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1, cuboid_2 = abstraction_6(0.89, 0.88, bbox, 0.09, sub_bbox_1, 0.06, 0.71, 0.11, 0.06)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -958,33 +958,16 @@ def make_subassembly_1(bbox):
     cuboid_1 = Cuboid(0.6, 0.11, 0.12, True)
     attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 0.99, 0.58, 0.5)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.89, 1.65, 0.88, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.89, 0.85, 0.88, True, 0.5, 0.5)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1, cuboid_2 = abstraction_6(0.89, 0.88, bbox, 0.09, sub_bbox_1, 0.06, 0.71, 0.11, 0.06)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_13(0.85, bbox, 0.11, 0.13, 0.41, 0.08)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.13, 0.13, 0.66, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.64, 0.58, 0.84)
 
 `;
 
-const baselineInitialTask7 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.1, 0.65, 0.11, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.09)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.1, 0.07, 0.44, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.52, 0.24, 0.67)
-
-@child_assembly
-def make_subassembly_1(bbox):
-    sub_bbox_2 = Cuboid(0.11, 0.65, 0.59, True)
-    make_subassembly_2(sub_bbox_2)
-    squeeze(sub_bbox_2, bbox, bbox, bot, 0.09, 0.5)
-    reflect(sub_bbox_2, X)
-    cuboid_1 = Cuboid(0.37, 0.06, 0.06, True)
-    attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 1.0, 0.24, 0.51)
-
-@root_assembly
+const baselineInitialTask7 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.6, 1.76, 0.6, True)
     sub_bbox_1 = Cuboid(0.59, 0.65, 0.59, True)
@@ -995,26 +978,26 @@ def make_root_assembly():
     cuboid_2 = Cuboid(0.6, 0.96, 0.1, True)
     squeeze(cuboid_2, cuboid_1, bbox, bot, 0.5, 0.09)
 
-`;
-
-const baselineTargetTask7 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.11, 0.85, 0.13, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.41, 0.08)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.13, 0.13, 0.66, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.64, 0.58, 0.84)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    sub_bbox_2 = Cuboid(0.14, 0.85, 0.88, True)
+    sub_bbox_2 = Cuboid(0.11, 0.65, 0.59, True)
     make_subassembly_2(sub_bbox_2)
-    squeeze(sub_bbox_2, bbox, bbox, bot, 0.08, 0.5)
+    squeeze(sub_bbox_2, bbox, bbox, bot, 0.09, 0.5)
     reflect(sub_bbox_2, X)
-    cuboid_1 = Cuboid(0.6, 0.11, 0.12, True)
-    attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 0.99, 0.58, 0.5)
+    cuboid_1 = Cuboid(0.37, 0.06, 0.06, True)
+    attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 1.0, 0.24, 0.51)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.1, 0.65, 0.11, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.09)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.1, 0.07, 0.44, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.52, 0.24, 0.67)
+
+`;
+
+const baselineTargetTask7 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.89, 1.65, 0.88, True)
     sub_bbox_1 = Cuboid(0.89, 0.85, 0.88, True)
@@ -1025,13 +1008,26 @@ def make_root_assembly():
     cuboid_2 = Cuboid(0.89, 0.71, 0.11, True)
     squeeze(cuboid_2, cuboid_1, bbox, bot, 0.5, 0.06)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    sub_bbox_2 = Cuboid(0.14, 0.85, 0.88, True)
+    make_subassembly_2(sub_bbox_2)
+    squeeze(sub_bbox_2, bbox, bbox, bot, 0.08, 0.5)
+    reflect(sub_bbox_2, X)
+    cuboid_1 = Cuboid(0.6, 0.11, 0.12, True)
+    attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 0.99, 0.58, 0.5)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.11, 0.85, 0.13, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.41, 0.08)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.13, 0.13, 0.66, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.64, 0.58, 0.84)
+
 `;
 
-const abstractedInitialTask8 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.13, bbox, 0.14, True, 0.08)
-
-@root_assembly
+const abstractedInitialTask8 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.16, 1.32, 1.25, True)
     sub_bbox_1 = abstraction_14(bbox, 1.14, 0.13, 1.02, True, 0.5, 0.57)
@@ -1043,13 +1039,13 @@ def make_root_assembly():
     cuboid_3 = abstraction_15(bbox, 1.1, 1.17, 0.3, False, 0.12)
     attach(cuboid_3, cuboid_1, 0.07, 0.38, 0.8, 0.5, 0.5, 0.0)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.13, bbox, 0.14, True, 0.08)
+
 `;
 
-const abstractedTargetTask8 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.09, bbox, 0.12, True, 0.04)
-
-@root_assembly
+const abstractedTargetTask8 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.22, 1.21, 1.44, True)
     sub_bbox_1 = abstraction_14(bbox, 1.22, 0.09, 1.14, True, 0.5, 0.5)
@@ -1061,18 +1057,13 @@ def make_root_assembly():
     cuboid_3 = abstraction_15(bbox, 0.93, 1.01, 0.32, False, 0.11)
     attach(cuboid_3, cuboid_1, 0.0, 0.5, 0.5, 0.97, 0.6, 0.11)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.09, bbox, 0.12, True, 0.04)
+
 `;
 
-const baselineInitialTask8 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.14, 0.13, 0.14, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.08)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.133, 0.13, 0.133, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.92)
-    reflect(cuboid_1, X)
-
-@root_assembly
+const baselineInitialTask8 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.16, 1.32, 1.25, True)
     sub_bbox_1 = Cuboid(1.14, 0.13, 1.02, True)
@@ -1087,18 +1078,18 @@ def make_root_assembly():
     attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.12)
     attach(cuboid_3, cuboid_1, 0.07, 0.38, 0.8, 0.5, 0.5, 0.0)
 
-`;
-
-const baselineTargetTask8 = `@child_assembly
+@child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.12, 0.09, 0.12, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.072, 0.04)
+    cuboid_0 = Cuboid(0.14, 0.13, 0.14, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.08)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.114, 0.09, 0.114, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0684, 0.96)
+    cuboid_1 = Cuboid(0.133, 0.13, 0.133, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.92)
     reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const baselineTargetTask8 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.22, 1.21, 1.44, True)
     sub_bbox_1 = Cuboid(1.22, 0.09, 1.14, True)
@@ -1113,14 +1104,23 @@ def make_root_assembly():
     attach(cuboid_3, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.11)
     attach(cuboid_3, cuboid_1, 0.0, 0.5, 0.5, 0.97, 0.6, 0.11)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.12, 0.09, 0.12, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.072, 0.04)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.114, 0.09, 0.114, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0684, 0.96)
+    reflect(cuboid_1, X)
+
 `;
 
-const abstractedInitialTask9 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_13(0.42, bbox, 0.05, 0.04, 0.5, 0.02)
-    reflect(cuboid_0, Z)
-    cuboid_1 = abstraction_14(bbox, 0.05, 0.04, 0.93, True, 0.5, 0.5)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.05, 0.93)
+const abstractedInitialTask9 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.87, 1.53, 1.05, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.84, 0.42, 1.01, True, 0.5, 0.51)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1, cuboid_2 = abstraction_6(0.87, 1.05, bbox, 0.45, sub_bbox_1, 0.0, 0.66, 0.29, 0.14)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -1128,21 +1128,21 @@ def make_subassembly_1(bbox):
     make_subassembly_2(sub_bbox_2)
     reflect(sub_bbox_2, X)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.87, 1.53, 1.05, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.84, 0.42, 1.01, True, 0.5, 0.51)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1, cuboid_2 = abstraction_6(0.87, 1.05, bbox, 0.45, sub_bbox_1, 0.0, 0.66, 0.29, 0.14)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_13(0.42, bbox, 0.05, 0.04, 0.5, 0.02)
+    reflect(cuboid_0, Z)
+    cuboid_1 = abstraction_14(bbox, 0.05, 0.04, 0.93, True, 0.5, 0.5)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.05, 0.93)
 
 `;
 
-const abstractedTargetTask9 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_13(0.7, bbox, 0.08, 0.09, 0.5, 0.06)
-    reflect(cuboid_0, Z)
-    cuboid_1 = abstraction_14(bbox, 0.07, 0.08, 0.58, True, 0.48, 0.49)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.46, 0.06, 0.94)
+const abstractedTargetTask9 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.83, 1.56, 0.78, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.83, 0.7, 0.78, True, 0.5, 0.5)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1, cuboid_2 = abstraction_6(0.83, 0.78, bbox, 0.11, sub_bbox_1, 0.22, 0.77, 0.08, 0.05)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -1150,32 +1150,16 @@ def make_subassembly_1(bbox):
     make_subassembly_2(sub_bbox_2)
     reflect(sub_bbox_2, X)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.83, 1.56, 0.78, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.83, 0.7, 0.78, True, 0.5, 0.5)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1, cuboid_2 = abstraction_6(0.83, 0.78, bbox, 0.11, sub_bbox_1, 0.22, 0.77, 0.08, 0.05)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_13(0.7, bbox, 0.08, 0.09, 0.5, 0.06)
+    reflect(cuboid_0, Z)
+    cuboid_1 = abstraction_14(bbox, 0.07, 0.08, 0.58, True, 0.48, 0.49)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.46, 0.06, 0.94)
 
 `;
 
-const baselineInitialTask9 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.05, 0.42, 0.04, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.02)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.05, 0.04, 0.93, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.05, 0.93)
-
-@child_assembly
-def make_subassembly_1(bbox):
-    sub_bbox_2 = Cuboid(0.05, 0.42, 1.01, True)
-    make_subassembly_2(sub_bbox_2)
-    squeeze(sub_bbox_2, bbox, bbox, bot, 0.03, 0.5)
-    reflect(sub_bbox_2, X)
-
-@root_assembly
+const baselineInitialTask9 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.87, 1.53, 1.05, True)
     sub_bbox_1 = Cuboid(0.84, 0.42, 1.01, True)
@@ -1186,25 +1170,25 @@ def make_root_assembly():
     cuboid_2 = Cuboid(0.87, 0.66, 0.29, True)
     squeeze(cuboid_2, cuboid_1, bbox, bot, 0.5, 0.14)
 
-`;
-
-const baselineTargetTask9 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.08, 0.7, 0.09, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.06)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.07, 0.08, 0.58, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.48, 0.0, 0.49)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.46, 0.06, 0.94)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    sub_bbox_2 = Cuboid(0.08, 0.7, 0.78, True)
+    sub_bbox_2 = Cuboid(0.05, 0.42, 1.01, True)
     make_subassembly_2(sub_bbox_2)
-    squeeze(sub_bbox_2, bbox, bbox, bot, 0.05, 0.5)
+    squeeze(sub_bbox_2, bbox, bbox, bot, 0.03, 0.5)
     reflect(sub_bbox_2, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.05, 0.42, 0.04, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.02)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.05, 0.04, 0.93, True)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.05, 0.93)
+
+`;
+
+const baselineTargetTask9 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.83, 1.56, 0.78, True)
     sub_bbox_1 = Cuboid(0.83, 0.7, 0.78, True)
@@ -1215,18 +1199,25 @@ def make_root_assembly():
     cuboid_2 = Cuboid(0.83, 0.77, 0.08, True)
     squeeze(cuboid_2, cuboid_1, bbox, bot, 0.5, 0.05)
 
-`;
-
-const abstractedInitialTask10 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(1.15, 0.31, bbox, 0.32, 0.08, 0.11, 0.08, 0.1, 0.5)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.08, bbox, 0.12, True, 0.07)
+    sub_bbox_2 = Cuboid(0.08, 0.7, 0.78, True)
+    make_subassembly_2(sub_bbox_2)
+    squeeze(sub_bbox_2, bbox, bbox, bot, 0.05, 0.5)
+    reflect(sub_bbox_2, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.08, 0.7, 0.09, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.06)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.07, 0.08, 0.58, True)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.48, 0.0, 0.49)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.46, 0.06, 0.94)
+
+`;
+
+const abstractedInitialTask10 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.34, 1.15, 1.19, True)
     sub_bbox_1 = abstraction_14(bbox, 1.13, 0.08, 0.94, True, 0.5, 0.5)
@@ -1236,18 +1227,18 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.14)
 
-`;
-
-const abstractedTargetTask10 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.75, 0.14, bbox, 0.19, 0.08, 0.65, 0.1, 0.15, 0.44)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.71, bbox, 0.09, True, 0.07)
+    cuboid_0, cuboid_1 = abstraction_12(0.08, bbox, 0.12, True, 0.07)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(1.15, 0.31, bbox, 0.32, 0.08, 0.11, 0.08, 0.1, 0.5)
+    reflect(cuboid_1, X)
+
+`;
+
+const abstractedTargetTask10 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.82, 1.65, 0.82, True)
     sub_bbox_1 = abstraction_14(bbox, 0.73, 0.71, 0.63, True, 0.49, 0.51)
@@ -1257,26 +1248,18 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.49, 0.19)
 
-`;
-
-const baselineInitialTask10 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(1.15, 0.32, 0.31, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.08, 0.11, 0.08, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.5)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.12, 0.08, 0.12, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.072, 0.07)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.114, 0.08, 0.114, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0684, 0.93)
+    cuboid_0, cuboid_1 = abstraction_12(0.71, bbox, 0.09, True, 0.07)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.75, 0.14, bbox, 0.19, 0.08, 0.65, 0.1, 0.15, 0.44)
     reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const baselineInitialTask10 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.34, 1.15, 1.19, True)
     sub_bbox_1 = Cuboid(1.13, 0.08, 0.94, True)
@@ -1288,26 +1271,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.14)
 
-`;
-
-const baselineTargetTask10 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.75, 0.19, 0.14, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.08, 0.65, 0.1, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.15, 0.44)
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.12, 0.08, 0.12, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.072, 0.07)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.114, 0.08, 0.114, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0684, 0.93)
     reflect(cuboid_1, X)
 
 @child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.09, 0.71, 0.09, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.054, 0.07)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.0855, 0.71, 0.0855, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0513, 0.93)
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(1.15, 0.32, 0.31, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.08, 0.11, 0.08, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.1, 0.5)
     reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const baselineTargetTask10 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.82, 1.65, 0.82, True)
     sub_bbox_1 = Cuboid(0.73, 0.71, 0.63, True)
@@ -1319,18 +1302,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.49, 0.19)
 
-`;
-
-const abstractedInitialTask11 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_14(bbox, 0.88, 0.07, 0.86, True, 0.5, 0.49)
-    cuboid_1 = abstraction_16(bbox, 0.43, 0.15, 0.66, True, cuboid_0, 0.41, 0.64, 0.63)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.61, bbox, 0.22, True, 0.12)
+    cuboid_0 = Cuboid(0.09, 0.71, 0.09, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.054, 0.07)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.0855, 0.71, 0.0855, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0513, 0.93)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.75, 0.19, 0.14, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.08, 0.65, 0.1, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.15, 0.44)
+    reflect(cuboid_1, X)
+
+`;
+
+const abstractedInitialTask11 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.89, 1.64, 0.9, True)
     sub_bbox_1 = abstraction_14(bbox, 0.89, 0.61, 0.9, True, 0.5, 0.5)
@@ -1344,18 +1335,18 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.0, 0.5, 0.5, 0.01, 0.11, 0.37)
     attach(sub_bbox_2, cuboid_1, 0.5, 0.5, 0.0, 0.5, 0.02, 0.01)
 
-`;
-
-const abstractedTargetTask11 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_14(bbox, 0.97, 0.25, 1.15, True, 0.51, 0.49)
-    cuboid_1 = abstraction_16(bbox, 0.99, 0.12, 1.14, True, cuboid_0, 0.75, 0.52, 0.51)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.22, bbox, 0.13, True, 0.05)
+    cuboid_0, cuboid_1 = abstraction_12(0.61, bbox, 0.22, True, 0.12)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_14(bbox, 0.88, 0.07, 0.86, True, 0.5, 0.49)
+    cuboid_1 = abstraction_16(bbox, 0.43, 0.15, 0.66, True, cuboid_0, 0.41, 0.64, 0.63)
+
+`;
+
+const abstractedTargetTask11 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.34, 1.25, 1.31, True)
     sub_bbox_1 = abstraction_14(bbox, 1.1, 0.22, 1.24, True, 0.49, 0.48)
@@ -1369,26 +1360,18 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.0, 0.5, 0.5, 0.74, 0.15, 0.56)
     attach(sub_bbox_2, cuboid_1, 0.5, 0.5, 0.0, 0.5, 0.11, 0.85)
 
-`;
-
-const baselineInitialTask11 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.88, 0.07, 0.86, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.49)
-    cuboid_1 = Cuboid(0.43, 0.15, 0.66, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.5, 0.41, 0.64)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.63)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.22, 0.61, 0.22, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.132, 0.12)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.209, 0.61, 0.209, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.1254, 0.88)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.22, bbox, 0.13, True, 0.05)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_14(bbox, 0.97, 0.25, 1.15, True, 0.51, 0.49)
+    cuboid_1 = abstraction_16(bbox, 0.99, 0.12, 1.14, True, cuboid_0, 0.75, 0.52, 0.51)
+
+`;
+
+const baselineInitialTask11 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.89, 1.64, 0.9, True)
     sub_bbox_1 = Cuboid(0.89, 0.61, 0.9, True)
@@ -1405,26 +1388,26 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.0, 0.5, 0.5, 0.01, 0.11, 0.37)
     attach(sub_bbox_2, cuboid_1, 0.5, 0.5, 0.0, 0.5, 0.02, 0.01)
 
-`;
-
-const baselineTargetTask11 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.97, 0.25, 1.15, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.51, 0.0, 0.49)
-    cuboid_1 = Cuboid(0.99, 0.12, 1.14, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.5, 0.75, 0.52)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.51)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.13, 0.22, 0.13, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.078, 0.05)
+    cuboid_0 = Cuboid(0.22, 0.61, 0.22, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.132, 0.12)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1235, 0.22, 0.1235, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0741, 0.95)
+    cuboid_1 = Cuboid(0.209, 0.61, 0.209, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.1254, 0.88)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.88, 0.07, 0.86, True)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.49)
+    cuboid_1 = Cuboid(0.43, 0.15, 0.66, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.5, 0.41, 0.64)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.63)
+
+`;
+
+const baselineTargetTask11 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.34, 1.25, 1.31, True)
     sub_bbox_1 = Cuboid(1.1, 0.22, 1.24, True)
@@ -1441,13 +1424,26 @@ def make_root_assembly():
     attach(sub_bbox_2, cuboid_2, 0.0, 0.5, 0.5, 0.74, 0.15, 0.56)
     attach(sub_bbox_2, cuboid_1, 0.5, 0.5, 0.0, 0.5, 0.11, 0.85)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.13, 0.22, 0.13, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.078, 0.05)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.1235, 0.22, 0.1235, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0741, 0.95)
+    reflect(cuboid_1, X)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.97, 0.25, 1.15, True)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.51, 0.0, 0.49)
+    cuboid_1 = Cuboid(0.99, 0.12, 1.14, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.5, 0.75, 0.52)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.51)
+
 `;
 
-const abstractedInitialTask12 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.64, bbox, 0.14, True, 0.08)
-
-@root_assembly
+const abstractedInitialTask12 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.15, 1.78, 0.64, True)
     sub_bbox_1 = abstraction_14(bbox, 1.15, 0.64, 0.63, True, 0.5, 0.51)
@@ -1460,13 +1456,13 @@ def make_root_assembly():
     attach(cuboid_3, cuboid_1, 0.5, 0.5, 0.0, 0.01, 0.08, 0.99)
     reflect(cuboid_3, X)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.64, bbox, 0.14, True, 0.08)
+
 `;
 
-const abstractedTargetTask12 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.59, bbox, 0.1, True, 0.05)
-
-@root_assembly
+const abstractedTargetTask12 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.94, 1.24, 0.95, True)
     sub_bbox_1 = abstraction_14(bbox, 0.94, 0.59, 0.95, True, 0.5, 0.5)
@@ -1479,18 +1475,13 @@ def make_root_assembly():
     attach(cuboid_3, cuboid_1, 0.5, 0.5, 0.0, 0.05, 0.55, 0.97)
     reflect(cuboid_3, X)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.59, bbox, 0.1, True, 0.05)
+
 `;
 
-const baselineInitialTask12 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.14, 0.64, 0.14, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.08)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.133, 0.64, 0.133, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.92)
-    reflect(cuboid_1, X)
-
-@root_assembly
+const baselineInitialTask12 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.15, 1.78, 0.64, True)
     sub_bbox_1 = Cuboid(1.15, 0.64, 0.63, True)
@@ -1506,18 +1497,18 @@ def make_root_assembly():
     attach(cuboid_3, cuboid_1, 0.5, 0.5, 0.0, 0.01, 0.08, 0.99)
     reflect(cuboid_3, X)
 
-`;
-
-const baselineTargetTask12 = `@child_assembly
+@child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.1, 0.59, 0.1, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.05)
+    cuboid_0 = Cuboid(0.14, 0.64, 0.14, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.08)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.095, 0.59, 0.095, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.95)
+    cuboid_1 = Cuboid(0.133, 0.64, 0.133, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.92)
     reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const baselineTargetTask12 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.94, 1.24, 0.95, True)
     sub_bbox_1 = Cuboid(0.94, 0.59, 0.95, True)
@@ -1533,18 +1524,18 @@ def make_root_assembly():
     attach(cuboid_3, cuboid_1, 0.5, 0.5, 0.0, 0.05, 0.55, 0.97)
     reflect(cuboid_3, X)
 
-`;
-
-const abstractedInitialTask13 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.55, bbox, 0.26, True, 0.12)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(1.02, 0.24, bbox, 0.14, 0.2, 0.71, 0.19, 0.09, 0.49)
-    translate(cuboid_1, X, 2, 0.81)
+    cuboid_0 = Cuboid(0.1, 0.59, 0.1, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.05)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.095, 0.59, 0.095, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.95)
+    reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const abstractedInitialTask13 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.48, 1.04, True)
     sub_bbox_1 = abstraction_15(bbox, 1.02, 0.88, 0.24, True, 0.11)
@@ -1554,18 +1545,18 @@ def make_root_assembly():
     sub_bbox_2 = abstraction_8(bbox, 1.03, 0.55, 1.01, cuboid_1, 0.5, 0.5)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const abstractedTargetTask13 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.65, bbox, 0.1, True, 0.09)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.56, 0.24, bbox, 0.2, 0.04, 0.83, 0.04, 0.14, 0.47)
-    translate(cuboid_1, X, 3, 0.66)
+    cuboid_0, cuboid_1 = abstraction_18(1.02, 0.24, bbox, 0.14, 0.2, 0.71, 0.19, 0.09, 0.49)
+    translate(cuboid_1, X, 2, 0.81)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.55, bbox, 0.26, True, 0.12)
+
+`;
+
+const abstractedTargetTask13 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.58, 1.75, 0.69, True)
     sub_bbox_1 = abstraction_15(bbox, 0.56, 1.03, 0.24, True, 0.32)
@@ -1575,26 +1566,18 @@ def make_root_assembly():
     sub_bbox_2 = abstraction_8(bbox, 0.56, 0.65, 0.49, cuboid_1, 0.49, 0.64)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const baselineInitialTask13 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.26, 0.55, 0.26, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.156, 0.12)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.247, 0.55, 0.247, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.1482, 0.88)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(1.02, 0.14, 0.24, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.2, 0.71, 0.19, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.49)
-    translate(cuboid_1, X, 2, 0.81)
+    cuboid_0, cuboid_1 = abstraction_18(0.56, 0.24, bbox, 0.2, 0.04, 0.83, 0.04, 0.14, 0.47)
+    translate(cuboid_1, X, 3, 0.66)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.65, bbox, 0.1, True, 0.09)
+
+`;
+
+const baselineInitialTask13 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.48, 1.04, True)
     sub_bbox_1 = Cuboid(1.02, 0.88, 0.24, True)
@@ -1606,26 +1589,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, bbox, cuboid_1, bot, 0.5, 0.5)
 
-`;
-
-const baselineTargetTask13 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.1, 0.65, 0.1, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.09)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.095, 0.65, 0.095, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.91)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.56, 0.2, 0.24, True)
+    cuboid_0 = Cuboid(1.02, 0.14, 0.24, True)
     attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.04, 0.83, 0.04, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.14, 0.47)
-    translate(cuboid_1, X, 3, 0.66)
+    cuboid_1 = Cuboid(0.2, 0.71, 0.19, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.49)
+    translate(cuboid_1, X, 2, 0.81)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.26, 0.55, 0.26, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.156, 0.12)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.247, 0.55, 0.247, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.1482, 0.88)
+    reflect(cuboid_1, X)
+
+`;
+
+const baselineTargetTask13 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.58, 1.75, 0.69, True)
     sub_bbox_1 = Cuboid(0.56, 1.03, 0.24, True)
@@ -1637,22 +1620,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, bbox, cuboid_1, bot, 0.49, 0.64)
 
-`;
-
-const abstractedInitialTask14 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.95, 0.29, bbox, 0.45, 0.1, 0.31, 0.11, 0.16, 0.51)
-    translate(cuboid_1, X, 3, 0.67)
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.56, 0.2, 0.24, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.04, 0.83, 0.04, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.14, 0.47)
+    translate(cuboid_1, X, 3, 0.66)
 
 @child_assembly
 def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.93, 0.93, bbox, 0.02, 0.92, 0.19, 0.92, 0.5, 0.5)
+    cuboid_0 = Cuboid(0.1, 0.65, 0.1, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.09)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.095, 0.65, 0.095, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.91)
+    reflect(cuboid_1, X)
 
-@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.66, bbox, 0.12, True, 0.09)
+`;
 
-@root_assembly
+const abstractedInitialTask14 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.95, 1.63, 0.93, True)
     sub_bbox_1 = abstraction_14(bbox, 0.77, 0.66, 0.63, True, 0.5, 0.57)
@@ -1663,22 +1650,22 @@ def make_root_assembly():
     make_subassembly_3(sub_bbox_3)
     squeeze(sub_bbox_3, sub_bbox_2, bbox, bot, 0.5, 0.23)
 
-`;
-
-const abstractedTargetTask14 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.58, 0.17, bbox, 0.27, 0.05, 0.7, 0.05, 0.12, 0.68)
-    translate(cuboid_1, X, 4, 0.77)
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.66, bbox, 0.12, True, 0.09)
 
 @child_assembly
 def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.58, 0.71, bbox, 0.04, 0.58, 0.07, 0.71, 0.5, 0.5)
+    cuboid_0, cuboid_1 = abstraction_18(0.93, 0.93, bbox, 0.02, 0.92, 0.19, 0.92, 0.5, 0.5)
 
 @child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.63, bbox, 0.06, True, 0.04)
+def make_subassembly_3(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.95, 0.29, bbox, 0.45, 0.1, 0.31, 0.11, 0.16, 0.51)
+    translate(cuboid_1, X, 3, 0.67)
 
-@root_assembly
+`;
+
+const abstractedTargetTask14 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.6, 1.7, 0.71, True)
     sub_bbox_1 = abstraction_14(bbox, 0.53, 0.64, 0.61, True, 0.54, 0.56)
@@ -1689,33 +1676,22 @@ def make_root_assembly():
     make_subassembly_3(sub_bbox_3)
     squeeze(sub_bbox_3, sub_bbox_2, bbox, bot, 0.48, 0.11)
 
-`;
-
-const baselineInitialTask14 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = Cuboid(0.95, 0.45, 0.29, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.1, 0.31, 0.11, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.16, 0.51)
-    translate(cuboid_1, X, 3, 0.67)
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.63, bbox, 0.06, True, 0.04)
 
 @child_assembly
 def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.93, 0.02, 0.93, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.92, 0.19, 0.92, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
+    cuboid_0, cuboid_1 = abstraction_18(0.58, 0.71, bbox, 0.04, 0.58, 0.07, 0.71, 0.5, 0.5)
 
 @child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.12, 0.66, 0.12, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.072, 0.09)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.114, 0.66, 0.114, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0684, 0.91)
-    reflect(cuboid_1, X)
+def make_subassembly_3(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.58, 0.17, bbox, 0.27, 0.05, 0.7, 0.05, 0.12, 0.68)
+    translate(cuboid_1, X, 4, 0.77)
 
-@root_assembly
+`;
+
+const baselineInitialTask14 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.95, 1.63, 0.93, True)
     sub_bbox_1 = Cuboid(0.77, 0.66, 0.63, True)
@@ -1728,33 +1704,33 @@ def make_root_assembly():
     make_subassembly_3(sub_bbox_3)
     squeeze(sub_bbox_3, sub_bbox_2, bbox, bot, 0.5, 0.23)
 
-`;
-
-const baselineTargetTask14 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = Cuboid(0.58, 0.27, 0.17, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.05, 0.7, 0.05, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.12, 0.68)
-    translate(cuboid_1, X, 4, 0.77)
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.12, 0.66, 0.12, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.072, 0.09)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.114, 0.66, 0.114, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0684, 0.91)
+    reflect(cuboid_1, X)
 
 @child_assembly
 def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.58, 0.04, 0.71, True)
+    cuboid_0 = Cuboid(0.93, 0.02, 0.93, True)
     attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.58, 0.07, 0.71, True)
+    cuboid_1 = Cuboid(0.92, 0.19, 0.92, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
 
 @child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.06, 0.63, 0.06, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.036, 0.04)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.057, 0.63, 0.057, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0342, 0.96)
-    reflect(cuboid_1, X)
+def make_subassembly_3(bbox):
+    cuboid_0 = Cuboid(0.95, 0.45, 0.29, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.1, 0.31, 0.11, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.16, 0.51)
+    translate(cuboid_1, X, 3, 0.67)
 
-@root_assembly
+`;
+
+const baselineTargetTask14 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.6, 1.7, 0.71, True)
     sub_bbox_1 = Cuboid(0.53, 0.64, 0.61, True)
@@ -1767,19 +1743,33 @@ def make_root_assembly():
     make_subassembly_3(sub_bbox_3)
     squeeze(sub_bbox_3, sub_bbox_2, bbox, bot, 0.48, 0.11)
 
-`;
-
-const abstractedInitialTask15 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(1.05, 0.33, bbox, 0.28, 0.12, 0.78, 0.12, 0.11, 0.62)
-    cuboid_2 = abstraction_8(bbox, 0.12, 0.78, 0.12, cuboid_0, 0.25, 0.43)
-    translate(cuboid_2, X, 4, 0.6)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.4, bbox, 0.14, True, 0.09)
+    cuboid_0 = Cuboid(0.06, 0.63, 0.06, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.036, 0.04)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.057, 0.63, 0.057, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0342, 0.96)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.58, 0.04, 0.71, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.58, 0.07, 0.71, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
+
+@child_assembly
+def make_subassembly_3(bbox):
+    cuboid_0 = Cuboid(0.58, 0.27, 0.17, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.05, 0.7, 0.05, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.12, 0.68)
+    translate(cuboid_1, X, 4, 0.77)
+
+`;
+
+const abstractedInitialTask15 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.05, 1.57, 0.91, True)
     sub_bbox_1 = abstraction_14(bbox, 1.04, 0.4, 0.76, True, 0.5, 0.58)
@@ -1789,19 +1779,19 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.19)
 
-`;
-
-const abstractedTargetTask15 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.7, 0.29, bbox, 0.17, 0.05, 0.66, 0.05, 0.19, 0.7)
-    cuboid_2 = abstraction_8(bbox, 0.05, 0.66, 0.05, cuboid_0, 0.4, 0.39)
-    translate(cuboid_2, X, 2, 0.45)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.7, bbox, 0.1, True, 0.06)
+    cuboid_0, cuboid_1 = abstraction_12(0.4, bbox, 0.14, True, 0.09)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(1.05, 0.33, bbox, 0.28, 0.12, 0.78, 0.12, 0.11, 0.62)
+    cuboid_2 = abstraction_8(bbox, 0.12, 0.78, 0.12, cuboid_0, 0.25, 0.43)
+    translate(cuboid_2, X, 4, 0.6)
+
+`;
+
+const abstractedTargetTask15 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.71, 1.63, 0.85, True)
     sub_bbox_1 = abstraction_14(bbox, 0.55, 0.7, 0.64, True, 0.52, 0.58)
@@ -1811,28 +1801,19 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.48, 0.17)
 
-`;
-
-const baselineInitialTask15 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(1.05, 0.28, 0.33, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.12, 0.78, 0.12, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.11, 0.62)
-    cuboid_2 = Cuboid(0.12, 0.78, 0.12, True)
-    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.25, 0.43)
-    translate(cuboid_2, X, 4, 0.6)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.14, 0.4, 0.14, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.09)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.133, 0.4, 0.133, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.91)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.7, bbox, 0.1, True, 0.06)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.7, 0.29, bbox, 0.17, 0.05, 0.66, 0.05, 0.19, 0.7)
+    cuboid_2 = abstraction_8(bbox, 0.05, 0.66, 0.05, cuboid_0, 0.4, 0.39)
+    translate(cuboid_2, X, 2, 0.45)
+
+`;
+
+const baselineInitialTask15 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.05, 1.57, 0.91, True)
     sub_bbox_1 = Cuboid(1.04, 0.4, 0.76, True)
@@ -1844,28 +1825,28 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.19)
 
-`;
-
-const baselineTargetTask15 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.7, 0.17, 0.29, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.05, 0.66, 0.05, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.19, 0.7)
-    cuboid_2 = Cuboid(0.05, 0.66, 0.05, True)
-    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.4, 0.39)
-    translate(cuboid_2, X, 2, 0.45)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.1, 0.7, 0.1, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.06)
+    cuboid_0 = Cuboid(0.14, 0.4, 0.14, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.09)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.095, 0.7, 0.095, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.94)
+    cuboid_1 = Cuboid(0.133, 0.4, 0.133, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.91)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(1.05, 0.28, 0.33, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.12, 0.78, 0.12, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.11, 0.62)
+    cuboid_2 = Cuboid(0.12, 0.78, 0.12, True)
+    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.25, 0.43)
+    translate(cuboid_2, X, 4, 0.6)
+
+`;
+
+const baselineTargetTask15 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.71, 1.63, 0.85, True)
     sub_bbox_1 = Cuboid(0.55, 0.7, 0.64, True)
@@ -1877,18 +1858,35 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.48, 0.17)
 
-`;
-
-const abstractedInitialTask16 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = abstraction_13(1.0, bbox, 0.14, 0.12, 0.5, 0.08)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.09, 0.1, 0.5, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.35, 0.37, 1.0)
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.1, 0.7, 0.1, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.06)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.095, 0.7, 0.095, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.94)
+    reflect(cuboid_1, X)
 
 @child_assembly
 def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.74, 0.74, bbox, 0.02, 0.74, 0.16, 0.74, 0.5, 0.5)
+    cuboid_0 = Cuboid(0.7, 0.17, 0.29, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.05, 0.66, 0.05, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.19, 0.7)
+    cuboid_2 = Cuboid(0.05, 0.66, 0.05, True)
+    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.4, 0.39)
+    translate(cuboid_2, X, 2, 0.45)
+
+`;
+
+const abstractedInitialTask16 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.83, 1.6, 0.74, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.74, 1.0, 0.74, True, 0.51, 0.5)
+    make_subassembly_1(sub_bbox_1)
+    sub_bbox_2 = abstraction_9(0.74, 0.18, 0.74, sub_bbox_1, 0.04, 0.5)
+    make_subassembly_2(sub_bbox_2)
+    cuboid_2 = abstraction_16(bbox, 0.83, 0.47, 0.08, True, sub_bbox_2, 0.72, 0.05, 0.05)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -1899,27 +1897,27 @@ def make_subassembly_1(bbox):
     attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.98, 0.37, 0.06)
     reflect(cuboid_1, Z)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.83, 1.6, 0.74, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.74, 1.0, 0.74, True, 0.51, 0.5)
-    make_subassembly_1(sub_bbox_1)
-    sub_bbox_2 = abstraction_9(0.74, 0.18, 0.74, sub_bbox_1, 0.04, 0.5)
-    make_subassembly_2(sub_bbox_2)
-    cuboid_2 = abstraction_16(bbox, 0.83, 0.47, 0.08, True, sub_bbox_2, 0.72, 0.05, 0.05)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.74, 0.74, bbox, 0.02, 0.74, 0.16, 0.74, 0.5, 0.5)
+
+@child_assembly
+def make_subassembly_3(bbox):
+    cuboid_0 = abstraction_13(1.0, bbox, 0.14, 0.12, 0.5, 0.08)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.09, 0.1, 0.5, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.35, 0.37, 1.0)
 
 `;
 
-const abstractedTargetTask16 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = abstraction_13(1.21, bbox, 0.06, 0.08, 0.5, 0.07)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.06, 0.03, 0.38, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.49, 0.4, 1.0)
-
-@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.67, 0.54, bbox, 0.05, 0.67, 0.06, 0.54, 0.5, 0.5)
+const abstractedTargetTask16 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.67, 1.67, 0.54, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.67, 1.21, 0.54, True, 0.5, 0.51)
+    make_subassembly_1(sub_bbox_1)
+    sub_bbox_2 = abstraction_9(0.67, 0.11, 0.54, sub_bbox_1, 0.0, 0.5)
+    make_subassembly_2(sub_bbox_2)
+    cuboid_2 = abstraction_16(bbox, 0.67, 0.38, 0.07, True, sub_bbox_2, 0.75, 0.05, 0.06)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -1930,43 +1928,20 @@ def make_subassembly_1(bbox):
     attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 1.0, 0.41, 0.08)
     reflect(cuboid_1, Z)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.67, 1.67, 0.54, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.67, 1.21, 0.54, True, 0.5, 0.51)
-    make_subassembly_1(sub_bbox_1)
-    sub_bbox_2 = abstraction_9(0.67, 0.11, 0.54, sub_bbox_1, 0.0, 0.5)
-    make_subassembly_2(sub_bbox_2)
-    cuboid_2 = abstraction_16(bbox, 0.67, 0.38, 0.07, True, sub_bbox_2, 0.75, 0.05, 0.06)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.67, 0.54, bbox, 0.05, 0.67, 0.06, 0.54, 0.5, 0.5)
+
+@child_assembly
+def make_subassembly_3(bbox):
+    cuboid_0 = abstraction_13(1.21, bbox, 0.06, 0.08, 0.5, 0.07)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.06, 0.03, 0.38, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.49, 0.4, 1.0)
 
 `;
 
-const baselineInitialTask16 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = Cuboid(0.14, 1.0, 0.12, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.08)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.09, 0.1, 0.5, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.35, 0.37, 1.0)
-
-@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.74, 0.02, 0.74, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.74, 0.16, 0.74, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
-
-@child_assembly
-def make_subassembly_1(bbox):
-    sub_bbox_3 = Cuboid(0.14, 1.0, 0.74, True)
-    make_subassembly_3(sub_bbox_3)
-    squeeze(sub_bbox_3, bbox, bbox, bot, 0.09, 0.5)
-    reflect(sub_bbox_3, X)
-    cuboid_1 = Cuboid(0.51, 0.12, 0.09, True)
-    attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.98, 0.37, 0.06)
-    reflect(cuboid_1, Z)
-
-@root_assembly
+const baselineInitialTask16 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.83, 1.6, 0.74, True)
     sub_bbox_1 = Cuboid(0.74, 1.0, 0.74, True)
@@ -1979,34 +1954,34 @@ def make_root_assembly():
     attach(cuboid_2, sub_bbox_2, 0.5, 0.0, 0.5, 0.5, 0.72, 0.05)
     attach(cuboid_2, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.05)
 
-`;
-
-const baselineTargetTask16 = `@child_assembly
-def make_subassembly_3(bbox):
-    cuboid_0 = Cuboid(0.06, 1.21, 0.08, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.07)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.06, 0.03, 0.38, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.49, 0.4, 1.0)
+@child_assembly
+def make_subassembly_1(bbox):
+    sub_bbox_3 = Cuboid(0.14, 1.0, 0.74, True)
+    make_subassembly_3(sub_bbox_3)
+    squeeze(sub_bbox_3, bbox, bbox, bot, 0.09, 0.5)
+    reflect(sub_bbox_3, X)
+    cuboid_1 = Cuboid(0.51, 0.12, 0.09, True)
+    attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 0.98, 0.37, 0.06)
+    reflect(cuboid_1, Z)
 
 @child_assembly
 def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.67, 0.05, 0.54, True)
+    cuboid_0 = Cuboid(0.74, 0.02, 0.74, True)
     attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.67, 0.06, 0.54, True)
+    cuboid_1 = Cuboid(0.74, 0.16, 0.74, True)
     squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
 
 @child_assembly
-def make_subassembly_1(bbox):
-    sub_bbox_3 = Cuboid(0.06, 1.21, 0.54, True)
-    make_subassembly_3(sub_bbox_3)
-    squeeze(sub_bbox_3, bbox, bbox, bot, 0.05, 0.5)
-    reflect(sub_bbox_3, X)
-    cuboid_1 = Cuboid(0.55, 0.04, 0.08, True)
-    attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 1.0, 0.41, 0.08)
-    reflect(cuboid_1, Z)
+def make_subassembly_3(bbox):
+    cuboid_0 = Cuboid(0.14, 1.0, 0.12, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.08)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.09, 0.1, 0.5, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.35, 0.37, 1.0)
 
-@root_assembly
+`;
+
+const baselineTargetTask16 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.67, 1.67, 0.54, True)
     sub_bbox_1 = Cuboid(0.67, 1.21, 0.54, True)
@@ -2019,13 +1994,34 @@ def make_root_assembly():
     attach(cuboid_2, sub_bbox_2, 0.5, 0.0, 0.5, 0.5, 0.75, 0.05)
     attach(cuboid_2, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.06)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    sub_bbox_3 = Cuboid(0.06, 1.21, 0.54, True)
+    make_subassembly_3(sub_bbox_3)
+    squeeze(sub_bbox_3, bbox, bbox, bot, 0.05, 0.5)
+    reflect(sub_bbox_3, X)
+    cuboid_1 = Cuboid(0.55, 0.04, 0.08, True)
+    attach(cuboid_1, sub_bbox_3, 0.0, 0.5, 0.5, 1.0, 0.41, 0.08)
+    reflect(cuboid_1, Z)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.67, 0.05, 0.54, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.67, 0.06, 0.54, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.5, 0.5)
+
+@child_assembly
+def make_subassembly_3(bbox):
+    cuboid_0 = Cuboid(0.06, 1.21, 0.08, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.07)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.06, 0.03, 0.38, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.49, 0.4, 1.0)
+
 `;
 
-const abstractedInitialTask17 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.59, bbox, 0.14, True, 0.07)
-
-@root_assembly
+const abstractedInitialTask17 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.33, 1.57, 1.35, True)
     sub_bbox_1 = abstraction_14(bbox, 1.05, 0.59, 1.1, True, 0.51, 0.47)
@@ -2035,13 +2031,13 @@ def make_root_assembly():
     attach(cuboid_3, cuboid_2, 0.5, 0.5, 0.0, 0.03, 0.13, 0.94)
     reflect(cuboid_3, X)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.59, bbox, 0.14, True, 0.07)
+
 `;
 
-const abstractedTargetTask17 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.67, bbox, 0.16, True, 0.11)
-
-@root_assembly
+const abstractedTargetTask17 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.71, 1.83, 0.68, True)
     sub_bbox_1 = abstraction_14(bbox, 0.68, 0.67, 0.68, True, 0.48, 0.5)
@@ -2051,18 +2047,13 @@ def make_root_assembly():
     attach(cuboid_3, cuboid_2, 0.5, 0.5, 0.0, 0.15, 0.12, 1.0)
     reflect(cuboid_3, X)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0, cuboid_1 = abstraction_12(0.67, bbox, 0.16, True, 0.11)
+
 `;
 
-const baselineInitialTask17 = `@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.14, 0.59, 0.14, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.07)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.133, 0.59, 0.133, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.93)
-    reflect(cuboid_1, X)
-
-@root_assembly
+const baselineInitialTask17 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.33, 1.57, 1.35, True)
     sub_bbox_1 = Cuboid(1.05, 0.59, 1.1, True)
@@ -2077,18 +2068,18 @@ def make_root_assembly():
     attach(cuboid_3, cuboid_2, 0.5, 0.5, 0.0, 0.03, 0.13, 0.94)
     reflect(cuboid_3, X)
 
-`;
-
-const baselineTargetTask17 = `@child_assembly
+@child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.16, 0.67, 0.16, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.096, 0.11)
+    cuboid_0 = Cuboid(0.14, 0.59, 0.14, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.07)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.152, 0.67, 0.152, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0912, 0.89)
+    cuboid_1 = Cuboid(0.133, 0.59, 0.133, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.93)
     reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const baselineTargetTask17 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.71, 1.83, 0.68, True)
     sub_bbox_1 = Cuboid(0.68, 0.67, 0.68, True)
@@ -2103,20 +2094,18 @@ def make_root_assembly():
     attach(cuboid_3, cuboid_2, 0.5, 0.5, 0.0, 0.15, 0.12, 1.0)
     reflect(cuboid_3, X)
 
-`;
-
-const abstractedInitialTask18 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_15(bbox, 0.76, 0.08, 0.15, True, 0.52)
-    cuboid_1 = abstraction_14(bbox, 0.12, 0.58, 0.1, True, 0.15, 0.31)
-    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.15, 0.23, 0.29)
-    translate(cuboid_1, X, 3, 0.69)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.83, bbox, 0.11, True, 0.08)
+    cuboid_0 = Cuboid(0.16, 0.67, 0.16, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.096, 0.11)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.152, 0.67, 0.152, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0912, 0.89)
+    reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const abstractedInitialTask18 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.76, 1.6, 0.68, True)
     sub_bbox_1 = abstraction_14(bbox, 0.66, 0.83, 0.65, True, 0.5, 0.5)
@@ -2126,20 +2115,20 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.13)
 
-`;
-
-const abstractedTargetTask18 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_15(bbox, 0.8, 0.07, 0.07, True, 0.43)
-    cuboid_1 = abstraction_14(bbox, 0.23, 0.88, 0.08, True, 0.14, 0.5)
-    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.14, 0.57, 0.58)
-    translate(cuboid_1, X, 2, 0.72)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.6, bbox, 0.12, True, 0.08)
+    cuboid_0, cuboid_1 = abstraction_12(0.83, bbox, 0.11, True, 0.08)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_15(bbox, 0.76, 0.08, 0.15, True, 0.52)
+    cuboid_1 = abstraction_14(bbox, 0.12, 0.58, 0.1, True, 0.15, 0.31)
+    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.15, 0.23, 0.29)
+    translate(cuboid_1, X, 3, 0.69)
+
+`;
+
+const abstractedTargetTask18 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.88, 1.63, 0.87, True)
     sub_bbox_1 = abstraction_14(bbox, 0.88, 0.6, 0.82, True, 0.5, 0.5)
@@ -2149,27 +2138,20 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.04)
 
-`;
-
-const baselineInitialTask18 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.76, 0.08, 0.15, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.52)
-    cuboid_1 = Cuboid(0.12, 0.58, 0.1, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.15, 0.0, 0.31)
-    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.15, 0.23, 0.29)
-    translate(cuboid_1, X, 3, 0.69)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.11, 0.83, 0.11, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.08)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1045, 0.83, 0.1045, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.92)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.6, bbox, 0.12, True, 0.08)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_15(bbox, 0.8, 0.07, 0.07, True, 0.43)
+    cuboid_1 = abstraction_14(bbox, 0.23, 0.88, 0.08, True, 0.14, 0.5)
+    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.14, 0.57, 0.58)
+    translate(cuboid_1, X, 2, 0.72)
+
+`;
+
+const baselineInitialTask18 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.76, 1.6, 0.68, True)
     sub_bbox_1 = Cuboid(0.66, 0.83, 0.65, True)
@@ -2181,27 +2163,27 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.13)
 
-`;
-
-const baselineTargetTask18 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.8, 0.07, 0.07, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.43)
-    cuboid_1 = Cuboid(0.23, 0.88, 0.08, True)
-    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.14, 0.0, 0.5)
-    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.14, 0.57, 0.58)
-    translate(cuboid_1, X, 2, 0.72)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.12, 0.6, 0.12, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.072, 0.08)
+    cuboid_0 = Cuboid(0.11, 0.83, 0.11, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.08)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.114, 0.6, 0.114, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0684, 0.92)
+    cuboid_1 = Cuboid(0.1045, 0.83, 0.1045, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.92)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.76, 0.08, 0.15, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.52)
+    cuboid_1 = Cuboid(0.12, 0.58, 0.1, True)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.15, 0.0, 0.31)
+    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.15, 0.23, 0.29)
+    translate(cuboid_1, X, 3, 0.69)
+
+`;
+
+const baselineTargetTask18 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.88, 1.63, 0.87, True)
     sub_bbox_1 = Cuboid(0.88, 0.6, 0.82, True)
@@ -2213,14 +2195,32 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.04)
 
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.12, 0.6, 0.12, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.072, 0.08)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.114, 0.6, 0.114, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0684, 0.92)
+    reflect(cuboid_1, X)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.8, 0.07, 0.07, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.43)
+    cuboid_1 = Cuboid(0.23, 0.88, 0.08, True)
+    attach(cuboid_1, bbox, 0.5, 0.0, 0.5, 0.14, 0.0, 0.5)
+    attach(cuboid_1, cuboid_0, 0.5, 1.0, 0.5, 0.14, 0.57, 0.58)
+    translate(cuboid_1, X, 2, 0.72)
+
 `;
 
-const abstractedInitialTask19 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_13(1.08, bbox, 0.1, 0.1, 0.5, 0.09)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.07, 0.09, 0.41, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.35, 1.0)
+const abstractedInitialTask19 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.61, 1.55, 0.61, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.61, 1.08, 0.61, True, 0.5, 0.5)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1, cuboid_2 = abstraction_6(0.61, 0.61, bbox, 0.24, sub_bbox_1, 0.03, 0.24, 0.11, 0.09)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -2231,21 +2231,21 @@ def make_subassembly_1(bbox):
     attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 1.0, 0.35, 0.07)
     reflect(cuboid_1, Z)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.61, 1.55, 0.61, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.61, 1.08, 0.61, True, 0.5, 0.5)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1, cuboid_2 = abstraction_6(0.61, 0.61, bbox, 0.24, sub_bbox_1, 0.03, 0.24, 0.11, 0.09)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_13(1.08, bbox, 0.1, 0.1, 0.5, 0.09)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.07, 0.09, 0.41, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.35, 1.0)
 
 `;
 
-const abstractedTargetTask19 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_13(0.79, bbox, 0.05, 0.05, 0.5, 0.04)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.02, 0.02, 0.58, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.49, 0.52, 0.91)
+const abstractedTargetTask19 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.66, 1.42, 0.71, True)
+    sub_bbox_1 = abstraction_14(bbox, 0.61, 0.79, 0.68, True, 0.5, 0.5)
+    make_subassembly_1(sub_bbox_1)
+    cuboid_1, cuboid_2 = abstraction_6(0.66, 0.71, bbox, 0.37, sub_bbox_1, 0.01, 0.26, 0.13, 0.1)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -2256,22 +2256,25 @@ def make_subassembly_1(bbox):
     attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 1.0, 0.43, 0.05)
     reflect(cuboid_1, Z)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.66, 1.42, 0.71, True)
-    sub_bbox_1 = abstraction_14(bbox, 0.61, 0.79, 0.68, True, 0.5, 0.5)
-    make_subassembly_1(sub_bbox_1)
-    cuboid_1, cuboid_2 = abstraction_6(0.66, 0.71, bbox, 0.37, sub_bbox_1, 0.01, 0.26, 0.13, 0.1)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_13(0.79, bbox, 0.05, 0.05, 0.5, 0.04)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.02, 0.02, 0.58, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.49, 0.52, 0.91)
 
 `;
 
-const baselineInitialTask19 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.1, 1.08, 0.1, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.09)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.07, 0.09, 0.41, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.35, 1.0)
+const baselineInitialTask19 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.61, 1.55, 0.61, True)
+    sub_bbox_1 = Cuboid(0.61, 1.08, 0.61, True)
+    make_subassembly_1(sub_bbox_1)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    cuboid_1 = Cuboid(0.61, 0.24, 0.61, True)
+    attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.5, 0.5, 1.0, 0.5)
+    cuboid_2 = Cuboid(0.61, 0.24, 0.11, True)
+    squeeze(cuboid_2, cuboid_1, bbox, bot, 0.5, 0.09)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -2283,26 +2286,26 @@ def make_subassembly_1(bbox):
     attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 1.0, 0.35, 0.07)
     reflect(cuboid_1, Z)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.61, 1.55, 0.61, True)
-    sub_bbox_1 = Cuboid(0.61, 1.08, 0.61, True)
-    make_subassembly_1(sub_bbox_1)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
-    cuboid_1 = Cuboid(0.61, 0.24, 0.61, True)
-    attach(cuboid_1, sub_bbox_1, 0.5, 0.03, 0.5, 0.5, 1.0, 0.5)
-    cuboid_2 = Cuboid(0.61, 0.24, 0.11, True)
-    squeeze(cuboid_2, cuboid_1, bbox, bot, 0.5, 0.09)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.1, 1.08, 0.1, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.09)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.07, 0.09, 0.41, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.5, 0.35, 1.0)
 
 `;
 
-const baselineTargetTask19 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.05, 0.79, 0.05, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.04)
-    reflect(cuboid_0, Z)
-    cuboid_1 = Cuboid(0.02, 0.02, 0.58, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.49, 0.52, 0.91)
+const baselineTargetTask19 = `@root_assembly
+def make_root_assembly():
+    bbox = Cuboid(0.66, 1.42, 0.71, True)
+    sub_bbox_1 = Cuboid(0.61, 0.79, 0.68, True)
+    make_subassembly_1(sub_bbox_1)
+    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    cuboid_1 = Cuboid(0.66, 0.37, 0.71, True)
+    attach(cuboid_1, sub_bbox_1, 0.5, 0.01, 0.5, 0.5, 1.0, 0.5)
+    cuboid_2 = Cuboid(0.66, 0.26, 0.13, True)
+    squeeze(cuboid_2, cuboid_1, bbox, bot, 0.5, 0.1)
 
 @child_assembly
 def make_subassembly_1(bbox):
@@ -2314,30 +2317,17 @@ def make_subassembly_1(bbox):
     attach(cuboid_1, sub_bbox_2, 0.0, 0.5, 0.5, 1.0, 0.43, 0.05)
     reflect(cuboid_1, Z)
 
-@root_assembly
-def make_root_assembly():
-    bbox = Cuboid(0.66, 1.42, 0.71, True)
-    sub_bbox_1 = Cuboid(0.61, 0.79, 0.68, True)
-    make_subassembly_1(sub_bbox_1)
-    attach(sub_bbox_1, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
-    cuboid_1 = Cuboid(0.66, 0.37, 0.71, True)
-    attach(cuboid_1, sub_bbox_1, 0.5, 0.01, 0.5, 0.5, 1.0, 0.5)
-    cuboid_2 = Cuboid(0.66, 0.26, 0.13, True)
-    squeeze(cuboid_2, cuboid_1, bbox, bot, 0.5, 0.1)
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.05, 0.79, 0.05, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.5, 0.04)
+    reflect(cuboid_0, Z)
+    cuboid_1 = Cuboid(0.02, 0.02, 0.58, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.5, 0.0, 0.49, 0.52, 0.91)
 
 `;
 
-const abstractedInitialTask20 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.65, 0.08, bbox, 0.23, 0.38, 0.44, 0.07, 0.49, 0.5)
-    cuboid_2 = abstraction_8(bbox, 0.08, 0.44, 0.07, cuboid_0, 0.06, 0.5)
-    reflect(cuboid_2, X)
-
-@child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.75, bbox, 0.09, True, 0.07)
-
-@root_assembly
+const abstractedInitialTask20 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.65, 1.59, 0.65, True)
     sub_bbox_1 = abstraction_14(bbox, 0.65, 0.75, 0.65, True, 0.5, 0.5)
@@ -2345,19 +2335,19 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.65, 0.65, bbox, 0.18, sub_bbox_1, 0.03, 0.67, 0.07, 0.06)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const abstractedTargetTask20 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.79, 0.14, bbox, 0.39, 0.27, 0.54, 0.14, 0.49, 0.5)
-    cuboid_2 = abstraction_8(bbox, 0.07, 0.54, 0.14, cuboid_0, 0.05, 0.5)
-    reflect(cuboid_2, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.57, bbox, 0.16, True, 0.09)
+    cuboid_0, cuboid_1 = abstraction_12(0.75, bbox, 0.09, True, 0.07)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.65, 0.08, bbox, 0.23, 0.38, 0.44, 0.07, 0.49, 0.5)
+    cuboid_2 = abstraction_8(bbox, 0.08, 0.44, 0.07, cuboid_0, 0.06, 0.5)
+    reflect(cuboid_2, X)
+
+`;
+
+const abstractedTargetTask20 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.69, 0.78, True)
     sub_bbox_1 = abstraction_14(bbox, 0.78, 0.57, 0.78, True, 0.5, 0.5)
@@ -2365,28 +2355,19 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.79, 0.78, bbox, 0.21, sub_bbox_1, 0.01, 0.93, 0.14, 0.09)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const baselineInitialTask20 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.65, 0.23, 0.08, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.38, 0.44, 0.07, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.49, 0.5)
-    cuboid_2 = Cuboid(0.08, 0.44, 0.07, True)
-    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.06, 0.5)
-    reflect(cuboid_2, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.09, 0.75, 0.09, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.054, 0.07)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.0855, 0.75, 0.0855, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0513, 0.93)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.57, bbox, 0.16, True, 0.09)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.79, 0.14, bbox, 0.39, 0.27, 0.54, 0.14, 0.49, 0.5)
+    cuboid_2 = abstraction_8(bbox, 0.07, 0.54, 0.14, cuboid_0, 0.05, 0.5)
+    reflect(cuboid_2, X)
+
+`;
+
+const baselineInitialTask20 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.65, 1.59, 0.65, True)
     sub_bbox_1 = Cuboid(0.65, 0.75, 0.65, True)
@@ -2398,28 +2379,28 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.06)
 
-`;
-
-const baselineTargetTask20 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.79, 0.39, 0.14, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.27, 0.54, 0.14, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.49, 0.5)
-    cuboid_2 = Cuboid(0.07, 0.54, 0.14, True)
-    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.05, 0.5)
-    reflect(cuboid_2, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.16, 0.57, 0.16, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.096, 0.09)
+    cuboid_0 = Cuboid(0.09, 0.75, 0.09, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.054, 0.07)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.152, 0.57, 0.152, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0912, 0.91)
+    cuboid_1 = Cuboid(0.0855, 0.75, 0.0855, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0513, 0.93)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.65, 0.23, 0.08, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.38, 0.44, 0.07, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.49, 0.5)
+    cuboid_2 = Cuboid(0.08, 0.44, 0.07, True)
+    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.06, 0.5)
+    reflect(cuboid_2, X)
+
+`;
+
+const baselineTargetTask20 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.69, 0.78, True)
     sub_bbox_1 = Cuboid(0.78, 0.57, 0.78, True)
@@ -2431,21 +2412,28 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.09)
 
-`;
-
-const abstractedInitialTask21 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_14(bbox, 0.8, 0.29, 0.12, True, 0.5, 0.5)
-    cuboid_1 = abstraction_15(bbox, 0.8, 0.31, 0.11, True, 0.48)
-    cuboid_2 = Cuboid(0.11, 0.33, 0.11, True)
-    squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.06, 0.49)
-    translate(cuboid_2, X, 3, 0.82)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.6, bbox, 0.14, True, 0.08)
+    cuboid_0 = Cuboid(0.16, 0.57, 0.16, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.096, 0.09)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.152, 0.57, 0.152, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0912, 0.91)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.79, 0.39, 0.14, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.27, 0.54, 0.14, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.49, 0.5)
+    cuboid_2 = Cuboid(0.07, 0.54, 0.14, True)
+    squeeze(cuboid_2, bbox, cuboid_0, bot, 0.05, 0.5)
+    reflect(cuboid_2, X)
+
+`;
+
+const abstractedInitialTask21 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.81, 1.67, 0.89, True)
     sub_bbox_1 = abstraction_14(bbox, 0.8, 0.6, 0.89, True, 0.5, 0.5)
@@ -2453,21 +2441,21 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.81, 0.89, bbox, 0.14, sub_bbox_1, 0.03, 0.93, 0.12, 0.07)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const abstractedTargetTask21 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_14(bbox, 0.78, 0.07, 0.12, True, 0.5, 0.5)
-    cuboid_1 = abstraction_15(bbox, 0.79, 0.28, 0.12, True, 0.48)
-    cuboid_2 = Cuboid(0.12, 0.63, 0.12, True)
-    squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.08, 0.49)
-    translate(cuboid_2, X, 4, 0.85)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.59, bbox, 0.19, True, 0.12)
+    cuboid_0, cuboid_1 = abstraction_12(0.6, bbox, 0.14, True, 0.08)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_14(bbox, 0.8, 0.29, 0.12, True, 0.5, 0.5)
+    cuboid_1 = abstraction_15(bbox, 0.8, 0.31, 0.11, True, 0.48)
+    cuboid_2 = Cuboid(0.11, 0.33, 0.11, True)
+    squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.06, 0.49)
+    translate(cuboid_2, X, 3, 0.82)
+
+`;
+
+const abstractedTargetTask21 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.8, 0.77, True)
     sub_bbox_1 = abstraction_14(bbox, 0.67, 0.59, 0.76, True, 0.53, 0.51)
@@ -2475,28 +2463,21 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.79, 0.77, bbox, 0.24, sub_bbox_1, 0.01, 0.97, 0.12, 0.09)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const baselineInitialTask21 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.8, 0.29, 0.12, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
-    cuboid_1 = Cuboid(0.8, 0.31, 0.11, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
-    cuboid_2 = Cuboid(0.11, 0.33, 0.11, True)
-    squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.06, 0.49)
-    translate(cuboid_2, X, 3, 0.82)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.14, 0.6, 0.14, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.08)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.133, 0.6, 0.133, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.92)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.59, bbox, 0.19, True, 0.12)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_14(bbox, 0.78, 0.07, 0.12, True, 0.5, 0.5)
+    cuboid_1 = abstraction_15(bbox, 0.79, 0.28, 0.12, True, 0.48)
+    cuboid_2 = Cuboid(0.12, 0.63, 0.12, True)
+    squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.08, 0.49)
+    translate(cuboid_2, X, 4, 0.85)
+
+`;
+
+const baselineInitialTask21 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.81, 1.67, 0.89, True)
     sub_bbox_1 = Cuboid(0.8, 0.6, 0.89, True)
@@ -2508,28 +2489,28 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.07)
 
-`;
-
-const baselineTargetTask21 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.78, 0.07, 0.12, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
-    cuboid_1 = Cuboid(0.79, 0.28, 0.12, True)
-    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
-    cuboid_2 = Cuboid(0.12, 0.63, 0.12, True)
-    squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.08, 0.49)
-    translate(cuboid_2, X, 4, 0.85)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.19, 0.59, 0.19, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.114, 0.12)
+    cuboid_0 = Cuboid(0.14, 0.6, 0.14, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.084, 0.08)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1805, 0.59, 0.1805, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.1083, 0.88)
+    cuboid_1 = Cuboid(0.133, 0.6, 0.133, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0798, 0.92)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.8, 0.29, 0.12, True)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    cuboid_1 = Cuboid(0.8, 0.31, 0.11, True)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
+    cuboid_2 = Cuboid(0.11, 0.33, 0.11, True)
+    squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.06, 0.49)
+    translate(cuboid_2, X, 3, 0.82)
+
+`;
+
+const baselineTargetTask21 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.79, 1.8, 0.77, True)
     sub_bbox_1 = Cuboid(0.67, 0.59, 0.76, True)
@@ -2541,18 +2522,28 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.09)
 
-`;
-
-const abstractedInitialTask22 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.63, 0.1, bbox, 0.18, 0.15, 0.72, 0.1, 0.12, 0.49)
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.19, 0.59, 0.19, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.114, 0.12)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.1805, 0.59, 0.1805, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.1083, 0.88)
     reflect(cuboid_1, X)
 
 @child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.61, bbox, 0.16, True, 0.1)
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.78, 0.07, 0.12, True)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    cuboid_1 = Cuboid(0.79, 0.28, 0.12, True)
+    attach(cuboid_1, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.48)
+    cuboid_2 = Cuboid(0.12, 0.63, 0.12, True)
+    squeeze(cuboid_2, cuboid_0, cuboid_1, bot, 0.08, 0.49)
+    translate(cuboid_2, X, 4, 0.85)
 
-@root_assembly
+`;
+
+const abstractedInitialTask22 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.63, 1.66, 0.63, True)
     sub_bbox_1 = abstraction_14(bbox, 0.63, 0.61, 0.64, True, 0.5, 0.5)
@@ -2560,18 +2551,18 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.63, 0.63, bbox, 0.18, sub_bbox_1, 0.15, 0.91, 0.1, 0.08)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const abstractedTargetTask22 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.67, 0.14, bbox, 0.62, 0.03, 0.03, 0.03, 0.3, 0.53)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.62, bbox, 0.1, True, 0.07)
+    cuboid_0, cuboid_1 = abstraction_12(0.61, bbox, 0.16, True, 0.1)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.63, 0.1, bbox, 0.18, 0.15, 0.72, 0.1, 0.12, 0.49)
+    reflect(cuboid_1, X)
+
+`;
+
+const abstractedTargetTask22 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.68, 1.47, 0.91, True)
     sub_bbox_1 = abstraction_14(bbox, 0.68, 0.62, 0.87, True, 0.5, 0.52)
@@ -2579,26 +2570,18 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.68, 0.91, bbox, 0.19, sub_bbox_1, 0.02, 0.66, 0.14, 0.06)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const baselineInitialTask22 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.63, 0.18, 0.1, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.15, 0.72, 0.1, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.12, 0.49)
-    reflect(cuboid_1, X)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.16, 0.61, 0.16, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.096, 0.1)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.152, 0.61, 0.152, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0912, 0.9)
+    cuboid_0, cuboid_1 = abstraction_12(0.62, bbox, 0.1, True, 0.07)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.67, 0.14, bbox, 0.62, 0.03, 0.03, 0.03, 0.3, 0.53)
     reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const baselineInitialTask22 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.63, 1.66, 0.63, True)
     sub_bbox_1 = Cuboid(0.63, 0.61, 0.63, True)
@@ -2610,26 +2593,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.08)
 
-`;
-
-const baselineTargetTask22 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.67, 0.62, 0.14, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.03, 0.03, 0.03, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.3, 0.53)
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.16, 0.61, 0.16, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.096, 0.1)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.152, 0.61, 0.152, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0912, 0.9)
     reflect(cuboid_1, X)
 
 @child_assembly
-def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.1, 0.62, 0.1, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.07)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.095, 0.62, 0.095, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.93)
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.63, 0.18, 0.1, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.15, 0.72, 0.1, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.12, 0.49)
     reflect(cuboid_1, X)
 
-@root_assembly
+`;
+
+const baselineTargetTask22 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.68, 1.47, 0.91, True)
     sub_bbox_1 = Cuboid(0.68, 0.62, 0.87, True)
@@ -2641,18 +2624,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.06)
 
-`;
-
-const abstractedInitialTask23 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(1.03, 0.35, bbox, 0.11, 0.09, 0.78, 0.09, 0.15, 0.53)
-    translate(cuboid_1, X, 2, 0.7)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.64, bbox, 0.15, True, 0.08)
+    cuboid_0 = Cuboid(0.1, 0.62, 0.1, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.07)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.095, 0.62, 0.095, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.93)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.67, 0.62, 0.14, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.03, 0.03, 0.03, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.3, 0.53)
+    reflect(cuboid_1, X)
+
+`;
+
+const abstractedInitialTask23 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.63, 0.92, True)
     sub_bbox_1 = abstraction_14(bbox, 0.99, 0.64, 0.81, True, 0.48, 0.56)
@@ -2662,18 +2653,18 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.51, 0.19)
 
-`;
-
-const abstractedTargetTask23 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.82, 0.41, bbox, 0.19, 0.09, 0.56, 0.07, 0.23, 0.47)
-    translate(cuboid_1, X, 4, 0.55)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.57, bbox, 0.11, True, 0.08)
+    cuboid_0, cuboid_1 = abstraction_12(0.64, bbox, 0.15, True, 0.08)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(1.03, 0.35, bbox, 0.11, 0.09, 0.78, 0.09, 0.15, 0.53)
+    translate(cuboid_1, X, 2, 0.7)
+
+`;
+
+const abstractedTargetTask23 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.82, 1.5, 0.8, True)
     sub_bbox_1 = abstraction_14(bbox, 0.58, 0.57, 0.54, True, 0.5, 0.57)
@@ -2683,26 +2674,18 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.24)
 
-`;
-
-const baselineInitialTask23 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(1.03, 0.11, 0.35, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.09, 0.78, 0.09, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.15, 0.53)
-    translate(cuboid_1, X, 2, 0.7)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.15, 0.64, 0.15, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.09, 0.08)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1425, 0.64, 0.1425, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0855, 0.92)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.57, bbox, 0.11, True, 0.08)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.82, 0.41, bbox, 0.19, 0.09, 0.56, 0.07, 0.23, 0.47)
+    translate(cuboid_1, X, 4, 0.55)
+
+`;
+
+const baselineInitialTask23 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.03, 1.63, 0.92, True)
     sub_bbox_1 = Cuboid(0.99, 0.64, 0.81, True)
@@ -2714,26 +2697,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.51, 0.19)
 
-`;
-
-const baselineTargetTask23 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.82, 0.19, 0.41, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.09, 0.56, 0.07, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.23, 0.47)
-    translate(cuboid_1, X, 4, 0.55)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.11, 0.57, 0.11, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.08)
+    cuboid_0 = Cuboid(0.15, 0.64, 0.15, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.09, 0.08)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1045, 0.57, 0.1045, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.92)
+    cuboid_1 = Cuboid(0.1425, 0.64, 0.1425, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0855, 0.92)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(1.03, 0.11, 0.35, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.09, 0.78, 0.09, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.15, 0.53)
+    translate(cuboid_1, X, 2, 0.7)
+
+`;
+
+const baselineTargetTask23 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.82, 1.5, 0.8, True)
     sub_bbox_1 = Cuboid(0.58, 0.57, 0.54, True)
@@ -2745,18 +2728,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.24)
 
-`;
-
-const abstractedInitialTask24 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.71, 0.23, bbox, 0.12, 0.03, 0.55, 0.03, 0.09, 0.61)
-    translate(cuboid_1, X, 9, 0.79)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.64, bbox, 0.06, True, 0.03)
+    cuboid_0 = Cuboid(0.11, 0.57, 0.11, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.066, 0.08)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.1045, 0.57, 0.1045, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0627, 0.92)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.82, 0.19, 0.41, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.09, 0.56, 0.07, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.23, 0.47)
+    translate(cuboid_1, X, 4, 0.55)
+
+`;
+
+const abstractedInitialTask24 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.73, 1.38, 0.98, True)
     sub_bbox_1 = abstraction_14(bbox, 0.67, 0.64, 0.85, True, 0.48, 0.54)
@@ -2764,18 +2755,18 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.73, 0.98, bbox, 0.08, sub_bbox_1, 0.0, 0.66, 0.23, 0.13)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const abstractedTargetTask24 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0, cuboid_1 = abstraction_18(0.93, 0.13, bbox, 0.57, 0.23, 0.31, 0.1, 0.2, 0.47)
-    translate(cuboid_1, X, 2, 0.6)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.66, bbox, 0.25, True, 0.15)
+    cuboid_0, cuboid_1 = abstraction_12(0.64, bbox, 0.06, True, 0.03)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.71, 0.23, bbox, 0.12, 0.03, 0.55, 0.03, 0.09, 0.61)
+    translate(cuboid_1, X, 9, 0.79)
+
+`;
+
+const abstractedTargetTask24 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.96, 1.65, 0.9, True)
     sub_bbox_1 = abstraction_14(bbox, 0.94, 0.66, 0.87, True, 0.5, 0.5)
@@ -2783,26 +2774,18 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.96, 0.9, bbox, 0.13, sub_bbox_1, 0.19, 0.89, 0.13, 0.09)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const baselineInitialTask24 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.71, 0.12, 0.23, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.03, 0.55, 0.03, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.61)
-    translate(cuboid_1, X, 9, 0.79)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.06, 0.64, 0.06, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.036, 0.03)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.057, 0.64, 0.057, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0342, 0.97)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.66, bbox, 0.25, True, 0.15)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0, cuboid_1 = abstraction_18(0.93, 0.13, bbox, 0.57, 0.23, 0.31, 0.1, 0.2, 0.47)
+    translate(cuboid_1, X, 2, 0.6)
+
+`;
+
+const baselineInitialTask24 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.73, 1.38, 0.98, True)
     sub_bbox_1 = Cuboid(0.67, 0.64, 0.85, True)
@@ -2814,26 +2797,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.13)
 
-`;
-
-const baselineTargetTask24 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.93, 0.57, 0.13, True)
-    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
-    cuboid_1 = Cuboid(0.23, 0.31, 0.1, True)
-    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.2, 0.47)
-    translate(cuboid_1, X, 2, 0.6)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.25, 0.66, 0.25, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.15, 0.15)
+    cuboid_0 = Cuboid(0.06, 0.64, 0.06, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.036, 0.03)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.2375, 0.66, 0.2375, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.1425, 0.85)
+    cuboid_1 = Cuboid(0.057, 0.64, 0.057, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0342, 0.97)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.71, 0.12, 0.23, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.03, 0.55, 0.03, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.09, 0.61)
+    translate(cuboid_1, X, 9, 0.79)
+
+`;
+
+const baselineTargetTask24 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.96, 1.65, 0.9, True)
     sub_bbox_1 = Cuboid(0.94, 0.66, 0.87, True)
@@ -2845,20 +2828,26 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.09)
 
-`;
-
-const abstractedInitialTask25 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_14(bbox, 0.77, 0.16, 0.15, True, 0.5, 0.5)
-    reflect(cuboid_0, Y)
-    cuboid_1 = abstraction_17(0.18, 0.63, 0.14, True, cuboid_0, 0.12, 0.99, 0.46)
-    translate(cuboid_1, X, 3, 0.76)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.4, bbox, 0.17, True, 0.12)
+    cuboid_0 = Cuboid(0.25, 0.66, 0.25, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.15, 0.15)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.2375, 0.66, 0.2375, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.1425, 0.85)
+    reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.93, 0.57, 0.13, True)
+    attach(cuboid_0, bbox, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5)
+    cuboid_1 = Cuboid(0.23, 0.31, 0.1, True)
+    squeeze(cuboid_1, bbox, cuboid_0, bot, 0.2, 0.47)
+    translate(cuboid_1, X, 2, 0.6)
+
+`;
+
+const abstractedInitialTask25 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.77, 1.65, 0.84, True)
     sub_bbox_1 = abstraction_14(bbox, 0.77, 0.4, 0.84, True, 0.5, 0.5)
@@ -2866,20 +2855,20 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.77, 0.84, bbox, 0.3, sub_bbox_1, 0.0, 0.95, 0.15, 0.09)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const abstractedTargetTask25 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = abstraction_14(bbox, 0.75, 0.12, 0.1, True, 0.5, 0.5)
-    reflect(cuboid_0, Y)
-    cuboid_1 = abstraction_17(0.1, 0.9, 0.1, True, cuboid_0, 0.07, 0.97, 0.5)
-    translate(cuboid_1, X, 2, 0.86)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0, cuboid_1 = abstraction_12(0.47, bbox, 0.1, True, 0.06)
+    cuboid_0, cuboid_1 = abstraction_12(0.4, bbox, 0.17, True, 0.12)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_14(bbox, 0.77, 0.16, 0.15, True, 0.5, 0.5)
+    reflect(cuboid_0, Y)
+    cuboid_1 = abstraction_17(0.18, 0.63, 0.14, True, cuboid_0, 0.12, 0.99, 0.46)
+    translate(cuboid_1, X, 3, 0.76)
+
+`;
+
+const abstractedTargetTask25 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.75, 1.68, 0.75, True)
     sub_bbox_1 = abstraction_14(bbox, 0.75, 0.47, 0.75, True, 0.5, 0.5)
@@ -2887,27 +2876,20 @@ def make_root_assembly():
     cuboid_1,sub_bbox_2 = abstraction_6(0.75, 0.75, bbox, 0.09, sub_bbox_1, 0.0, 1.12, 0.1, 0.06)
     make_subassembly_2(sub_bbox_2)
 
-`;
-
-const baselineInitialTask25 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.77, 0.16, 0.15, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
-    reflect(cuboid_0, Y)
-    cuboid_1 = Cuboid(0.18, 0.63, 0.14, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.12, 0.99, 0.46)
-    translate(cuboid_1, X, 3, 0.76)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.17, 0.4, 0.17, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.102, 0.12)
-    reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.1615, 0.4, 0.1615, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.0969, 0.88)
-    reflect(cuboid_1, X)
+    cuboid_0, cuboid_1 = abstraction_12(0.47, bbox, 0.1, True, 0.06)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = abstraction_14(bbox, 0.75, 0.12, 0.1, True, 0.5, 0.5)
+    reflect(cuboid_0, Y)
+    cuboid_1 = abstraction_17(0.1, 0.9, 0.1, True, cuboid_0, 0.07, 0.97, 0.5)
+    translate(cuboid_1, X, 2, 0.86)
+
+`;
+
+const baselineInitialTask25 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.77, 1.65, 0.84, True)
     sub_bbox_1 = Cuboid(0.77, 0.4, 0.84, True)
@@ -2919,27 +2901,27 @@ def make_root_assembly():
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.09)
 
-`;
-
-const baselineTargetTask25 = `@child_assembly
-def make_subassembly_2(bbox):
-    cuboid_0 = Cuboid(0.75, 0.12, 0.1, True)
-    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
-    reflect(cuboid_0, Y)
-    cuboid_1 = Cuboid(0.1, 0.9, 0.1, True)
-    attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.07, 0.97, 0.5)
-    translate(cuboid_1, X, 2, 0.86)
-
 @child_assembly
 def make_subassembly_1(bbox):
-    cuboid_0 = Cuboid(0.1, 0.47, 0.1, True)
-    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.06)
+    cuboid_0 = Cuboid(0.17, 0.4, 0.17, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.102, 0.12)
     reflect(cuboid_0, X)
-    cuboid_1 = Cuboid(0.095, 0.47, 0.095, True)
-    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.94)
+    cuboid_1 = Cuboid(0.1615, 0.4, 0.1615, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.0969, 0.88)
     reflect(cuboid_1, X)
 
-@root_assembly
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.77, 0.16, 0.15, True)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    reflect(cuboid_0, Y)
+    cuboid_1 = Cuboid(0.18, 0.63, 0.14, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.12, 0.99, 0.46)
+    translate(cuboid_1, X, 3, 0.76)
+
+`;
+
+const baselineTargetTask25 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.75, 1.68, 0.75, True)
     sub_bbox_1 = Cuboid(0.75, 0.47, 0.75, True)
@@ -2950,6 +2932,24 @@ def make_root_assembly():
     sub_bbox_2 = Cuboid(0.75, 1.12, 0.1, True)
     make_subassembly_2(sub_bbox_2)
     squeeze(sub_bbox_2, cuboid_1, bbox, bot, 0.5, 0.06)
+
+@child_assembly
+def make_subassembly_1(bbox):
+    cuboid_0 = Cuboid(0.1, 0.47, 0.1, True)
+    squeeze(cuboid_0, bbox, bbox, bot, 0.06, 0.06)
+    reflect(cuboid_0, X)
+    cuboid_1 = Cuboid(0.095, 0.47, 0.095, True)
+    squeeze(cuboid_1, bbox, bbox, bot, 0.057, 0.94)
+    reflect(cuboid_1, X)
+
+@child_assembly
+def make_subassembly_2(bbox):
+    cuboid_0 = Cuboid(0.75, 0.12, 0.1, True)
+    attach(cuboid_0, bbox, 0.5, 0.0, 0.5, 0.5, 0.0, 0.5)
+    reflect(cuboid_0, Y)
+    cuboid_1 = Cuboid(0.1, 0.9, 0.1, True)
+    attach(cuboid_1, cuboid_0, 0.5, 0.0, 0.5, 0.07, 0.97, 0.5)
+    translate(cuboid_1, X, 2, 0.86)
 
 `;
 
