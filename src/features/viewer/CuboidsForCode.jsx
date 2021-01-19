@@ -5,6 +5,7 @@ import { fetchExecute } from '../executor/executorSlice';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import GroupWithMatrix from './GroupWithMatrix';
 import { PREFIX } from '../editing-task/editingTasks.gen';
+import { TRANSPILER_SETTINGS } from '../context/NonSerializableContextManager';
 
 const CuboidsForCode = ({ code, ...props }) => {
   // Call the executor to get the code's result.
@@ -13,7 +14,7 @@ const CuboidsForCode = ({ code, ...props }) => {
     const doFetch = async () => {
       // Transpile the code.
       const ast = new ShapeAssemblyParser().parseShapeAssemblyProgram(code, PREFIX);
-      const transpiled = new Transpiler().transpile(ast, { doBboxAttachPostprocessing: true });
+      const transpiled = new Transpiler().transpile(ast, TRANSPILER_SETTINGS);
       if (!transpiled) {
         return;
       }

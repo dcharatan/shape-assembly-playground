@@ -10,6 +10,9 @@ const InvocationFunctionNameDecorator = ({ children, token }) => {
   const [hovered, setHovered] = useState(false);
   const dispatch = useDispatch();
   const color = '#6c757d';
+  if (!metadata) {
+    return <span style={{ color }}>{children}</span>;
+  }
 
   // Define some helper functions.
   const tokenToKey = (t) => `${t.start}/${t.end}`;

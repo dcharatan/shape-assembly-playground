@@ -12,6 +12,11 @@ import { setTargetCode, setUsernameAndStudyCondition } from '../editing-task/edi
 import { getBaseUrl } from '../../environment';
 import { getEditingTask } from '../editing-task/getEditingTask';
 
+export const TRANSPILER_SETTINGS = {
+  doBboxAttachPostprocessing: true,
+  doBboxParamSubstitution: true,
+};
+
 const INITIAL_TEXT = `@root_assembly
 def root_asm():
     bbox = Cuboid(1, 1, 1, True)
@@ -93,7 +98,7 @@ const NonSerializableContextManager = ({ children }) => {
       setAst(mostRecentAst);
 
       // Transpile the AST.
-      const transpiled = new Transpiler().transpile(mostRecentAst, { doBboxAttachPostprocessing: true });
+      const transpiled = new Transpiler().transpile(mostRecentAst, TRANSPILER_SETTINGS);
       mostRecentMetadata = transpiled?.metadata ?? metadata;
       if (transpiled) {
         delete transpiled.metadata;
@@ -114,7 +119,7 @@ const NonSerializableContextManager = ({ children }) => {
   // This is used to change the visible cuboids without changing the editor text.
   const updateCuboidsSilently = (editorText) => {
     const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText, PREFIX);
-    const transpiled = new Transpiler().transpile(silentAst, { doBboxAttachPostprocessing: true });
+    const transpiled = new Transpiler().transpile(silentAst, TRANSPILER_SETTINGS);
     if (transpiled && transpiled.text) {
       dispatch(execute(transpiled.text));
     }

@@ -10,12 +10,14 @@ import { tokenPropType, tokenToKey } from '../tokenUtilities';
 const HoverableCuboidDecorator = ({ children, token }) => {
   const dispatch = useDispatch();
   const { metadata } = useContext(NonSerializableContext);
-  const highlights = metadata.get(tokenToKey(token));
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
   const hoveredCuboids = useSelector((state) => state.editorSlice.hoveredCuboids);
   const [hovered, setHovered] = useState(false);
-
   const color = COLOR_SECONDARY;
+  if (!metadata) {
+    return <span style={{ color }}>{children}</span>;
+  }
+  const highlights = metadata.get(tokenToKey(token));
   if (!highlights) {
     // This happens if a cuboid is in a function that hasn't been called.
     return <span style={{ color }}>{children}</span>;
