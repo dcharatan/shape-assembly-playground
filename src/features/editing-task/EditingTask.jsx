@@ -4,6 +4,7 @@ import EditorArea from '../editor/EditorArea';
 import ViewerArea from '../viewer/ViewerArea';
 import EditingTaskBar from './EditingTaskBar';
 import EditingTaskIntro from './EditingTaskIntro';
+import EditingTaskTutorial from './tutorial/EditingTaskTutorial';
 
 const EditingTask = () => {
   const targetCode = useSelector((state) => state.editingTaskSlice.targetCode);
@@ -12,6 +13,7 @@ const EditingTask = () => {
       <div className="d-flex flex-row w-100 h-100 p-2 overflow-y-hidden">
         <div className="w-50 h-100 p-2 overflow-y-hidden d-flex flex-column">
           <EditingTaskBar />
+          <EditingTaskTutorial />
           <EditingTaskIntro />
           <div className="w-100 d-flex flex-grow-1 overflow-y-hidden">
             <EditorArea hideTabs hideTutorial disableTextEditing />

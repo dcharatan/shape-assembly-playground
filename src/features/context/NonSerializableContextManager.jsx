@@ -19,7 +19,7 @@ export const TRANSPILER_SETTINGS = {
 };
 
 const INITIAL_TEXT = `@root_assembly
-def root_asm():
+def make_root_assembly():
     bbox = Cuboid(1, 1, 1, True)
     cube = Cuboid(1, 1, 1, True)`;
 
