@@ -8,6 +8,7 @@ import { Popover, Overlay, Form } from 'react-bootstrap';
 import SapType from '@dcharatan/shape-assembly-parser/dist/type/SapType';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import Invocation from '@dcharatan/shape-assembly-parser/dist/invocation/Invocation';
 import SimpleTooltip from '../../../components/SimpleTooltip';
 import { PARAMETER_SUBSTITUTION_THRESHOLD, substitute } from '../../executor/executorSlice';
 import '../../../index.scss';
@@ -24,10 +25,20 @@ const NumberParameterDecorator = ({
   contentBlock,
   contentState,
   functionName,
+  parentFunctionName,
+  rangeType,
   type,
+  invocation,
 }) => {
   const isInteger = type && type.name.includes('integer');
-  const context = useContext(NonSerializableContext);
+  const {
+    selectedParameter,
+    setSelectedParameter,
+    subassemblyBounds,
+    editorState,
+    updateCuboidsSilently,
+    setEditorState,
+  } = useContext(NonSerializableContext);
   const initialValue = parseFloat(children[0].props.text);
   const range = 2 * Math.abs(initialValue);
 
@@ -39,7 +50,6 @@ const NumberParameterDecorator = ({
   const adjustedEnd = end + offset;
 
   // Figure out if this decorator is selected as a slider.
-  const { selectedParameter, setSelectedParameter } = context;
   const show = selectedParameter.start === adjustedStart && selectedParameter.end === adjustedEnd;
   const toggleShow = () => {
     const alreadyShowingSlider = selectedParameter.start && selectedParameter.end;
@@ -51,23 +61,23 @@ const NumberParameterDecorator = ({
   // If there's no substitution and it's a float, show the parameter slider.
   if (oldValue === undefined || newValue === undefined) {
     const modifyCodeWithValue = (modifiedValue) => {
-      const text = editorStateToText(context.editorState);
+      const text = editorStateToText(editorState);
       const { modifiedCode } = substitute(text, [[adjustedStart, adjustedEnd, modifiedValue]], true, isInteger ? 0 : 2);
       return modifiedCode;
     };
     const onChangeSlider = (e) => {
       const newSliderValue = parseFloat(e.target.value);
-      context.updateCuboidsSilently(modifyCodeWithValue(newSliderValue));
+      updateCuboidsSilently(modifyCodeWithValue(newSliderValue));
       setValue(newSliderValue);
     };
     const onExitSlider = (save) => {
       if (save) {
-        context.setEditorState(editorStateFromText(modifyCodeWithValue(value)), {
+        setEditorState(editorStateFromText(modifyCodeWithValue(value)), {
           doNotTriggerParameterSliderDeselection: true,
           saveToHistory: true,
         });
       } else {
-        context.updateCuboidsSilently(modifyCodeWithValue(initialValue));
+        updateCuboidsSilently(modifyCodeWithValue(initialValue));
         setValue(initialValue);
       }
       setSelectedParameter({});
@@ -82,6 +92,34 @@ const NumberParameterDecorator = ({
     min = Math.max(min, 0);
     if (functionName === 'translate' && isInteger) {
       min = 1;
+    }
+
+    // Use the rangeType to override the above, if it's available.
+    const isRootBbox =
+      parentFunctionName === 'make_root_assembly' &&
+      invocation.assignmentTokens.length === 1 &&
+      invocation.assignmentTokens[0].text === 'bbox';
+    if (Array.isArray(rangeType) && rangeType.length > 0 && !isRootBbox) {
+      min = 0;
+      max = 0;
+      rangeType.forEach((rt) => {
+        if (Array.isArray(rt)) {
+          const [rMin, rMax] = rangeType;
+          min = Math.min(min, rMin);
+          max = Math.max(max, rMax);
+        } else if (['bbox_x', 'bbox_y', 'bbox_z'].includes(rt)) {
+          const bbox = subassemblyBounds[parentFunctionName];
+          if (bbox) {
+            const rMax = bbox[rt];
+            if (rMax) {
+              max = Math.max(rMax, max);
+            }
+          }
+        } else if (rt === 'unit') {
+          min = Math.min(min, 0);
+          max = Math.max(max, 1);
+        }
+      });
     }
 
     return (
@@ -152,7 +190,10 @@ NumberParameterDecorator.propTypes = {
   contentBlock: PropTypes.instanceOf(ContentBlock),
   contentState: PropTypes.instanceOf(ContentState),
   functionName: PropTypes.string,
+  parentFunctionName: PropTypes.string,
   type: PropTypes.instanceOf(SapType),
+  rangeType: PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.string, PropTypes.arrayOf(PropTypes.number))),
+  invocation: PropTypes.instanceOf(Invocation),
 };
 
 NumberParameterDecorator.defaultProps = {
@@ -161,23 +202,31 @@ NumberParameterDecorator.defaultProps = {
   contentBlock: undefined,
   contentState: undefined,
   functionName: undefined,
+  parentFunctionName: undefined,
   type: undefined,
+  rangeType: [],
+  invocation: undefined,
 };
 
 export default NumberParameterDecorator;
 
-const gatherFloatParameters = (expressionNode, invocation, tokens, index) => {
+const gatherFloatParameters = (expressionNode, invocation, tokens, index, parentFunctionName) => {
   // Parse the token as float. If it's a float (and not an operator, bool, etc.) add it to the list of float parameters.
   if (isNumber(expressionNode.token.text)) {
     tokens.push({
       token: expressionNode.token,
       functionName: invocation.definitionToken.text,
+      parentFunctionName,
       type: invocation.argumentTypes[index],
+      rangeType: invocation.argumentRangeTypes[index],
+      invocation,
     });
   }
 
   // Handle the children (for operators).
-  expressionNode.children.forEach((child) => gatherFloatParameters(child, invocation, tokens, index));
+  expressionNode.children.forEach((child) =>
+    gatherFloatParameters(child, invocation, tokens, index, parentFunctionName)
+  );
 };
 
 export const makeNumberParameterDecoratorStrategy = (getAst, optimizedParameters, applyStrategy) => (
@@ -202,7 +251,13 @@ export const makeNumberParameterDecoratorStrategy = (getAst, optimizedParameters
       if (!definition.isFromPrefix) {
         definition.invocations.forEach((invocation) => {
           invocation.argumentExpressions.forEach((argumentExpression, index) => {
-            gatherFloatParameters(argumentExpression, invocation, floatParameters, index);
+            gatherFloatParameters(
+              argumentExpression,
+              invocation,
+              floatParameters,
+              index,
+              definition.declaration.nameToken.text
+            );
           });
         });
       }
@@ -212,7 +267,15 @@ export const makeNumberParameterDecoratorStrategy = (getAst, optimizedParameters
       callback,
       contentState,
       floatParameters.map((fp) => fp.token),
-      floatParameters.map((fp) => ({ contentBlock, contentState, functionName: fp.functionName, type: fp.type }))
+      floatParameters.map((fp) => ({
+        contentBlock,
+        contentState,
+        functionName: fp.functionName,
+        type: fp.type,
+        parentFunctionName: fp.parentFunctionName,
+        rangeType: fp.rangeType,
+        invocation: fp.invocation,
+      }))
     );
   }
 };

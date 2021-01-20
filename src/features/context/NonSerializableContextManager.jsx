@@ -11,6 +11,7 @@ import { PREFIX } from '../editing-task/editingTasks.gen';
 import { setTargetCode, setUsernameAndStudyCondition } from '../editing-task/editingTaskSlice';
 import { getBaseUrl } from '../../environment';
 import { getEditingTask } from '../editing-task/getEditingTask';
+import getSubassemblyBounds from '../editing-task/getSubassemblyBounds';
 
 export const TRANSPILER_SETTINGS = {
   doBboxAttachPostprocessing: true,
@@ -62,6 +63,10 @@ const NonSerializableContextManager = ({ children }) => {
     });
   };
 
+  // This is used for the editing task.
+  // It's here because it gets changed each time transpilation happens.
+  const [subassemblyBounds, setSubassemblyBounds] = useState({});
+
   // This is used to ensure that transpilation only runs when the text actually changes.
   const lastEditorText = useRef(undefined);
   const update = (newEditorState, forceRefresh, additionalInformation) => {
@@ -108,6 +113,7 @@ const NonSerializableContextManager = ({ children }) => {
 
       // If transpilation succeeds, call the executor.
       if (transpiled && transpiled.text && (liveUpdatesEnabled || forceRefresh)) {
+        setSubassemblyBounds(getSubassemblyBounds(transpiled.text));
         dispatch(execute(transpiled.text));
       }
     }
@@ -192,9 +198,9 @@ const NonSerializableContextManager = ({ children }) => {
       })
     );
   };
-  const startEditingTaskSeries = (username, studyCondition) => {
-    dispatch(setUsernameAndStudyCondition({ username, studyCondition }));
-    startEditingTask(0, studyCondition);
+  const startEditingTaskSeries = (newUsername, newStudyCondition) => {
+    dispatch(setUsernameAndStudyCondition({ username: newUsername, studyCondition: newStudyCondition }));
+    startEditingTask(0, newStudyCondition);
   };
 
   return (
@@ -216,9 +222,12 @@ const NonSerializableContextManager = ({ children }) => {
         redoHistory,
         undoAvailable,
         redoAvailable,
+
+        // These are other editing task helpers.
         startEditingTask,
         startEditingTaskSeries,
         saveEditingTask,
+        subassemblyBounds,
       }}
     >
       {children}

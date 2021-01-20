@@ -1178,10 +1178,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@dcharatan/shape-assembly-parser@^6.5.1":
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/@dcharatan/shape-assembly-parser/-/shape-assembly-parser-6.5.1.tgz#ce1078a033134081283ef6ec11a9f0a05efa4d50"
-  integrity sha512-SQO8BcnRTAwd1liyozJ5bhpj1TrpH9aDKdbcZkzdMgjYP/clbuSY9WUKkHoKOmQe1M8Ni3axy5rofHvXRFPHPg==
+"@dcharatan/shape-assembly-parser@^6.7.0":
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/@dcharatan/shape-assembly-parser/-/shape-assembly-parser-6.7.0.tgz#738637312d1e3a7e514f9a919413aea776cdf241"
+  integrity sha512-D4qGusGigXIJ5ShjdbY4Ei6uusXh8Peqn9VnUT57rTm2YD3SwdhrdHZEn3UD9Np94K3+8X8ZX8acg5E9g2pWGA==
 
 "@emotion/hash@^0.8.0":
   version "0.8.0"
