@@ -11,6 +11,7 @@ const editingTaskSlice = createSlice({
   initialState: {
     username: undefined,
     targetCode: INITIAL_CODE,
+    abstractions: '',
     currentTaskIndex: 0,
     wireframeEnabled: false,
     studyCondition: undefined,
@@ -30,8 +31,9 @@ const editingTaskSlice = createSlice({
       }
     },
     setTargetCode(state, { payload }) {
-      const { targetCode, taskIndex } = payload;
+      const { targetCode, abstractions, taskIndex } = payload;
       state.targetCode = targetCode;
+      state.abstractions = abstractions;
       state.currentTaskIndex = taskIndex;
     },
   },

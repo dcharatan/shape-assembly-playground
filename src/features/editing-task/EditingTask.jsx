@@ -8,6 +8,7 @@ import EditingTaskTutorial from './tutorial/EditingTaskTutorial';
 
 const EditingTask = () => {
   const targetCode = useSelector((state) => state.editingTaskSlice.targetCode);
+  const abstractions = useSelector((state) => state.editingTaskSlice.abstractions);
   return (
     <div className="d-flex flex-grow-1 overflow-y-hidden">
       <div className="d-flex flex-row w-100 h-100 p-2 overflow-y-hidden">
@@ -24,7 +25,7 @@ const EditingTask = () => {
             <ViewerArea inEditingTask />
           </div>
           <div className="w-100 h-50 p-2">
-            <ViewerArea code={targetCode} />
+            <ViewerArea code={targetCode} prefix={abstractions} />
           </div>
         </div>
       </div>

@@ -7,7 +7,6 @@ import { endCuboidEditing, execute, updateWithTranspilation } from '../executor/
 import insertDecorators from '../editor/decorators/insertDecorators';
 import { resetOptimizedParameters } from '../editor/editorSlice';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
-import { PREFIX } from '../editing-task/editingTasks.gen';
 import { setTargetCode, setUsernameAndStudyCondition } from '../editing-task/editingTaskSlice';
 import { getBaseUrl } from '../../environment';
 import { getEditingTask } from '../editing-task/getEditingTask';
@@ -46,6 +45,7 @@ const NonSerializableContextManager = ({ children }) => {
   const [metadata, setMetadata] = useState(undefined);
   const [ast, setAst] = useState(undefined);
   const [editorState, setEditorState] = useState(editorStateFromText(INITIAL_TEXT));
+  const [prefix, setPrefix] = useState(''); // This is prepended to the text sent to the transpiler.
   const [selectedParameter, setSelectedParameter] = useState({});
 
   // This handles undo/redo.
@@ -98,8 +98,15 @@ const NonSerializableContextManager = ({ children }) => {
         setUndoAvailable(true);
       }
 
+      if (additionalInformation?.prefix) {
+        setPrefix(additionalInformation.prefix);
+      }
+
       // Parse a new AST.
-      mostRecentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText, PREFIX);
+      mostRecentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(
+        editorText,
+        additionalInformation?.prefix ?? prefix
+      );
       setAst(mostRecentAst);
 
       // Transpile the AST.
@@ -122,9 +129,9 @@ const NonSerializableContextManager = ({ children }) => {
     setEditorState(insertDecorators(newEditorState, mostRecentAst, mostRecentOptimizedParameters, mostRecentMetadata));
   };
 
-  // This is used to change the visible cuboids without changing the editor text.
+  // This is used to change the visible cuboids without changing the editor text.s
   const updateCuboidsSilently = (editorText) => {
-    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText, PREFIX);
+    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText, prefix);
     const transpiled = new Transpiler().transpile(silentAst, TRANSPILER_SETTINGS);
     if (transpiled && transpiled.text) {
       dispatch(execute(transpiled.text));
@@ -190,10 +197,13 @@ const NonSerializableContextManager = ({ children }) => {
     // Log the initial state.
     pushAction(editingTask.initial);
 
-    update(editorStateFromText(editingTask.initial), true);
+    update(editorStateFromText(editingTask.initial), true, {
+      prefix: editingTask.abstractions,
+    });
     dispatch(
       setTargetCode({
         targetCode: editingTask.target,
+        abstractions: editingTask.abstractions,
         taskIndex: index,
       })
     );

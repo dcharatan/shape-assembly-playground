@@ -24,6 +24,7 @@ const Viewer = ({ inEditingTask }) => {
 
   // For the editing task, handle the wireframe stuff.
   const wireframeCode = useSelector((state) => state.editingTaskSlice.targetCode);
+  const wireframeAbstractions = useSelector((state) => state.editingTaskSlice.abstractions);
   const wireframeEnabled = useSelector((state) => state.editingTaskSlice.wireframeEnabled);
 
   let borderColorClass = 'border-primary';
@@ -75,6 +76,7 @@ const Viewer = ({ inEditingTask }) => {
                       {wireframeCode && inEditingTask ? (
                         <CuboidsForCode
                           code={wireframeCode}
+                          prefix={wireframeAbstractions}
                           wireframe
                           wireframeColor="red"
                           invisible={!wireframeEnabled}

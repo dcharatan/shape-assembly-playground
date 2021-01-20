@@ -42,7 +42,7 @@ The \`translate\` command is used to clone a cuboid several times along an axis.
 
 \`translate(target, axis, num_clones, distance)\`
 
-The parameter \`axis\` can be \`X\`, \`Y\` or \`Z\`, while the parameters \`num_clones\` and \`distance\` dictate how many clones are created and how closely they are spaced together.
+The parameter \`axis\` can be \`X\`, \`Y\` or \`Z\`, while the parameters \`num_clones\` and \`distance\` dictate the number of clones in the symmetry group and the symmetry group's (spatial) extent respectively.
 
 Now that you've learned about all of ShapeAssembly's operators, you're ready to begin your editing task! You'll have to modify the given shape to match the target by adjusting the program's numeric parameters. Try to spend a few minutes per shape and get as close as possible to the target.
 

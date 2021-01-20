@@ -44,7 +44,7 @@ def make_root_assembly():
 const TUTORIAL_SQUEEZE_TARGET = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1, 1, 1, True)
-    base_cuboid = Cuboid(1, 0.25, 1, True)
+    base_cuboid = Cuboid(2, 0.25, 1, True)
     attach(base_cuboid, bbox, 0, 0, 0, 0, 1, 0)
     left_cuboid = Cuboid(0.25, 0.75, 1, True)
     right_cuboid = Cuboid(0.25, 0.75, 1, True)
