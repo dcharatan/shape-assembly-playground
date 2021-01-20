@@ -113,7 +113,7 @@ const NonSerializableContextManager = ({ children }) => {
 
       // If transpilation succeeds, call the executor.
       if (transpiled && transpiled.text && (liveUpdatesEnabled || forceRefresh)) {
-        setSubassemblyBounds(getSubassemblyBounds(transpiled.text));
+        setSubassemblyBounds(getSubassemblyBounds(transpiled));
         dispatch(execute(transpiled.text));
       }
     }
