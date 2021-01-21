@@ -11,6 +11,7 @@ const HoverableCuboidDecorator = ({ children, token }) => {
   const dispatch = useDispatch();
   const { metadata } = useContext(NonSerializableContext);
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
+  const selectedTranspiledLines = useSelector((state) => state.editorSlice.selectedTranspiledLines);
   const hoveredCuboids = useSelector((state) => state.editorSlice.hoveredCuboids);
   const [hovered, setHovered] = useState(false);
   const color = COLOR_SECONDARY;
@@ -41,7 +42,11 @@ const HoverableCuboidDecorator = ({ children, token }) => {
   // Highlight if at least one of the line indices is selected.
   let selection;
   transpiledLineIndices.forEach((lineIndex) => {
-    selection = selection || hoveredTranspiledLines[lineIndex] || hoveredCuboids[lineIndex];
+    selection =
+      selection ||
+      hoveredTranspiledLines[lineIndex] ||
+      (Object.entries(hoveredTranspiledLines).length === 0 && selectedTranspiledLines[lineIndex]) ||
+      hoveredCuboids[lineIndex];
   });
 
   // Figure out the selection color.

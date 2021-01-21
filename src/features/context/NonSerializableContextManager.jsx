@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NonSerializableContext from './NonSerializableContext';
 import { endCuboidEditing, execute, updateWithTranspilation } from '../executor/executorSlice';
 import insertDecorators from '../editor/decorators/insertDecorators';
-import { resetOptimizedParameters } from '../editor/editorSlice';
+import { deselectAllLines, resetOptimizedParameters } from '../editor/editorSlice';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
 import { setTargetCode, setUsernameAndStudyCondition } from '../editing-task/editingTaskSlice';
 import { getBaseUrl } from '../../environment';
@@ -90,6 +90,9 @@ const NonSerializableContextManager = ({ children }) => {
         dispatch(resetOptimizedParameters());
         mostRecentOptimizedParameters = undefined;
       }
+
+      // Deselect all lines. This is because line selections might change if the text does.
+      dispatch(deselectAllLines());
 
       // Deselect any parameter sliders.
       if (!additionalInformation?.doNotTriggerParameterSliderDeselection) {
@@ -229,7 +232,7 @@ const NonSerializableContextManager = ({ children }) => {
   };
   const startEditingTaskSeries = (newUsername, newStudyCondition) => {
     dispatch(setUsernameAndStudyCondition({ username: newUsername, studyCondition: newStudyCondition }));
-    startEditingTask(5, newStudyCondition);
+    startEditingTask(0, newStudyCondition);
   };
 
   return (

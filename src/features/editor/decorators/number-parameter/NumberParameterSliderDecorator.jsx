@@ -6,12 +6,14 @@ import { ContentBlock, ContentState } from 'draft-js';
 import PropTypes from 'prop-types';
 import SapType from '@dcharatan/shape-assembly-parser/dist/type/SapType';
 import Invocation from '@dcharatan/shape-assembly-parser/dist/invocation/Invocation';
+import { useDispatch } from 'react-redux';
 import { substitute } from '../../../executor/executorSlice';
 import '../../../../index.scss';
 import NonSerializableContext from '../../../context/NonSerializableContext';
 import { editorStateFromText, editorStateToText, getContentBlockOffset } from '../../draftUtilities';
 import NumberParameterSlider from './NumberParameterSlider';
 import { isNumber } from '../../../../utilities';
+import { setTranspiledLinesNotSelected, setTranspiledLinesSelected } from '../../editorSlice';
 
 const NumberParameterSliderDecorator = ({
   children,
@@ -34,10 +36,20 @@ const NumberParameterSliderDecorator = ({
     updateCuboidsSilently,
     setEditorState,
     fakeParameters,
+    metadata,
   } = useContext(NonSerializableContext);
+  const dispatch = useDispatch();
   const initialValue = parseFloat(children[0].props.text);
   const [value, setValue] = useState(initialValue);
   const target = useRef(null);
+
+  // Figure out the highlights.
+  const tokenToKey = (t) => `${t.start}/${t.end}`;
+  const highlights = metadata.get(tokenToKey(invocation.definitionToken)) ?? [];
+  const selection = {};
+  highlights.forEach(({ line, variant }) => {
+    selection[line] = variant;
+  });
 
   // Figure out if this decorator is selected as a slider.
   const offset = getContentBlockOffset(contentState, contentBlock);
@@ -47,6 +59,7 @@ const NumberParameterSliderDecorator = ({
   const toggleShow = () => {
     const alreadyShowingSlider = selectedParameter.start && selectedParameter.end;
     if (!alreadyShowingSlider) {
+      dispatch(setTranspiledLinesSelected(selection));
       setSelectedParameter({ start: adjustedStart, end: adjustedEnd });
     }
   };
@@ -88,6 +101,7 @@ const NumberParameterSliderDecorator = ({
       updateCuboidsSilently(modifyCodeWithValue(initialValue));
       setValue(initialValue);
     }
+    dispatch(setTranspiledLinesNotSelected(Object.keys(selection)));
     setSelectedParameter({});
   };
 

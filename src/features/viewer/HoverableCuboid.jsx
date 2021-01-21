@@ -8,7 +8,7 @@ import { onCuboidClicked } from '../executor/executorSlice';
 import GroupWithMatrix from './GroupWithMatrix';
 import { COLOR_DIRECT, COLOR_PRIMARY, COLOR_SECONDARY } from '../../colors';
 
-const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, cuboidIndex }) => {
+const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, selectedTranspiledLines, cuboidIndex }) => {
   const dispatch = useDispatch();
   const [hovered, setHover] = useState(false);
   const onHover = useCallback(
@@ -28,7 +28,10 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, cuboidIndex }) => {
   const optimizingThisCuboid = cuboidIndex === modifiedCuboidIndex;
 
   // Calculate the cuboid's color.
-  const selection = hoveredTranspiledLines[cuboid.lineIndex];
+  // Hover selection causes "selection" (locked) selection to be ignored.
+  const selection =
+    hoveredTranspiledLines[cuboid.lineIndex] ||
+    (Object.entries(hoveredTranspiledLines).length === 0 && selectedTranspiledLines[cuboid.lineIndex]);
   let color = 'gray';
   if (optimizingThisCuboid) {
     color = 0xb603fc;
@@ -74,6 +77,7 @@ HoverableCuboid.propTypes = {
     source: PropTypes.string.isRequired,
   }).isRequired,
   hoveredTranspiledLines: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
+  selectedTranspiledLines: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
   cuboidIndex: PropTypes.number.isRequired,
 };
 

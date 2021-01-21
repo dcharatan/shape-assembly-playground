@@ -14,6 +14,7 @@ import CuboidsForCode from './CuboidsForCode';
 const Viewer = ({ inEditingTask }) => {
   const { cuboids, executionInProgress, errored } = useSelector((state) => state.executorSlice);
   const hoveredTranspiledLines = useSelector((state) => state.editorSlice.hoveredTranspiledLines);
+  const selectedTranspiledLines = useSelector((state) => state.editorSlice.selectedTranspiledLines);
   const transpiled = useSelector((state) => state.executorSlice.transpiled);
   const [orbitRef, setOrbitRef] = useState(undefined);
   const orbitRefHook = useCallback((camera) => {
@@ -51,6 +52,7 @@ const Viewer = ({ inEditingTask }) => {
           cuboidIndex={cuboidIndex}
           cuboid={cuboid}
           hoveredTranspiledLines={hoveredTranspiledLines}
+          selectedTranspiledLines={selectedTranspiledLines}
         />
       );
     });
