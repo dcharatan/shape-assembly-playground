@@ -4,7 +4,6 @@ import DefParameterDecorator, { makeDefParameterDecoratorStrategy } from './DefP
 import ErrorDecorator, { makeErrorDecoratorStrategy } from './ErrorDecorator';
 import makeAssignmentDecoratorStrategy from './makeAssignmentDecoratorStrategy';
 import ProppableCompositeDraftDecorator from './ProppableCompositeDraftDecorator';
-import NumberParameterDecorator, { makeNumberParameterDecoratorStrategy } from './NumberParameterDecorator';
 import ReturnDecorator, { makeReturnDecoratorStrategy } from './ReturnDecorator';
 import { getContentBlockOffset } from '../draftUtilities';
 import InvocationFunctionNameDecorator, {
@@ -14,6 +13,12 @@ import makeCuboidParameterDecoratorStrategy from './makeCuboidParameterDecorator
 import makeReturnValueDecoratorStrategy from './makeReturnValueDecorator';
 import HoverableCuboidDecorator from './HoverableCuboidDecorator';
 import HiddenDecorator, { makeHiddenDecoratorStrategy } from './HiddenDecorator';
+import NumberParameterOptimizerDecorator, {
+  makeNumberParameterOptimizerDecoratorStrategy,
+} from './number-parameter/NumberParameterOptimizerDecorator';
+import NumberParameterSliderDecorator, {
+  makeNumberParameterSliderDecoratorStrategy,
+} from './number-parameter/NumberParameterSliderDecorator';
 
 // The parser gives global character indices, but they have to be converted to per-block character indices.
 // That's done here.
@@ -29,7 +34,7 @@ function applyStrategy(contentBlock, callback, contentState, highlights, props =
   });
 }
 
-const insertDecorators = (editorState, ast, optimizedParameters, metadata) =>
+const insertDecorators = (editorState, ast, optimizedParameters, fakeParameters, metadata) =>
   EditorState.set(editorState, {
     decorator: new ProppableCompositeDraftDecorator([
       {
@@ -53,8 +58,12 @@ const insertDecorators = (editorState, ast, optimizedParameters, metadata) =>
         component: HoverableCuboidDecorator,
       },
       {
-        strategy: makeNumberParameterDecoratorStrategy(() => ast, optimizedParameters, applyStrategy),
-        component: NumberParameterDecorator,
+        strategy: makeNumberParameterSliderDecoratorStrategy(() => ast, applyStrategy),
+        component: NumberParameterSliderDecorator,
+      },
+      {
+        strategy: makeNumberParameterOptimizerDecoratorStrategy(optimizedParameters, applyStrategy),
+        component: NumberParameterOptimizerDecorator,
       },
       {
         strategy: makeCuboidParameterDecoratorStrategy(() => ast, applyStrategy),

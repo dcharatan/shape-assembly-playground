@@ -37,7 +37,7 @@ const abstractedInitialTask0 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.75, 1.68, 0.75, True)
     sub_bbox_1 = abstraction_14(bbox, 0.75, 0.47, 0.75, True, 0.5, 0.5)
-    cuboid_1,sub_bbox_2 = abstraction_6(bbox, 0.09, sub_bbox_1, 0.0, 1.12, 0.1, 0.06)
+    cuboid_1, sub_bbox_2 = abstraction_6(bbox, 0.09, sub_bbox_1, 0.0, 1.12, 0.1, 0.06)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
 
@@ -58,7 +58,7 @@ const abstractedTargetTask0 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.77, 1.65, 0.84, True)
     sub_bbox_1 = abstraction_14(bbox, 0.77, 0.4, 0.84, True, 0.5, 0.5)
-    cuboid_1,sub_bbox_2 = abstraction_6(bbox, 0.3, sub_bbox_1, 0.0, 0.95, 0.15, 0.09)
+    cuboid_1, sub_bbox_2 = abstraction_6(bbox, 0.3, sub_bbox_1, 0.0, 0.95, 0.15, 0.09)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
 
@@ -187,7 +187,7 @@ const abstractedInitialTask1 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.63, 1.66, 0.63, True)
     sub_bbox_1 = abstraction_14(bbox, 0.63, 0.61, 0.64, True, 0.5, 0.5)
-    cuboid_1,sub_bbox_2 = abstraction_6(bbox, 0.18, sub_bbox_1, 0.15, 0.91, 0.1, 0.08)
+    cuboid_1, sub_bbox_2 = abstraction_6(bbox, 0.18, sub_bbox_1, 0.15, 0.91, 0.1, 0.08)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
 
@@ -206,7 +206,7 @@ const abstractedTargetTask1 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.68, 1.47, 0.91, True)
     sub_bbox_1 = abstraction_14(bbox, 0.68, 0.62, 0.87, True, 0.5, 0.52)
-    cuboid_1,sub_bbox_2 = abstraction_6(bbox, 0.19, sub_bbox_1, 0.02, 0.66, 0.14, 0.06)
+    cuboid_1, sub_bbox_2 = abstraction_6(bbox, 0.19, sub_bbox_1, 0.02, 0.66, 0.14, 0.06)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
 
@@ -331,7 +331,7 @@ const abstractedInitialTask2 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.96, 1.65, 0.9, True)
     sub_bbox_1 = abstraction_14(bbox, 0.94, 0.66, 0.87, True, 0.5, 0.5)
-    cuboid_1,sub_bbox_2 = abstraction_6(bbox, 0.13, sub_bbox_1, 0.19, 0.89, 0.13, 0.09)
+    cuboid_1, sub_bbox_2 = abstraction_6(bbox, 0.13, sub_bbox_1, 0.19, 0.89, 0.13, 0.09)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
 
@@ -350,7 +350,7 @@ const abstractedTargetTask2 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.73, 1.38, 0.98, True)
     sub_bbox_1 = abstraction_14(bbox, 0.67, 0.64, 0.85, True, 0.48, 0.54)
-    cuboid_1,sub_bbox_2 = abstraction_6(bbox, 0.08, sub_bbox_1, 0.0, 0.66, 0.23, 0.13)
+    cuboid_1, sub_bbox_2 = abstraction_6(bbox, 0.08, sub_bbox_1, 0.0, 0.66, 0.23, 0.13)
     make_subassembly_1(sub_bbox_1)
     make_subassembly_2(sub_bbox_2)
 
@@ -1648,7 +1648,7 @@ def abstraction_19(i_bbox, f_var_0, f_var_1, b_var_0, f_var_2, f_var_3, f_var_4,
 const abstractedInitialTask12 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.43, 1.19, 1.43, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.02, 1.18, 1.17, 1.18, 0.12)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.02, 1.18, 1.17, 1.18, 0.12)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -1669,7 +1669,7 @@ def make_subassembly_1(bbox):
 const abstractedTargetTask12 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.82, 0.65, 1.82, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.02, 1.69, 0.63, 1.69, 0.1)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.02, 1.69, 0.63, 1.69, 0.1)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -1784,7 +1784,7 @@ def abstraction_18(i_bbox, f_var_0, f_var_1, f_var_2, f_var_3, c_var_0):
 const abstractedInitialTask13 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.42, 0.9, 0.3, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.01, 1.38, 0.89, 0.26, 0.12)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.01, 1.38, 0.89, 0.26, 0.12)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -1806,7 +1806,7 @@ def make_subassembly_2(bbox):
 const abstractedTargetTask13 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.77, 0.75, 0.88, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.02, 1.2, 0.73, 0.81, 0.15)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.02, 1.2, 0.73, 0.81, 0.15)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -1922,7 +1922,7 @@ def abstraction_18(i_bbox, f_var_0, f_var_1, f_var_2, f_var_3, c_var_0):
 const abstractedInitialTask14 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.36, 0.97, 1.36, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.06, 0.94, 0.93, 0.93, 0.36)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.06, 0.94, 0.93, 0.93, 0.36)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -1945,7 +1945,7 @@ def make_subassembly_2(bbox):
 const abstractedTargetTask14 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.45, 0.75, 0.81, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.1, 1.42, 0.66, 0.79, 0.11)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.1, 1.42, 0.66, 0.79, 0.11)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2065,7 +2065,7 @@ def abstraction_18(i_bbox, f_var_0, f_var_1, f_var_2, f_var_3, c_var_0):
 const abstractedInitialTask15 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.91, 0.45, 0.71, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.02, 1.23, 0.44, 0.49, 0.41)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.02, 1.23, 0.44, 0.49, 0.41)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2089,7 +2089,7 @@ def make_subassembly_2(bbox):
 const abstractedTargetTask15 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.12, 1.09, 1.12, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.03, 0.76, 1.07, 0.79, 0.33)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.03, 0.76, 1.07, 0.79, 0.33)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2204,7 +2204,7 @@ def abstraction_18(i_bbox, f_var_0, f_var_1, f_var_2, f_var_3, c_var_0):
 const abstractedInitialTask16 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.89, 1.27, 0.89, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.08, 0.85, 1.2, 0.83, 0.12)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.08, 0.85, 1.2, 0.83, 0.12)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2224,7 +2224,7 @@ def make_subassembly_2(bbox):
 const abstractedTargetTask16 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.37, 0.9, 0.8, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.19, 1.37, 0.74, 0.8, 0.16)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.19, 1.37, 0.74, 0.8, 0.16)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2331,7 +2331,7 @@ def abstraction_18(i_bbox, f_var_0, f_var_1, f_var_2, f_var_3, c_var_0):
 const abstractedInitialTask17 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.57, 0.79, 1.05, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.16, 1.45, 0.66, 1.01, 0.19)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.16, 1.45, 0.66, 1.01, 0.19)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2350,7 +2350,7 @@ def make_subassembly_2(bbox):
 const abstractedTargetTask17 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.41, 0.88, 0.54, True)
-    cuboid_0,sub_bbox_1 = abstraction_12(bbox, 0.06, 1.34, 0.83, 0.41, 0.12)
+    cuboid_0, sub_bbox_1 = abstraction_12(bbox, 0.06, 1.34, 0.83, 0.41, 0.12)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2452,7 +2452,7 @@ def abstraction_18(i_bbox, f_var_0, f_var_1, f_var_2, f_var_3, c_var_0):
 const abstractedInitialTask18 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.1, 1.1, 1.1, True)
-    cuboid_0,sub_bbox_1 = abstraction_1(bbox, 0.05, 0.72, 0.72, True)
+    cuboid_0, sub_bbox_1 = abstraction_1(bbox, 0.05, 0.72, 0.72, True)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2473,7 +2473,7 @@ def make_subassembly_2(bbox):
 const abstractedTargetTask18 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.36, 0.62, 1.36, True)
-    cuboid_0,sub_bbox_1 = abstraction_1(bbox, 0.08, 1.25, 1.25, True)
+    cuboid_0, sub_bbox_1 = abstraction_1(bbox, 0.08, 1.25, 1.25, True)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2576,7 +2576,7 @@ def abstraction_18(i_bbox, f_var_0, f_var_1, f_var_2, f_var_3, c_var_0):
 const abstractedInitialTask19 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(0.44, 1.65, 0.44, True)
-    cuboid_0,sub_bbox_1 = abstraction_1(bbox, 0.3, 0.43, 0.44, True)
+    cuboid_0, sub_bbox_1 = abstraction_1(bbox, 0.3, 0.43, 0.44, True)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly
@@ -2597,7 +2597,7 @@ def make_subassembly_2(bbox):
 const abstractedTargetTask19 = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1.83, 0.93, 1.83, True)
-    cuboid_0,sub_bbox_1 = abstraction_1(bbox, 0.08, 1.02, 1.0, True)
+    cuboid_0, sub_bbox_1 = abstraction_1(bbox, 0.08, 1.02, 1.0, True)
     make_subassembly_1(sub_bbox_1)
 
 @child_assembly

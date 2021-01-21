@@ -10,10 +10,10 @@ import { editorStateFromText, editorStateToText } from '../editor/draftUtilities
 import { setTargetCode, setUsernameAndStudyCondition } from '../editing-task/editingTaskSlice';
 import { getBaseUrl } from '../../environment';
 import { getEditingTask } from '../editing-task/getEditingTask';
-import getSubassemblyBounds from '../editing-task/getSubassemblyBounds';
+import getSubassemblyBounds, { getSubassemblyBoundClamps } from '../editing-task/getSubassemblyBounds';
 
 export const TRANSPILER_SETTINGS = {
-  doBboxAttachPostprocessing: true,
+  doBboxAttachPostprocessing: window.location.pathname.includes('editing-task'),
   doBboxParamSubstitution: true,
 };
 
@@ -67,12 +67,19 @@ const NonSerializableContextManager = ({ children }) => {
   // It's here because it gets changed each time transpilation happens.
   const [subassemblyBounds, setSubassemblyBounds] = useState({});
 
+  // These are clamped parameters that temporarrily have to be faked.
+  const [fakeParameters, setFakeParameters] = useState([]);
+
   // This is used to ensure that transpilation only runs when the text actually changes.
   const lastEditorText = useRef(undefined);
   const update = (newEditorState, forceRefresh, additionalInformation) => {
     // Get the new editor text.
     const editorText = editorStateToText(newEditorState);
     dispatch(endCuboidEditing());
+
+    // Clear the fake parameters.
+    // Leftover fake parameters will cause incorrect highlights.
+    setFakeParameters([]);
 
     // Attempt transpilation if the text is different.
     let mostRecentMetadata = metadata;
@@ -126,15 +133,27 @@ const NonSerializableContextManager = ({ children }) => {
     }
     lastEditorText.current = editorText;
 
-    setEditorState(insertDecorators(newEditorState, mostRecentAst, mostRecentOptimizedParameters, mostRecentMetadata));
+    setEditorState(
+      insertDecorators(newEditorState, mostRecentAst, mostRecentOptimizedParameters, fakeParameters, mostRecentMetadata)
+    );
   };
 
   // This is used to change the visible cuboids without changing the editor text.s
-  const updateCuboidsSilently = (editorText) => {
-    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(editorText, prefix);
+  const updateCuboidsSilently = (cuboidText) => {
+    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(cuboidText, prefix);
+
+    // Transpile once to get the subassembly bounds.
     const transpiled = new Transpiler().transpile(silentAst, TRANSPILER_SETTINGS);
-    if (transpiled && transpiled.text) {
-      dispatch(execute(transpiled.text));
+    const silentSubassemblyBounds = getSubassemblyBounds(transpiled);
+
+    // Clamp to the subassembly bounds, mark which tokens were faked and transpile again.
+    // Use the ast (with the original token indices) because the clamps are used for text highlighting.
+    const clamps = getSubassemblyBoundClamps(ast, silentAst, silentSubassemblyBounds);
+    setFakeParameters(clamps);
+    const finalTranspiled = new Transpiler().transpile(silentAst, TRANSPILER_SETTINGS);
+
+    if (finalTranspiled && finalTranspiled.text) {
+      dispatch(execute(finalTranspiled.text));
     }
   };
 
@@ -210,7 +229,7 @@ const NonSerializableContextManager = ({ children }) => {
   };
   const startEditingTaskSeries = (newUsername, newStudyCondition) => {
     dispatch(setUsernameAndStudyCondition({ username: newUsername, studyCondition: newStudyCondition }));
-    startEditingTask(0, newStudyCondition);
+    startEditingTask(5, newStudyCondition);
   };
 
   return (
@@ -238,6 +257,7 @@ const NonSerializableContextManager = ({ children }) => {
         startEditingTaskSeries,
         saveEditingTask,
         subassemblyBounds,
+        fakeParameters,
       }}
     >
       {children}

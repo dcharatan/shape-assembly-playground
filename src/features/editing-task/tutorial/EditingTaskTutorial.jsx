@@ -8,7 +8,7 @@ The \`Cuboid\` command is ShapeAssembly's basic building block. Its format is as
 
 \`cuboid_name = Cuboid(length, width, height, aligned)\`
 
-You can modify numeric parameters by clicking on them and dragging the slider that appears. Try to modify the cuboid in the 3D viewer so that it matches the editing target. Note that a cuboid cannot be larger than its bounding box, so you'll have to adjust the bounding box first.
+You can modify numeric parameters by clicking on them and dragging the slider that appears. Try to modify the cuboid in the 3D viewer so that it matches the editing target. Note that a cuboid cannot be larger than its bounding box, so you'll have to adjust the bounding box first. When you reduce the size of a bounding box, all cuboids within that bounding box are automatically clamped to the bounding box's dimensions.
 
 To help with fine adjustments, you can toggle a wireframe view of editing target using the \`Show Target (Wireframe)\` button. Click \`Complete Task\` once you're ready to move on.`;
 
