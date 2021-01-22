@@ -23,7 +23,6 @@ const App = () => (
     <Provider store={store}>
       <NonSerializableContextManager>
         <div className="d-flex flex-column h-100 overflow-y-hidden">
-          <SapNavbar />
           <Switch>
             <Route exact path="/editing-task">
               <EditingTask />
@@ -35,6 +34,7 @@ const App = () => (
               <ResultPage />
             </Route>
             <Route exact path="/">
+              <SapNavbar />
               <div className="d-flex flex-grow-1 overflow-y-hidden">
                 <div className="d-flex flex-row w-100 h-100 p-2 overflow-y-hidden">
                   <div className="w-50 h-100 p-2 overflow-y-hidden d-flex flex-column">
