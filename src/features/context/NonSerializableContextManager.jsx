@@ -182,12 +182,24 @@ const NonSerializableContextManager = ({ children }) => {
     setRedoAvailable(redoStack.current.length > 0);
     setUndoAvailable(true);
   };
-  const resetHistory = () => {
+  const clearHistory = () => {
     setUndoAvailable(false);
     setRedoAvailable(false);
     undoStack.current = [];
     redoStack.current = [];
     actionStack.current = [];
+  };
+  const resetHistory = () => {
+    const text = undoStack.current[0];
+    if (!text) {
+      return;
+    }
+    pushAction(text);
+    update(editorStateFromText(text), true);
+    undoStack.current = [];
+    redoStack.current = [];
+    setUndoAvailable(false);
+    setRedoAvailable(false);
   };
 
   const username = useSelector((state) => state.editingTaskSlice.username);
@@ -208,7 +220,7 @@ const NonSerializableContextManager = ({ children }) => {
   };
   const studyCondition = useSelector((state) => state.editingTaskSlice.studyCondition);
   const startEditingTask = (index, studyConditionOverride) => {
-    resetHistory();
+    clearHistory();
 
     const studyConditionAdjusted = studyConditionOverride ?? studyCondition;
     if (studyConditionAdjusted === undefined) {
@@ -254,6 +266,7 @@ const NonSerializableContextManager = ({ children }) => {
         redoHistory,
         undoAvailable,
         redoAvailable,
+        resetHistory,
 
         // These are other editing task helpers.
         startEditingTask,
