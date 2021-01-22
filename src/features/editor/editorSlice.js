@@ -21,11 +21,13 @@ const editorSlice = createSlice({
     setTab(state, { payload }) {
       state.tab = payload;
     },
-    setCuboidHovered(state, { payload }) {
-      state.hoveredCuboids[payload] = 'direct';
+    setCuboidsHovered(state, { payload }) {
+      state.hoveredCuboids = { ...state.hoveredCuboids, ...payload };
     },
-    setCuboidNotHovered(state, { payload }) {
-      delete state.hoveredCuboids[payload];
+    setCuboidsNotHovered(state, { payload }) {
+      Object.keys(payload).forEach((line) => {
+        delete state.hoveredCuboids[line];
+      });
     },
     setTranspiledLinesHovered(state, { payload }) {
       state.hoveredTranspiledLines = { ...state.hoveredTranspiledLines, ...payload };
@@ -67,8 +69,8 @@ const editorSlice = createSlice({
 
 export const {
   setTab,
-  setCuboidHovered,
-  setCuboidNotHovered,
+  setCuboidsHovered,
+  setCuboidsNotHovered,
   setTranspiledLinesHovered,
   setTranspiledLinesNotHovered,
   saveOptimizedParameters,
