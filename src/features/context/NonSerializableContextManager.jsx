@@ -11,6 +11,7 @@ import { setTargetCode, setUsernameAndStudyCondition } from '../editing-task/edi
 import { getBaseUrl } from '../../environment';
 import { getEditingTask } from '../editing-task/getEditingTask';
 import getSubassemblyBounds, { getSubassemblyBoundClamps } from '../editing-task/getSubassemblyBounds';
+import { mapToObject } from '../../utilities';
 
 export const getTranspilerSettings = () => ({
   doBboxAttachPostprocessing: window.location.pathname.includes('editing-task'),
@@ -126,12 +127,7 @@ const NonSerializableContextManager = ({ children }) => {
         delete transpiled.metadata;
 
         // Convert assemblyMap to a JS object so that it's serializable.
-        const { assemblyMap } = transpiled;
-        delete transpiled.assemblyMap;
-        transpiled.assemblyMap = {};
-        assemblyMap.forEach((value, key) => {
-          transpiled.assemblyMap[key] = value;
-        });
+        transpiled.assemblyMap = mapToObject(transpiled.assemblyMap);
       }
       setMetadata(mostRecentMetadata);
       dispatch(updateWithTranspilation(transpiled));
@@ -155,6 +151,7 @@ const NonSerializableContextManager = ({ children }) => {
 
     // Transpile once to get the subassembly bounds.
     const transpiled = new Transpiler().transpile(silentAst, getTranspilerSettings());
+    transpiled.assemblyMap = mapToObject(transpiled.assemblyMap);
     const silentSubassemblyBounds = getSubassemblyBounds(transpiled);
 
     // Clamp to the subassembly bounds, mark which tokens were faked and transpile again.
