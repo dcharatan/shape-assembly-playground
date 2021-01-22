@@ -44,12 +44,17 @@ The \`translate\` command is used to clone a cuboid several times along an axis.
 
 The parameter \`axis\` can be \`X\`, \`Y\` or \`Z\`, while the parameters \`num_clones\` and \`distance\` dictate the number of clones in the symmetry group and the symmetry group's (spatial) extent respectively.
 
-Now that you've learned about all of ShapeAssembly's operators, you're ready to begin your editing task! You'll have to modify the given shape to match the target by adjusting the program's numeric parameters. Try to spend a few minutes per shape and get as close as possible to the target.
+Now that you've learned about all of ShapeAssembly's operators, you're ready to begin your editing task! You'll have to modify the given shape to match the target by adjusting the program's numeric parameters. Try to spend a few minutes per shape and get as close as possible to the target. Remember that the \`Show Target (Wireframe)\` option can be very helpful for fine adjustments!`;
 
-Depending on which study condition you were assigned, you may encounter additional ShapeAssembly functions during your editing task. Remember that the \`Show Target (Wireframe)\` option can be very helpful for fine adjustments!`;
+const page5Baseline = `# Practice Task
+Here's an example of a task you will encounter. Practice adjusting the program to match the target shape. Once you feel comfortable with the editing process, you can move on to the main editing tasks.`;
+
+const page5Abstraction = `# Practice Task and Tutorial: Abstraction
+Throughout the editing task, you will find a series of functions called \`abstraction_<number>\`. These so-called abstractions are combinations of the aforementioned ShapeAssembly functions and other abstractions. Practice adjusting an abstraction's parameters in the program below. Once you feel comfortable with the editing process, you can move on to the main editing tasks.`;
 
 const EditingTaskTutorial = () => {
   const currentTaskIndex = useSelector((state) => state.editingTaskSlice.currentTaskIndex);
+  const studyCondition = useSelector((state) => state.editingTaskSlice.studyCondition);
 
   const page = {
     0: page0,
@@ -57,6 +62,7 @@ const EditingTaskTutorial = () => {
     2: page2,
     3: page3,
     4: page4,
+    5: studyCondition === 1 ? page5Baseline : page5Abstraction,
   }[currentTaskIndex];
   if (!page) {
     return null;
