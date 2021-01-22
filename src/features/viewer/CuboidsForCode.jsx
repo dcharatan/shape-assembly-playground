@@ -5,7 +5,7 @@ import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parse
 import { fetchExecute } from '../executor/executorSlice';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import GroupWithMatrix from './GroupWithMatrix';
-import { TRANSPILER_SETTINGS } from '../context/NonSerializableContextManager';
+import { getTranspilerSettings } from '../context/NonSerializableContextManager';
 
 const CuboidsForCode = ({ code, prefix, ...props }) => {
   // Call the executor to get the code's result.
@@ -14,7 +14,7 @@ const CuboidsForCode = ({ code, prefix, ...props }) => {
     const doFetch = async () => {
       // Transpile the code.
       const ast = new ShapeAssemblyParser().parseShapeAssemblyProgram(code, prefix);
-      const transpiled = new Transpiler().transpile(ast, TRANSPILER_SETTINGS);
+      const transpiled = new Transpiler().transpile(ast, getTranspilerSettings());
       if (!transpiled) {
         return;
       }

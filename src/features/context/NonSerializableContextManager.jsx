@@ -12,10 +12,10 @@ import { getBaseUrl } from '../../environment';
 import { getEditingTask } from '../editing-task/getEditingTask';
 import getSubassemblyBounds, { getSubassemblyBoundClamps } from '../editing-task/getSubassemblyBounds';
 
-export const TRANSPILER_SETTINGS = {
+export const getTranspilerSettings = () => ({
   doBboxAttachPostprocessing: window.location.pathname.includes('editing-task'),
   doBboxParamSubstitution: true,
-};
+});
 
 const INITIAL_TEXT = `@root_assembly
 def make_root_assembly():
@@ -120,7 +120,7 @@ const NonSerializableContextManager = ({ children }) => {
       setAst(mostRecentAst);
 
       // Transpile the AST.
-      const transpiled = new Transpiler().transpile(mostRecentAst, TRANSPILER_SETTINGS);
+      const transpiled = new Transpiler().transpile(mostRecentAst, getTranspilerSettings());
       mostRecentMetadata = transpiled?.metadata ?? metadata;
       if (transpiled) {
         delete transpiled.metadata;
@@ -146,14 +146,14 @@ const NonSerializableContextManager = ({ children }) => {
     const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(cuboidText, prefix);
 
     // Transpile once to get the subassembly bounds.
-    const transpiled = new Transpiler().transpile(silentAst, TRANSPILER_SETTINGS);
+    const transpiled = new Transpiler().transpile(silentAst, getTranspilerSettings());
     const silentSubassemblyBounds = getSubassemblyBounds(transpiled);
 
     // Clamp to the subassembly bounds, mark which tokens were faked and transpile again.
     // Use the ast (with the original token indices) because the clamps are used for text highlighting.
     const clamps = getSubassemblyBoundClamps(ast, silentAst, silentSubassemblyBounds);
     setFakeParameters(clamps);
-    const finalTranspiled = new Transpiler().transpile(silentAst, TRANSPILER_SETTINGS);
+    const finalTranspiled = new Transpiler().transpile(silentAst, getTranspilerSettings());
 
     if (finalTranspiled && finalTranspiled.text) {
       dispatch(execute(finalTranspiled.text));
