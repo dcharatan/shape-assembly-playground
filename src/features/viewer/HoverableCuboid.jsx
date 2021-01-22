@@ -35,7 +35,13 @@ const HoverableCuboid = ({ cuboid, hoveredTranspiledLines, selectedTranspiledLin
   let color = 'gray';
   if (optimizingThisCuboid) {
     color = 0xb603fc;
-  } else if (selection === 'direct' || hovered) {
+  } else if (hovered) {
+    if (cuboid.source === 'CUBOID') {
+      color = COLOR_PRIMARY;
+    } else {
+      color = COLOR_SECONDARY;
+    }
+  } else if (selection === 'direct') {
     color = COLOR_DIRECT;
   } else if (selection === 'primary') {
     color = COLOR_PRIMARY;
