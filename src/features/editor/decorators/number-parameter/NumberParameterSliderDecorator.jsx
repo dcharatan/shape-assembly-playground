@@ -168,7 +168,7 @@ NumberParameterSliderDecorator.propTypes = {
   functionName: PropTypes.string,
   parentFunctionName: PropTypes.string,
   type: PropTypes.instanceOf(SapType),
-  rangeType: PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.string, PropTypes.arrayOf(PropTypes.number))),
+  rangeType: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.number)])),
   invocation: PropTypes.instanceOf(Invocation),
 };
 

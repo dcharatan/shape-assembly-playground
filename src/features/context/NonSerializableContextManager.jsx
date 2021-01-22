@@ -124,6 +124,14 @@ const NonSerializableContextManager = ({ children }) => {
       mostRecentMetadata = transpiled?.metadata ?? metadata;
       if (transpiled) {
         delete transpiled.metadata;
+
+        // Convert assemblyMap to a JS object so that it's serializable.
+        const { assemblyMap } = transpiled;
+        delete transpiled.assemblyMap;
+        transpiled.assemblyMap = {};
+        assemblyMap.forEach((value, key) => {
+          transpiled.assemblyMap[key] = value;
+        });
       }
       setMetadata(mostRecentMetadata);
       dispatch(updateWithTranspilation(transpiled));

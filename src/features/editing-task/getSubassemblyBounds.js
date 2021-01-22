@@ -9,7 +9,7 @@ const getSubassemblyBounds = (transpiled) => {
       const components = line.split(',');
 
       // Since this is specific to the editing task, we know what the subassemblies will be called.
-      let name = transpiled.assemblyMap.get(currentAssembly);
+      let name = transpiled.assemblyMap[currentAssembly];
       if (currentAssembly === 'Program_0') {
         name = 'make_root_assembly';
       }
