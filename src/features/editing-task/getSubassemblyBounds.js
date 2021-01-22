@@ -34,11 +34,6 @@ export const getSubassemblyBoundClamps = (ast, silentAst, subassemblyBounds) => 
     const definitionName = definition.declaration.nameToken.text;
     let cuboidIndex = 0;
     definition.invocations.forEach((invocation, invocationIndex) => {
-      const invocationName = invocation.definitionToken.text;
-      if (invocationName === 'Cuboid') {
-        cuboidIndex += 1;
-      }
-
       // The root bbox should not be added to the clamps.
       if (cuboidIndex > 0 || definition.isChildAssembly) {
         invocation.argumentExpressions.forEach((expression, expressionIndex) => {
@@ -71,6 +66,9 @@ export const getSubassemblyBoundClamps = (ast, silentAst, subassemblyBounds) => 
             ].token.text = maximum.toString();
           }
         });
+      }
+      if (invocation.definitionToken.text === 'Cuboid') {
+        cuboidIndex += 1;
       }
     });
   });
