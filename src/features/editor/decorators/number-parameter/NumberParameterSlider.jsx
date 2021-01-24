@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Overlay, Popover, Form } from 'react-bootstrap';
-import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
 const NumberParameterSlider = ({ range, value, onChange, onExit, targetRef, show }) => {
@@ -20,15 +19,36 @@ const NumberParameterSlider = ({ range, value, onChange, onExit, targetRef, show
     );
   };
 
+  const handleClick = (e) => {
+    let ignoredClick = false;
+    document.querySelectorAll('.NumberParameterSlider').forEach((item) => {
+      if (item.contains(e.target)) {
+        ignoredClick = true;
+      }
+    });
+    document.querySelectorAll('.NumberParameterSliderDecorator').forEach((item) => {
+      if (item.contains(e.target)) {
+        ignoredClick = true;
+      }
+    });
+    if (show && !ignoredClick) {
+      onExit(true);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClick, false);
+    return () => document.removeEventListener('mousedown', handleClick, false);
+  });
+
   return (
     <Overlay target={targetRef.current} show={show} placement="top">
       {({ ...props }) => (
-        <Popover {...props}>
+        <Popover {...props} className="NumberParameterSlider">
           <Popover.Title as="h3">
             <div className="d-flex flex-row justify-content-between align-items-center">
               <div className="mr-1">Adjust Parameter</div>
               <div className="ml-1">
-                <CheckIcon onClick={() => onExit(true)} className="cursor-pointer" />
                 <CloseIcon onClick={() => onExit(false)} className="cursor-pointer" />
               </div>
             </div>

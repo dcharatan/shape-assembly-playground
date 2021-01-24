@@ -21,7 +21,7 @@ export const getTranspilerSettings = () => ({
 const INITIAL_TEXT = `@root_assembly
 def make_root_assembly():
     bbox = Cuboid(1, 1, 1, True)
-    cube = Cuboid(1, 1, 1, True)`;
+    cuboid = Cuboid(1, 1, 1, True)`;
 
 const TIME_PER_EDITING_TASK = 600;
 
