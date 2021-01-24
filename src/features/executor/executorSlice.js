@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getBaseUrl, getEditabilityEnabled, getOptimizerDisabled } from '../../environment';
+import { getBaseUrl, getExecutionBaseUrl, getEditabilityEnabled, getOptimizerDisabled } from '../../environment';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
 import { saveOptimizedParameters } from '../editor/editorSlice';
 
@@ -14,7 +14,7 @@ let optimizeController;
 let previousOptimizationPromise;
 
 export const fetchExecute = (program) =>
-  fetch(getBaseUrl(), {
+  fetch(getExecutionBaseUrl(), {
     headers: new Headers({
       'content-type': 'application/json',
     }),
