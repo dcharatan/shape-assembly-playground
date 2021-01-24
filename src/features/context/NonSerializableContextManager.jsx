@@ -23,7 +23,7 @@ def make_root_assembly():
     bbox = Cuboid(1, 1, 1, True)
     cube = Cuboid(1, 1, 1, True)`;
 
-const TIME_PER_EDITING_TASK = 4;
+const TIME_PER_EDITING_TASK = 600;
 
 export const postActionStack = (username, taskIndex, actionStack) =>
   fetch(`${getBaseUrl()}/save-editing-task`, {

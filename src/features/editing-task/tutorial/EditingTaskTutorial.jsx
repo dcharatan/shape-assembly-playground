@@ -10,7 +10,9 @@ The \`Cuboid\` command is ShapeAssembly's basic building block. Its format is as
 
 You can modify numeric parameters by clicking on them and dragging the slider that appears. Try to modify the cuboid in the 3D viewer so that it matches the editing target. Note that a cuboid cannot be larger than its bounding box, so you'll have to adjust the bounding box first. When you reduce the size of a bounding box, all cuboids within that bounding box are automatically clamped to the bounding box's dimensions.
 
-To help with fine adjustments, you can toggle a wireframe view of editing target using the \`Show Target (Wireframe)\` button. Click \`Complete Task\` once you're ready to move on.`;
+To help with fine adjustments, you can toggle a wireframe view of editing target using the \`Show Target (Wireframe)\` button. You can rotate the camera by clicking and dragging, or zoom by scrolling.
+
+The maximum recommended amount of time for each task is 600 seconds. If you exceed this limit, you'll receive a gentle warning to move on to the next task. Don't spend too long making your object match the target perfectly—if you're fairly close to the target and spending lots of time on tiny improvements, move on to the next task. Click \`Complete Task\` once you're ready to move on.`;
 
 const page1 = `# Tutorial: Attachments
 The \`attach\` command is used to connect cuboids created by the \`Cuboid\` command. Its format is as follows:

@@ -12,14 +12,15 @@ const EditingTaskIntro = () => {
   const onSubmit = () => {
     startEditingTaskSeries(name, studyCondition);
   };
+  const message =
+    "In this task, you will be asked to modify a Python-like program's parameters to recreate a target shape. Please enter your name to get started.";
   return (
     <Modal show={show}>
       <Modal.Header>
         <Modal.Title>Welcome to the editing task.</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        As outlined in the intro video, you will be asked to change program parameters to match a target shape. Please
-        enter your name to get started.
+        {message}
         <Form.Control
           className="mt-3"
           type="text"
