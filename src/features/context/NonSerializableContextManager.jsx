@@ -230,6 +230,7 @@ const NonSerializableContextManager = ({ children }) => {
   const studyCondition = useSelector((state) => state.editingTaskSlice.studyCondition);
   const startEditingTask = (index, studyConditionOverride) => {
     clearHistory();
+    setSecondsRemaining(TIME_PER_EDITING_TASK);
 
     const studyConditionAdjusted = studyConditionOverride ?? studyCondition;
     if (studyConditionAdjusted === undefined) {
