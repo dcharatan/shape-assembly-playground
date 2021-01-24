@@ -11,13 +11,19 @@ const CompleteTaskButton = () => {
   const handleClose = () => setShow(false);
   const history = useHistory();
   const taskIndex = useSelector((state) => state.editingTaskSlice.currentTaskIndex);
-  const { startEditingTask, saveEditingTask } = useContext(NonSerializableContext);
+  const { startEditingTask, saveEditingTask, selectedParameter } = useContext(NonSerializableContext);
   const studyCondition = useSelector((state) => state.editingTaskSlice.studyCondition);
   const editingTasks = studyCondition === undefined ? [] : getEditingTasks(studyCondition);
 
   return (
     <>
-      <Button variant="outline-success" className="m-1" size="sm" onClick={() => setShow(true)}>
+      <Button
+        variant="outline-success"
+        className="m-1"
+        size="sm"
+        onClick={() => setShow(true)}
+        disabled={Object.keys(selectedParameter).length > 0}
+      >
         Complete Task
       </Button>
 
