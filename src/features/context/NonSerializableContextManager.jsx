@@ -23,6 +23,8 @@ def make_root_assembly():
     bbox = Cuboid(1, 1, 1, True)
     cube = Cuboid(1, 1, 1, True)`;
 
+const TIME_PER_EDITING_TASK = 4;
+
 export const postActionStack = (username, taskIndex, actionStack) =>
   fetch(`${getBaseUrl()}/save-editing-task`, {
     headers: new Headers({
@@ -67,6 +69,8 @@ const NonSerializableContextManager = ({ children }) => {
   // This is used for the editing task.
   // It's here because it gets changed each time transpilation happens.
   const [subassemblyBounds, setSubassemblyBounds] = useState({});
+  const [secondsRemaining, setSecondsRemaining] = useState(TIME_PER_EDITING_TASK);
+  const [showingTimeWarning, setShowingTimeWarning] = useState(false);
 
   // These are clamped parameters that temporarrily have to be faked.
   const [fakeParameters, setFakeParameters] = useState([]);
@@ -252,6 +256,14 @@ const NonSerializableContextManager = ({ children }) => {
     startEditingTask(0, newStudyCondition);
   };
 
+  const decrementSecondsRemaining = () => {
+    const newValue = secondsRemaining - 1;
+    if (newValue === 0) {
+      setShowingTimeWarning(true);
+    }
+    setSecondsRemaining(newValue);
+  };
+
   return (
     <NonSerializableContext.Provider
       value={{
@@ -279,6 +291,10 @@ const NonSerializableContextManager = ({ children }) => {
         saveEditingTask,
         subassemblyBounds,
         fakeParameters,
+        secondsRemaining,
+        decrementSecondsRemaining,
+        showingTimeWarning,
+        setShowingTimeWarning,
       }}
     >
       {children}
