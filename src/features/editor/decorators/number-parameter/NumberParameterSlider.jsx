@@ -1,12 +1,46 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Overlay, Popover, Form } from 'react-bootstrap';
 import CloseIcon from '@material-ui/icons/Close';
+import CheckIcon from '@material-ui/icons/Check';
+import { editorStateToText } from '../../draftUtilities';
+import { substitute } from '../../../executor/executorSlice';
+import NonSerializableContext from '../../../context/NonSerializableContext';
 
-const NumberParameterSlider = ({ range, value, onChange, onExit, targetRef, show }) => {
-  const { min, max, step } = range;
+const NumberParameterSlider = ({ targetRef, thisStart, thisEnd }) => {
+  const {
+    selectedParameter,
+    editorState,
+    updateCuboidsSilently,
+    setSelectedParameterValue,
+    deselectCurrentParameter,
+  } = useContext(NonSerializableContext);
   const [textValue, setTextValue] = useState(undefined);
+  if (!selectedParameter) {
+    return null;
+  }
+
+  const { start, end, selection, value, isInteger, initialValue, min, max, step } = selectedParameter ?? {};
+  if (!targetRef?.current || thisStart !== start || thisEnd !== end) {
+    return null;
+  }
+
+  // This is used for text substitution in updates.
+  const modifyCodeWithValue = (modifiedValue) => {
+    const text = editorStateToText(editorState);
+    const { modifiedCode } = substitute(text, [[start, end, modifiedValue]], true, isInteger ? 0 : 2);
+    return modifiedCode;
+  };
+
+  // Silently update the cuboids when the slider is changed.
+  const onChange = (newSliderValue) => {
+    updateCuboidsSilently(modifyCodeWithValue(newSliderValue));
+    setSelectedParameterValue(newSliderValue);
+  };
+
+  // On exit, save or reset the slider value.
+  const onExit = (save) => deselectCurrentParameter(save);
 
   const isTextValid = (text) => {
     const textFloat = parseFloat(text);
@@ -19,36 +53,15 @@ const NumberParameterSlider = ({ range, value, onChange, onExit, targetRef, show
     );
   };
 
-  const handleClick = (e) => {
-    let ignoredClick = false;
-    document.querySelectorAll('.NumberParameterSlider').forEach((item) => {
-      if (item.contains(e.target)) {
-        ignoredClick = true;
-      }
-    });
-    document.querySelectorAll('.NumberParameterSliderDecorator').forEach((item) => {
-      if (item.contains(e.target)) {
-        ignoredClick = true;
-      }
-    });
-    if (show && !ignoredClick) {
-      onExit(true);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClick, false);
-    return () => document.removeEventListener('mousedown', handleClick, false);
-  });
-
   return (
-    <Overlay target={targetRef.current} show={show} placement="top">
+    <Overlay target={targetRef} show={!!selectedParameter} placement="top">
       {({ ...props }) => (
         <Popover {...props} className="NumberParameterSlider">
           <Popover.Title as="h3">
             <div className="d-flex flex-row justify-content-between align-items-center">
               <div className="mr-1">Adjust Parameter</div>
               <div className="ml-1">
+                <CheckIcon onClick={() => onExit(true)} className="cursor-pointer" />
                 <CloseIcon onClick={() => onExit(false)} className="cursor-pointer" />
               </div>
             </div>
@@ -91,22 +104,7 @@ const NumberParameterSlider = ({ range, value, onChange, onExit, targetRef, show
 };
 
 NumberParameterSlider.propTypes = {
-  range: PropTypes.shape({
-    min: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
-    step: PropTypes.number.isRequired,
-  }).isRequired,
-  value: PropTypes.number.isRequired,
-  onChange: PropTypes.func,
-  onExit: PropTypes.func,
-  show: PropTypes.bool,
   targetRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
-};
-
-NumberParameterSlider.defaultProps = {
-  onChange: () => {},
-  onExit: () => {},
-  show: false,
 };
 
 export default NumberParameterSlider;

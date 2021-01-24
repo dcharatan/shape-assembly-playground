@@ -1,19 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useRef, useContext } from 'react';
+import React, { useRef, useContext, useEffect } from 'react';
 import { ContentBlock, ContentState } from 'draft-js';
 import PropTypes from 'prop-types';
 import SapType from '@dcharatan/shape-assembly-parser/dist/type/SapType';
 import Invocation from '@dcharatan/shape-assembly-parser/dist/invocation/Invocation';
-import { useDispatch } from 'react-redux';
-import { substitute } from '../../../executor/executorSlice';
 import '../../../../index.scss';
 import NonSerializableContext from '../../../context/NonSerializableContext';
-import { editorStateFromText, editorStateToText, getContentBlockOffset } from '../../draftUtilities';
-import NumberParameterSlider from './NumberParameterSlider';
+import { getContentBlockOffset } from '../../draftUtilities';
 import { isNumber } from '../../../../utilities';
-import { setTranspiledLinesNotSelected, setTranspiledLinesSelected } from '../../editorSlice';
+import NumberParameterSlider from './NumberParameterSlider';
 
 const NumberParameterSliderDecorator = ({
   children,
@@ -28,19 +25,10 @@ const NumberParameterSliderDecorator = ({
   invocation,
 }) => {
   // Call hooks.
-  const {
-    selectedParameter,
-    setSelectedParameter,
-    subassemblyBounds,
-    editorState,
-    updateCuboidsSilently,
-    setEditorState,
-    fakeParameters,
-    metadata,
-  } = useContext(NonSerializableContext);
-  const dispatch = useDispatch();
+  const { selectedParameter, setSelectedParameter, subassemblyBounds, fakeParameters, metadata } = useContext(
+    NonSerializableContext
+  );
   const initialValue = parseFloat(children[0].props.text);
-  const [value, setValue] = useState(initialValue);
   const target = useRef(null);
 
   // Figure out the highlights.
@@ -55,55 +43,14 @@ const NumberParameterSliderDecorator = ({
   const offset = getContentBlockOffset(contentState, contentBlock);
   const adjustedStart = start + offset;
   const adjustedEnd = end + offset;
-  const show = selectedParameter.start === adjustedStart && selectedParameter.end === adjustedEnd;
-  const toggleShow = () => {
-    const alreadyShowingSlider = selectedParameter.start && selectedParameter.end;
-    if (!alreadyShowingSlider) {
-      dispatch(setTranspiledLinesSelected(selection));
-      setSelectedParameter({ start: adjustedStart, end: adjustedEnd });
-    }
-  };
+  const show = selectedParameter && selectedParameter.start === adjustedStart && selectedParameter.end === adjustedEnd;
+  const isInteger = type && type.name.includes('integer');
 
   // Show a placeholder if another slider is being slid.
   const fakeParameter = fakeParameters.find((p) => p.token.start === adjustedStart && p.token.end === adjustedEnd);
   if (fakeParameter && !show) {
     return <span className="rounded slider-parameter-affected">{fakeParameter.value}</span>;
   }
-
-  // This is used for text substitution in updates.
-  const isInteger = type && type.name.includes('integer');
-  const modifyCodeWithValue = (modifiedValue) => {
-    const text = editorStateToText(editorState);
-    const { modifiedCode } = substitute(text, [[adjustedStart, adjustedEnd, modifiedValue]], true, isInteger ? 0 : 2);
-    return modifiedCode;
-  };
-
-  // Silently update the cuboids when the slider is changed.
-  const onChangeSlider = (newSliderValue) => {
-    updateCuboidsSilently(modifyCodeWithValue(newSliderValue));
-    setValue(newSliderValue);
-  };
-
-  // On exit, save or reset the slider value.
-  const onExitSlider = (save) => {
-    if (save) {
-      const text = editorStateToText(editorState);
-      const substitutions = [
-        [adjustedStart, adjustedEnd, value],
-        ...fakeParameters.map((f) => [f.token.start, f.token.end, f.value]),
-      ];
-      const { modifiedCode } = substitute(text, substitutions, true, isInteger ? 0 : 2);
-      setEditorState(editorStateFromText(modifiedCode), {
-        doNotTriggerParameterSliderDeselection: true,
-        saveToHistory: true,
-      });
-    } else {
-      updateCuboidsSilently(modifyCodeWithValue(initialValue));
-      setValue(initialValue);
-    }
-    dispatch(setTranspiledLinesNotSelected(Object.keys(selection)));
-    setSelectedParameter({});
-  };
 
   // Calculate the slider range.
   let min = 0;
@@ -138,6 +85,20 @@ const NumberParameterSliderDecorator = ({
     max = 10;
   }
 
+  const toggleShow = () => {
+    setSelectedParameter({
+      start: adjustedStart,
+      end: adjustedEnd,
+      selection,
+      value: initialValue,
+      isInteger,
+      initialValue,
+      min,
+      max,
+      step: isInteger ? 1 : 0.01,
+    });
+  };
+
   return (
     <>
       <span
@@ -147,16 +108,9 @@ const NumberParameterSliderDecorator = ({
           show ? 'slider-parameter-selected' : ''
         } rounded slider-parameter cursor-pointer NumberParameterSliderDecorator`}
       >
-        {show ? value : children}
+        {show ? selectedParameter?.value : children}
       </span>
-      <NumberParameterSlider
-        show={show}
-        range={{ min, max, step: isInteger ? 1 : 0.01 }}
-        targetRef={target}
-        onExit={onExitSlider}
-        value={value}
-        onChange={onChangeSlider}
-      />
+      <NumberParameterSlider targetRef={target} thisStart={adjustedStart} thisEnd={adjustedEnd} />
     </>
   );
 };

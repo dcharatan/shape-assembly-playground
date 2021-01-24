@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parser';
 import { useDispatch, useSelector } from 'react-redux';
 import NonSerializableContext from './NonSerializableContext';
-import { endCuboidEditing, execute, updateWithTranspilation } from '../executor/executorSlice';
+import { endCuboidEditing, execute, substitute, updateWithTranspilation } from '../executor/executorSlice';
 import insertDecorators from '../editor/decorators/insertDecorators';
-import { deselectAllLines, resetOptimizedParameters } from '../editor/editorSlice';
+import {
+  deselectAllLines,
+  resetOptimizedParameters,
+  setTranspiledLinesNotSelected,
+  setTranspiledLinesSelected,
+} from '../editor/editorSlice';
 import { editorStateFromText, editorStateToText } from '../editor/draftUtilities';
 import { setTargetCode, setUsernameAndStudyCondition } from '../editing-task/editingTaskSlice';
 import { getBaseUrl } from '../../environment';
@@ -49,7 +54,12 @@ const NonSerializableContextManager = ({ children }) => {
   const [ast, setAst] = useState(undefined);
   const [editorState, setEditorState] = useState(editorStateFromText(INITIAL_TEXT));
   const [prefix, setPrefix] = useState(''); // This is prepended to the text sent to the transpiler.
-  const [selectedParameter, setSelectedParameter] = useState({});
+  const [selectedParameter, setSelectedParameterInner] = useState(undefined);
+  const setSelectedParameterValue = (newValue) => {
+    const newSelectedParameter = selectedParameter;
+    newSelectedParameter.value = newValue;
+    setSelectedParameterInner(newSelectedParameter);
+  };
 
   // This handles undo/redo.
   const undoStack = useRef([]);
@@ -75,9 +85,62 @@ const NonSerializableContextManager = ({ children }) => {
   // These are clamped parameters that temporarrily have to be faked.
   const [fakeParameters, setFakeParameters] = useState([]);
 
+  // This is used to change the visible cuboids without changing the editor text.s
+  const updateCuboidsSilently = (cuboidText) => {
+    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(cuboidText, prefix);
+
+    // Transpile once to get the subassembly bounds.
+    const transpiled = new Transpiler().transpile(silentAst, getTranspilerSettings());
+    transpiled.assemblyMap = mapToObject(transpiled.assemblyMap);
+    const silentSubassemblyBounds = getSubassemblyBounds(transpiled);
+
+    // Clamp to the subassembly bounds, mark which tokens were faked and transpile again.
+    // Use the ast (with the original token indices) because the clamps are used for text highlighting.
+    const clamps = getSubassemblyBoundClamps(ast, silentAst, silentSubassemblyBounds);
+    setFakeParameters(clamps);
+    const finalTranspiled = new Transpiler().transpile(silentAst, getTranspilerSettings());
+
+    if (finalTranspiled && finalTranspiled.text) {
+      dispatch(execute(finalTranspiled.text));
+    }
+  };
+
+  let update;
+  const deselectCurrentParameter = (save) => {
+    if (!selectedParameter) {
+      return;
+    }
+    const { start, end, selection, value, isInteger, initialValue } = selectedParameter;
+    dispatch(setTranspiledLinesNotSelected(selection));
+    if (save) {
+      const text = editorStateToText(editorState);
+      const substitutions = [[start, end, value], ...fakeParameters.map((f) => [f.token.start, f.token.end, f.value])];
+      const { modifiedCode } = substitute(text, substitutions, true, isInteger ? 0 : 2);
+      update(editorStateFromText(modifiedCode), false, {
+        doNotTriggerParameterSliderDeselection: true,
+        saveToHistory: true,
+      });
+    } else {
+      const text = editorStateToText(editorState);
+      const { modifiedCode } = substitute(text, [[start, end, initialValue]], true, isInteger ? 0 : 2);
+      updateCuboidsSilently(modifiedCode);
+    }
+    setSelectedParameterInner(undefined);
+  };
+
+  const setSelectedParameter = (parameter) => {
+    const selectable =
+      !selectedParameter || !(parameter.start === selectedParameter.start && parameter.end === selectedParameter.end);
+    if (selectable) {
+      deselectCurrentParameter(true);
+      dispatch(setTranspiledLinesSelected(parameter.selection));
+      setSelectedParameterInner(parameter);
+    }
+  };
+
   // This is used to ensure that transpilation only runs when the text actually changes.
   const lastEditorText = useRef(undefined);
-  const update = (newEditorState, forceRefresh, additionalInformation) => {
+  update = (newEditorState, forceRefresh, additionalInformation) => {
     // Get the new editor text.
     const editorText = editorStateToText(newEditorState);
     dispatch(endCuboidEditing());
@@ -101,7 +164,7 @@ const NonSerializableContextManager = ({ children }) => {
 
       // Deselect any parameter sliders.
       if (!additionalInformation?.doNotTriggerParameterSliderDeselection) {
-        setSelectedParameter({});
+        deselectCurrentParameter(false);
       }
 
       if (additionalInformation?.saveToHistory) {
@@ -147,26 +210,6 @@ const NonSerializableContextManager = ({ children }) => {
     setEditorState(
       insertDecorators(newEditorState, mostRecentAst, mostRecentOptimizedParameters, fakeParameters, mostRecentMetadata)
     );
-  };
-
-  // This is used to change the visible cuboids without changing the editor text.s
-  const updateCuboidsSilently = (cuboidText) => {
-    const silentAst = new ShapeAssemblyParser().parseShapeAssemblyProgram(cuboidText, prefix);
-
-    // Transpile once to get the subassembly bounds.
-    const transpiled = new Transpiler().transpile(silentAst, getTranspilerSettings());
-    transpiled.assemblyMap = mapToObject(transpiled.assemblyMap);
-    const silentSubassemblyBounds = getSubassemblyBounds(transpiled);
-
-    // Clamp to the subassembly bounds, mark which tokens were faked and transpile again.
-    // Use the ast (with the original token indices) because the clamps are used for text highlighting.
-    const clamps = getSubassemblyBoundClamps(ast, silentAst, silentSubassemblyBounds);
-    setFakeParameters(clamps);
-    const finalTranspiled = new Transpiler().transpile(silentAst, getTranspilerSettings());
-
-    if (finalTranspiled && finalTranspiled.text) {
-      dispatch(execute(finalTranspiled.text));
-    }
   };
 
   const undoHistory = () => {
@@ -273,8 +316,6 @@ const NonSerializableContextManager = ({ children }) => {
         setEditorState: (newEditorState, additionalInformation) => update(newEditorState, false, additionalInformation),
         forceRefresh: () => update(editorState, true),
         updateCuboidsSilently,
-        selectedParameter,
-        setSelectedParameter, // The selected parameter is an object containing start and end (the token).
         metadata,
 
         // These functions are for undo/redo for the parameter sliders.
@@ -286,6 +327,10 @@ const NonSerializableContextManager = ({ children }) => {
         resetHistory,
 
         // These are other editing task helpers.
+        selectedParameter,
+        setSelectedParameter,
+        setSelectedParameterValue,
+        deselectCurrentParameter,
         startEditingTask,
         startEditingTaskSeries,
         saveEditingTask,

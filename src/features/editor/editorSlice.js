@@ -43,7 +43,7 @@ const editorSlice = createSlice({
       state.selectedTranspiledLines = { ...state.selectedTranspiledLines, ...payload };
     },
     setTranspiledLinesNotSelected(state, { payload }) {
-      payload.forEach((line) => {
+      Object.keys(payload).forEach((line) => {
         delete state.selectedTranspiledLines[line];
       });
     },
