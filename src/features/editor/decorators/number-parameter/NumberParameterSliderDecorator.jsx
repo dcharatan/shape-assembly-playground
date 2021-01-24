@@ -143,9 +143,7 @@ const NumberParameterSliderDecorator = ({
       <span
         ref={target}
         onClick={toggleShow}
-        className={`${
-          show ? 'slider-parameter-selected' : ''
-        } rounded slider-parameter cursor-pointer NumberParameterSliderDecorator`}
+        className={`${show ? 'slider-parameter-selected' : ''} rounded slider-parameter cursor-pointer`}
       >
         {show ? value : children}
       </span>
