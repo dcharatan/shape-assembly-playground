@@ -20,6 +20,10 @@ const EditingTaskIntro = () => {
         <Modal.Title>Welcome to the editing task.</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <div className="bg-danger text-white rounded p-3 mb-3">
+          The editing task study has concluded. You will not receive a gift card for starting it after 12:20 AM EST on
+          January 28, 2021.
+        </div>
         {message}
         <Form.Control
           className="mt-3"
