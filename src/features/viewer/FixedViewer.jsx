@@ -5,13 +5,13 @@ import ViewerCore from './ViewerCore';
 import { registerCamera } from './cameraSync';
 import CuboidsForCode from './CuboidsForCode';
 
-const FixedViewer = ({ code, prefix }) => {
+const FixedViewer = ({ code, prefix, noBorder }) => {
   const orbitRef = useCallback((camera) => {
     registerCamera(camera);
   }, []);
 
   return (
-    <div className="w-100 h-100 border border-secondary">
+    <div className={`w-100 h-100 ${noBorder ? '' : 'border border-secondary'}`}>
       <Canvas
         orthographic
         camera={{
@@ -30,10 +30,12 @@ const FixedViewer = ({ code, prefix }) => {
 FixedViewer.propTypes = {
   code: PropTypes.string.isRequired,
   prefix: PropTypes.string,
+  noBorder: PropTypes.bool,
 };
 
 FixedViewer.defaultProps = {
   prefix: '',
+  noBorder: false,
 };
 
 export default FixedViewer;

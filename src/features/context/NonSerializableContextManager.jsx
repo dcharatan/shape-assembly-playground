@@ -14,7 +14,8 @@ import getSubassemblyBounds, { getSubassemblyBoundClamps } from '../editing-task
 import { mapToObject } from '../../utilities';
 
 export const getTranspilerSettings = () => ({
-  doBboxAttachPostprocessing: window.location.pathname.includes('editing-task'),
+  doBboxAttachPostprocessing:
+    window.location.pathname.includes('editing-task') || window.location.pathname.includes('naming-task'),
   doBboxParamSubstitution: true,
 });
 

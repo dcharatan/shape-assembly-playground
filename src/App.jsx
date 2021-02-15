@@ -12,6 +12,7 @@ import NonSerializableContextManager from './features/context/NonSerializableCon
 import KeypressHandler from './KeypressHandler';
 import Gallery from './features/gallery/Gallery';
 import EditingTask from './features/editing-task/EditingTask';
+import NamingTask from './features/naming-task/NamingTask';
 import EditingTaskThankYou from './features/editing-task/EditingTaskThankYou';
 
 const store = configureStore({
@@ -23,6 +24,7 @@ const App = () => (
     <Provider store={store}>
       <NonSerializableContextManager>
         <div className="d-flex flex-column h-100 overflow-y-hidden">
+          <SapNavbar />
           <Switch>
             <Route exact path="/editing-task">
               <EditingTask />
@@ -30,11 +32,13 @@ const App = () => (
             <Route exact path="/editing-task-thank-you">
               <EditingTaskThankYou />
             </Route>
+            <Route exact path="/naming-task">
+              <NamingTask />
+            </Route>
             <Route exact path="/result-viewer">
               <ResultPage />
             </Route>
             <Route exact path="/">
-              <SapNavbar />
               <div className="d-flex flex-grow-1 overflow-y-hidden">
                 <div className="d-flex flex-row w-100 h-100 p-2 overflow-y-hidden">
                   <div className="w-50 h-100 p-2 overflow-y-hidden d-flex flex-column">

@@ -41,6 +41,9 @@ const SapNavbar = () => {
           <Nav.Link as={Link} to="/editing-task" onClick={() => dispatch(setUsernameAndStudyCondition(undefined))}>
             Editing Task
           </Nav.Link>
+          <Nav.Link as={Link} to="/naming-task">
+            Naming Task
+          </Nav.Link>
         </Nav>
         <div>
           {liveUpdatesEnabled ? null : triggerExecuteButton}
