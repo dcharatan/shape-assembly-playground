@@ -80,6 +80,32 @@ export const substitute = (code, parameters, ignoreThreshold, numDecimals = 2) =
   return { modifiedCode, optimizedParameters };
 };
 
+export const substituteAbstractionValues = (code, abstraction, parameterValues) => {
+  const startIndices = [...code.matchAll(new RegExp(abstraction, 'gi'))].map((x) => x.index);
+  const parameters = [];
+  startIndices.forEach((startIndex) => {
+    // Create an array with the parameter indices.
+    const start = code.indexOf('(', startIndex);
+    const end = code.indexOf(')', startIndex);
+    const codeIndices = [start];
+    for (let i = start; i < end; i += 1) {
+      if (code[i] === ',') {
+        codeIndices.push(i);
+      }
+    }
+    codeIndices.push(end);
+
+    // Add the substitutions to parameters.
+    Object.entries(parameterValues).forEach(([parameterIndex, value]) => {
+      const parameterStart = codeIndices[parameterIndex] + 1;
+      const parameterEnd = codeIndices[parseInt(parameterIndex, 10) + 1];
+      parameters.push([parameterStart, parameterEnd, value]);
+    });
+  });
+  const { modifiedCode } = substitute(code, parameters, true, 2);
+  return modifiedCode;
+};
+
 const colMajorToRowMajor = (colMajor) => {
   const rowMajor = [];
   for (let row = 0; row < 4; row += 1) {

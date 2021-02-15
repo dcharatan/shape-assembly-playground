@@ -5,7 +5,7 @@ import ViewerCore from './ViewerCore';
 import { registerCamera } from './cameraSync';
 import CuboidsForCode from './CuboidsForCode';
 
-const FixedViewer = ({ code, prefix, noBorder }) => {
+const FixedViewer = ({ code, cuboidColor, prefix, noBorder, highlightAbstraction }) => {
   const orbitRef = useCallback((camera) => {
     registerCamera(camera);
   }, []);
@@ -20,7 +20,7 @@ const FixedViewer = ({ code, prefix, noBorder }) => {
         }}
       >
         <ViewerCore orbitRef={orbitRef}>
-          <CuboidsForCode code={code} prefix={prefix} color="orange" />
+          <CuboidsForCode code={code} prefix={prefix} highlightAbstraction={highlightAbstraction} color={cuboidColor} />
         </ViewerCore>
       </Canvas>
     </div>
@@ -31,11 +31,15 @@ FixedViewer.propTypes = {
   code: PropTypes.string.isRequired,
   prefix: PropTypes.string,
   noBorder: PropTypes.bool,
+  highlightAbstraction: PropTypes.string,
+  cuboidColor: PropTypes.string,
 };
 
 FixedViewer.defaultProps = {
   prefix: '',
   noBorder: false,
+  highlightAbstraction: undefined,
+  cuboidColor: 'orange',
 };
 
 export default FixedViewer;

@@ -20,7 +20,7 @@ const SliderInput = ({ value, onChange, min, max, step }) => {
     <div className="d-flex flex-row align-items-center">
       <Form.Control
         type="text"
-        value={textValue ?? value}
+        value={textValue ?? value ?? 'Unset'}
         onChange={(e) => {
           const newValue = e.target.value;
           if (isTextValid(newValue)) {

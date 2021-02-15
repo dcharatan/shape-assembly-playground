@@ -6,10 +6,12 @@ import { fetchExecute } from '../executor/executorSlice';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import GroupWithMatrix from './GroupWithMatrix';
 import { getTranspilerSettings } from '../context/NonSerializableContextManager';
+import { getColor } from '../../colors';
 
-const CuboidsForCode = ({ code, prefix, ...props }) => {
+const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props }) => {
   // Call the executor to get the code's result.
   const [cuboids, setCuboids] = useState([]);
+  const [highlights, setHighlights] = useState({});
   useEffect(() => {
     const doFetch = async () => {
       // Transpile the code.
@@ -19,22 +21,41 @@ const CuboidsForCode = ({ code, prefix, ...props }) => {
         return;
       }
 
+      // If a highlight is specified, find all indices of the highlight token.
+      const newHighlights = {};
+      if (highlightAbstraction) {
+        const highlightKeys = [...code.matchAll(new RegExp(highlightAbstraction, 'gi'))].map(
+          (a) => `${a.index}/${a.index + highlightAbstraction.length}`
+        );
+        highlightKeys.forEach((key) => {
+          const details = transpiled.metadata.get(key);
+          if (!details) {
+            return;
+          }
+          details.forEach(({ line, variant }) => {
+            newHighlights[line] = variant;
+          });
+        });
+      }
+
       // Call the executor.
       const result = await fetchExecute(transpiled.text);
       const json = await result.json();
       setCuboids(json.cuboids);
+      setHighlights(newHighlights);
     };
     doFetch();
-  }, [code, prefix]);
+  }, [code, prefix, highlightAbstraction]);
 
   const cuboidNodes = cuboids.map((cuboid) => {
     const matrix = makeCuboidMatrix(cuboid);
     if (cuboid.isBbox) {
       return null;
     }
+    const highlight = highlights[cuboid.lineIndex];
     return (
       <GroupWithMatrix matrix={matrix} key={JSON.stringify(cuboid)}>
-        <BaseCuboid {...props} />
+        <BaseCuboid {...props} color={highlight ? getColor(highlight) : color} />
       </GroupWithMatrix>
     );
   });
@@ -45,10 +66,14 @@ const CuboidsForCode = ({ code, prefix, ...props }) => {
 CuboidsForCode.propTypes = {
   code: PropTypes.string.isRequired,
   prefix: PropTypes.string,
+  highlightAbstraction: PropTypes.string,
+  color: PropTypes.string,
 };
 
 CuboidsForCode.defaultProps = {
   prefix: '',
+  highlightAbstraction: undefined,
+  color: undefined,
 };
 
 export default CuboidsForCode;

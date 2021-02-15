@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import ViewerGridHeader from './ViewerGridHeader';
 import FixedViewer from '../viewer/FixedViewer';
+import { substituteAbstractionValues } from '../executor/executorSlice';
 
-const ViewerGrid = ({ numRows, numCols, programs, prefix }) => {
+const ViewerGrid = ({ numRows, numCols }) => {
+  const prefix = useSelector((state) => state.namingTaskSlice.prefix);
+  const programs = useSelector((state) => state.namingTaskSlice.programs);
+  const abstraction = useSelector((state) => state.namingTaskSlice.abstraction);
+  const parameterValues = useSelector((state) => state.namingTaskSlice.parameterValues);
+
   const itemsPerPage = numRows * numCols;
   const [currentPrograms, setCurrentPrograms] = useState(programs.slice(0, itemsPerPage));
 
@@ -20,9 +27,16 @@ const ViewerGrid = ({ numRows, numCols, programs, prefix }) => {
     if (col < numCols - 1) {
       classNames.push('border-right');
     }
+    const modifiedProgram = substituteAbstractionValues(program, abstraction, parameterValues);
     return (
-      <div style={{ width, height }} className={classNames.join(' ')}>
-        <FixedViewer code={program} prefix={prefix} noBorder />
+      <div style={{ width, height }} className={classNames.join(' ')} key={`${row}/${col}`}>
+        <FixedViewer
+          code={modifiedProgram}
+          prefix={prefix}
+          highlightAbstraction={abstraction}
+          noBorder
+          cuboidColor="gray"
+        />
       </div>
     );
   });
@@ -38,12 +52,6 @@ const ViewerGrid = ({ numRows, numCols, programs, prefix }) => {
 ViewerGrid.propTypes = {
   numRows: PropTypes.number.isRequired,
   numCols: PropTypes.number.isRequired,
-  programs: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  prefix: PropTypes.string,
-};
-
-ViewerGrid.defaultProps = {
-  prefix: '',
 };
 
 export default ViewerGrid;

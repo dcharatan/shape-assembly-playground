@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import Code from '../editing-task/tutorial/Code';
 import NamingInterfaceParameter from './NamingInterfaceParameter';
 import NameField from './NameField';
 import SelectionBox from './SelectionBox';
 
-const getFloatParameters = (prefix, targetAbstraction) => {
+const getFloatParameters = (prefix, abstraction) => {
   // Find the line where the abstraction is declared.
-  const abstractionDeclaration = prefix.split('\n').find((line) => line.includes(`def ${targetAbstraction}`));
+  const abstractionDeclaration = prefix.split('\n').find((line) => line.includes(`def ${abstraction}`));
 
   // Extract the parameter names.
   const parameters = abstractionDeclaration
@@ -26,17 +26,20 @@ const getFloatParameters = (prefix, targetAbstraction) => {
   return parameterMap;
 };
 
-const NamingInterface = ({ prefix, targetAbstraction }) => {
+const NamingInterface = () => {
+  const prefix = useSelector((state) => state.namingTaskSlice.prefix);
+  const abstraction = useSelector((state) => state.namingTaskSlice.abstraction);
+
   // Set up state for what's currently being named.
   // -1 is the function name. Nonnegative values are parameters (by float parameter index).
   const [activeItem, setActiveItem] = useState(-1);
   const [names, setNames] = useState({});
 
   // Find the abstraction's float parameters.
-  const parameterMap = getFloatParameters(prefix, targetAbstraction);
+  const parameterMap = getFloatParameters(prefix, abstraction);
 
   // Create an input for each parameter.
-  const parameters = Object.entries(parameterMap).map(([name], floatParameterIndex) => (
+  const parameters = Object.entries(parameterMap).map(([name, index], floatParameterIndex) => (
     <NamingInterfaceParameter
       name={`Parameter ${floatParameterIndex} (${names[name] ?? name})`}
       selected={floatParameterIndex === activeItem}
@@ -44,6 +47,8 @@ const NamingInterface = ({ prefix, targetAbstraction }) => {
         setNames({ [name]: value, ...names });
         setActiveItem(activeItem + 1);
       }}
+      index={index}
+      key={name}
     />
   ));
 
@@ -53,7 +58,7 @@ const NamingInterface = ({ prefix, targetAbstraction }) => {
     <NameField
       type="Function"
       onConfirm={(value) => {
-        setNames({ function: value });
+        setNames({ abstraction: value });
         setActiveItem(0);
       }}
       className={nameFieldActive ? '' : 'p-2'}
@@ -63,7 +68,7 @@ const NamingInterface = ({ prefix, targetAbstraction }) => {
   const nameArea = (
     <SelectionBox selected={nameFieldActive}>
       <h1>
-        <Code>{names.function ?? targetAbstraction}</Code>
+        <Code>{names.abstraction ?? abstraction}</Code>
       </h1>
       {nameFieldActive && nameField}
     </SelectionBox>
@@ -75,11 +80,6 @@ const NamingInterface = ({ prefix, targetAbstraction }) => {
       {parameters}
     </div>
   );
-};
-
-NamingInterface.propTypes = {
-  prefix: PropTypes.string.isRequired,
-  targetAbstraction: PropTypes.string.isRequired,
 };
 
 export default NamingInterface;
