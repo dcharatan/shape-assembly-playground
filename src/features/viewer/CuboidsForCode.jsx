@@ -1,17 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ShapeAssemblyParser, { Transpiler } from '@dcharatan/shape-assembly-parser';
-import { fetchExecute } from '../executor/executorSlice';
 import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import GroupWithMatrix from './GroupWithMatrix';
 import { getTranspilerSettings } from '../context/NonSerializableContextManager';
 import { getColor } from '../../colors';
+import RateLimiter from '../executor/RateLimiter';
 
 const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props }) => {
   // Call the executor to get the code's result.
   const [cuboids, setCuboids] = useState([]);
   const [highlights, setHighlights] = useState({});
+  const rateLimiterRef = useRef(new RateLimiter(2));
   useEffect(() => {
     const doFetch = async () => {
       // Transpile the code.
@@ -39,10 +40,10 @@ const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props })
       }
 
       // Call the executor.
-      const result = await fetchExecute(transpiled.text);
-      const json = await result.json();
-      setCuboids(json.cuboids);
-      setHighlights(newHighlights);
+      rateLimiterRef.current.execute(transpiled.text, (result) => {
+        setCuboids(result.cuboids);
+        setHighlights(newHighlights);
+      });
     };
     doFetch();
   }, [code, prefix, highlightAbstraction]);
