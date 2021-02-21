@@ -139,11 +139,14 @@ const namingTaskSlice = createSlice({
   reducers: {
     setParameterValue(state, { payload }) {
       const { index, newValue } = payload;
-      state.parameterValues[index] = newValue;
+      state.parameterValues = { [index]: newValue };
+    },
+    resetParameterValues(state) {
+      state.parameterValues = {};
     },
   },
 });
 
-export const { setParameterValue } = namingTaskSlice.actions;
+export const { setParameterValue, resetParameterValues } = namingTaskSlice.actions;
 
 export default namingTaskSlice.reducer;

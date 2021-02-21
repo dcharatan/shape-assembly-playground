@@ -1,0 +1,16 @@
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+.selection-box-button {
+  border: 1px solid transparent;
+  &:hover:not(.border-primary-important) {
+    @extend .border
+  }
+  &:focus {
+    outline: 0 !important;
+    border: 1px solid theme-color("primary") !important;
+  }
+}
+
+.border-primary-important {
+  border: 1px solid theme-color("primary") !important;
+}

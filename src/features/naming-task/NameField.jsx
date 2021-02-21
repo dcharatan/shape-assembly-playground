@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 
-const NameField = ({ onConfirm, type, disabled, ...props }) => {
+const NameField = ({ onConfirm, type, disabled, rename, ...props }) => {
   const [text, setText] = useState('');
 
   return (
@@ -16,13 +16,13 @@ const NameField = ({ onConfirm, type, disabled, ...props }) => {
           disabled={disabled}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              onConfirm(text);
+              onConfirm(text, rename);
             }
           }}
         />
         <InputGroup.Append>
-          <Button onClick={() => onConfirm(text)} disabled={disabled}>
-            Confirm
+          <Button onClick={() => onConfirm(text, rename)} disabled={disabled}>
+            {rename ? 'Rename' : 'Set Name'}
           </Button>
         </InputGroup.Append>
       </InputGroup>
@@ -34,12 +34,14 @@ NameField.propTypes = {
   type: PropTypes.string,
   onConfirm: PropTypes.func,
   disabled: PropTypes.bool,
+  rename: PropTypes.bool,
 };
 
 NameField.defaultProps = {
   type: 'Parameter',
   onConfirm: () => {},
   disabled: false,
+  rename: false,
 };
 
 export default NameField;

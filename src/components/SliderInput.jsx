@@ -38,7 +38,7 @@ const SliderInput = ({ value, onChange, min, max, step }) => {
         min={min}
         max={max}
         step={step}
-        value={value}
+        value={value ?? 0.5}
         onChange={(e) => {
           onChange(parseFloat(e.target.value));
           setTextValue(undefined);
@@ -50,7 +50,7 @@ const SliderInput = ({ value, onChange, min, max, step }) => {
 };
 
 SliderInput.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   min: PropTypes.number,
   max: PropTypes.number,
@@ -58,6 +58,7 @@ SliderInput.propTypes = {
 };
 
 SliderInput.defaultProps = {
+  value: undefined,
   min: 0,
   max: 1,
   step: 0.01,

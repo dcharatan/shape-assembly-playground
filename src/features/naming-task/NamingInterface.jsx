@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import Code from '../editing-task/tutorial/Code';
+import { useDispatch, useSelector } from 'react-redux';
+import { Badge } from 'react-bootstrap';
+import { resetParameterValues } from './namingTaskSlice';
 import NamingInterfaceParameter from './NamingInterfaceParameter';
 import NameField from './NameField';
 import SelectionBox from './SelectionBox';
@@ -27,12 +28,17 @@ const getFloatParameters = (prefix, abstraction) => {
 };
 
 const NamingInterface = () => {
+  const dispatch = useDispatch();
   const prefix = useSelector((state) => state.namingTaskSlice.prefix);
   const abstraction = useSelector((state) => state.namingTaskSlice.abstraction);
 
   // Set up state for what's currently being named.
   // -1 is the function name. Nonnegative values are parameters (by float parameter index).
-  const [activeItem, setActiveItem] = useState(-1);
+  const [activeItem, innerSetActiveItem] = useState(-1);
+  const setActiveItem = (item) => {
+    innerSetActiveItem(item);
+    dispatch(resetParameterValues());
+  };
   const [names, setNames] = useState({});
 
   // Find the abstraction's float parameters.
@@ -41,11 +47,17 @@ const NamingInterface = () => {
   // Create an input for each parameter.
   const parameters = Object.entries(parameterMap).map(([name, index], floatParameterIndex) => (
     <NamingInterfaceParameter
-      name={`Parameter ${floatParameterIndex} (${names[name] ?? name})`}
+      givenName={names[name]}
+      parameterIndex={floatParameterIndex}
       selected={floatParameterIndex === activeItem}
-      onConfirm={(value) => {
-        setNames({ [name]: value, ...names });
-        setActiveItem(activeItem + 1);
+      onSelect={() => {
+        setActiveItem(floatParameterIndex);
+      }}
+      onConfirm={(value, rename) => {
+        setNames({ ...names, [name]: value });
+        if (!rename) {
+          setActiveItem(activeItem + 1);
+        }
       }}
       index={index}
       key={name}
@@ -53,29 +65,38 @@ const NamingInterface = () => {
   ));
 
   // Create the function name area.
+  // This should probably be done in a separate component.
   const nameFieldActive = activeItem === -1;
   const nameField = (
-    <NameField
-      type="Function"
-      onConfirm={(value) => {
-        setNames({ abstraction: value });
-        setActiveItem(0);
-      }}
-      className={nameFieldActive ? '' : 'p-2'}
-      disabled={!nameFieldActive}
-    />
+    <div className="border-top pt-2">
+      <NameField
+        type="Function"
+        onConfirm={(value) => {
+          setNames({ ...names, abstraction: value });
+          setActiveItem(0);
+        }}
+        className={nameFieldActive ? '' : 'p-2'}
+        disabled={!nameFieldActive}
+        rename={!!names.abstraction}
+      />
+    </div>
+  );
+  const header = (
+    <div>
+      <Badge variant={names.abstraction ? 'success' : 'danger'}>{names.abstraction ? 'Named' : 'Unnamed'}</Badge>
+      {` Function${names.abstraction ? ` "${names.abstraction}"` : ''}`}
+    </div>
   );
   const nameArea = (
-    <SelectionBox selected={nameFieldActive}>
-      <h1>
-        <Code>{names.abstraction ?? abstraction}</Code>
-      </h1>
-      {nameFieldActive && nameField}
-    </SelectionBox>
+    <div className={nameFieldActive && 'my-2'}>
+      <SelectionBox selected={nameFieldActive} onSelect={() => setActiveItem(-1)} header={header}>
+        {nameFieldActive && nameField}
+      </SelectionBox>
+    </div>
   );
 
   return (
-    <div className="border rounded p-2 h-100 w-100 overflow-y-scroll">
+    <div className="rounded border h-100 w-100 overflow-y-scroll p-2">
       {nameArea}
       {parameters}
     </div>
