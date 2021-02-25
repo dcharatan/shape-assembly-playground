@@ -5,9 +5,19 @@ import './UnstyledButton.scss';
 const UnstyledButton = ({ onClick, className, children }) => {
   const classNames = ['unstyled-button', className];
   return (
-    <button onClick={onClick} className={classNames.join(' ')} type="button">
+    <div
+      onClick={() => onClick()}
+      className={classNames.join(' ')}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === 'Spacebar' || e.key === ' ') {
+          onClick();
+        }
+      }}
+    >
       {children}
-    </button>
+    </div>
   );
 };
 

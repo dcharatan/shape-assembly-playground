@@ -133,13 +133,13 @@ const namingTaskSlice = createSlice({
     abstraction: 'abstraction_12',
     names: {},
 
-    // Current parameter values, where the mapping is index --> value.
+    // Current parameter values, where the mapping is name --> value.
     parameterValues: {},
   },
   reducers: {
     setParameterValue(state, { payload }) {
-      const { index, newValue } = payload;
-      state.parameterValues = { [index]: newValue };
+      const { name, newValue } = payload;
+      state.parameterValues = { [name]: newValue };
     },
     resetParameterValues(state) {
       state.parameterValues = {};

@@ -27,7 +27,7 @@ const ViewerGrid = ({ numRows, numCols }) => {
     if (col < numCols - 1) {
       classNames.push('border-right');
     }
-    const modifiedProgram = substituteAbstractionValues(program, abstraction, parameterValues);
+    const modifiedProgram = substituteAbstractionValues(program, prefix, abstraction, parameterValues);
     return (
       <div style={{ width, height }} className={classNames.join(' ')} key={`${row}/${col}`}>
         <FixedViewer

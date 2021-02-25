@@ -13,7 +13,28 @@ let delayedExecution;
 let optimizeController;
 let previousOptimizationPromise;
 
-export const fetchExecute = (program) =>
+export const getFloatParameters = (prefix, abstraction) => {
+  // Find the line where the abstraction is declared.
+  const abstractionDeclaration = prefix.split('\n').find((line) => line.includes(`def ${abstraction}`));
+
+  // Extract the parameter names.
+  const parameters = abstractionDeclaration
+    .split('(')[1]
+    .split(')')[0]
+    .split(',')
+    .map((x) => x.trim());
+
+  // Map parameters to their indices within the function.
+  const parameterMap = {};
+  parameters.forEach((parameter, index) => {
+    if (parameter.includes('f_var')) {
+      parameterMap[parameter] = index;
+    }
+  });
+  return parameterMap;
+};
+
+export const fetchExecute = (program, cacheKey) =>
   fetch(getExecutionBaseUrl(), {
     headers: new Headers({
       'content-type': 'application/json',
@@ -21,6 +42,7 @@ export const fetchExecute = (program) =>
     method: 'POST',
     body: JSON.stringify({
       program,
+      cacheKey,
     }),
   });
 
@@ -80,9 +102,10 @@ export const substitute = (code, parameters, ignoreThreshold, numDecimals = 2) =
   return { modifiedCode, optimizedParameters };
 };
 
-export const substituteAbstractionValues = (code, abstraction, parameterValues) => {
+export const substituteAbstractionValues = (code, prefix, abstraction, parameterValues) => {
   const startIndices = [...code.matchAll(new RegExp(abstraction, 'gi'))].map((x) => x.index);
   const parameters = [];
+  const parameterMap = getFloatParameters(prefix, abstraction);
   startIndices.forEach((startIndex) => {
     // Create an array with the parameter indices.
     const start = code.indexOf('(', startIndex);
@@ -96,9 +119,10 @@ export const substituteAbstractionValues = (code, abstraction, parameterValues) 
     codeIndices.push(end);
 
     // Add the substitutions to parameters.
-    Object.entries(parameterValues).forEach(([parameterIndex, value]) => {
+    Object.entries(parameterValues).forEach(([parameterName, value]) => {
+      const parameterIndex = parameterMap[parameterName];
       const parameterStart = codeIndices[parameterIndex] + 1;
-      const parameterEnd = codeIndices[parseInt(parameterIndex, 10) + 1];
+      const parameterEnd = codeIndices[parameterIndex + 1];
       parameters.push([parameterStart, parameterEnd, value]);
     });
   });

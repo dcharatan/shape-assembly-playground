@@ -7,7 +7,7 @@ class RateLimiter {
     this.mostRecentExecutionCompletionTimestamp = 0;
   }
 
-  async execute(programText, onComplete) {
+  async execute(programText, onComplete, key, onOutdatedComplete) {
     // Record the execution request time.
     const timestamp = new Date().getTime();
 
@@ -19,18 +19,22 @@ class RateLimiter {
       clearTimeout(this.delayedExecution);
     }
     if (timestamp < this.mostRecentExecutionRequestTimestamp + minimumMilliseconds) {
-      this.delayedExecution = setTimeout(() => this.execute(programText, onComplete), minimumMilliseconds);
+      this.delayedExecution = setTimeout(
+        () => this.execute(programText, onComplete, key, onOutdatedComplete),
+        minimumMilliseconds
+      );
       return;
     }
     this.mostRecentExecutionRequestTimestamp = timestamp;
 
     // Call the executor.
-    const result = await fetchExecute(programText);
+    const result = await fetchExecute(programText, key);
     if (!result.ok) {
       throw new Error('Executor failed.');
     }
     const json = await result.json();
     if (timestamp < this.mostRecentExecutionCompletionTimestamp || !json) {
+      onOutdatedComplete && onOutdatedComplete(json);
       return;
     }
     this.mostRecentExecutionCompletionTimestamp = timestamp;

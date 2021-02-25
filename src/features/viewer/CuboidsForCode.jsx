@@ -6,13 +6,13 @@ import BaseCuboid, { makeCuboidMatrix } from './BaseCuboid';
 import GroupWithMatrix from './GroupWithMatrix';
 import { getTranspilerSettings } from '../context/NonSerializableContextManager';
 import { getColor } from '../../colors';
-import RateLimiter from '../executor/RateLimiter';
+import CachedRateLimiter from '../executor/CachedRateLimiter';
 
 const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props }) => {
   // Call the executor to get the code's result.
   const [cuboids, setCuboids] = useState([]);
   const [highlights, setHighlights] = useState({});
-  const rateLimiterRef = useRef(new RateLimiter(2));
+  const rateLimiterRef = useRef(new CachedRateLimiter(2));
   useEffect(() => {
     const doFetch = async () => {
       // Transpile the code.
@@ -40,7 +40,7 @@ const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props })
       }
 
       // Call the executor.
-      rateLimiterRef.current.execute(transpiled.text, (result) => {
+      rateLimiterRef.current.cachedExecute(transpiled.text, (result) => {
         setCuboids(result.cuboids);
         setHighlights(newHighlights);
       });

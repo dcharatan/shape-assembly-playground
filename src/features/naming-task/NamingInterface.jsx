@@ -1,31 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Badge } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
 import { resetParameterValues } from './namingTaskSlice';
 import NamingInterfaceParameter from './NamingInterfaceParameter';
 import NameField from './NameField';
 import SelectionBox from './SelectionBox';
-
-const getFloatParameters = (prefix, abstraction) => {
-  // Find the line where the abstraction is declared.
-  const abstractionDeclaration = prefix.split('\n').find((line) => line.includes(`def ${abstraction}`));
-
-  // Extract the parameter names.
-  const parameters = abstractionDeclaration
-    .split('(')[1]
-    .split(')')[0]
-    .split(',')
-    .map((x) => x.trim());
-
-  // Map parameters to their indices within the function.
-  const parameterMap = {};
-  parameters.forEach((parameter, index) => {
-    if (parameter.includes('f_var')) {
-      parameterMap[parameter] = index;
-    }
-  });
-  return parameterMap;
-};
+import PrecomputeButton from './PrecomputeButton';
+import { getFloatParameters } from '../executor/executorSlice';
 
 const NamingInterface = () => {
   const dispatch = useDispatch();
@@ -47,6 +28,7 @@ const NamingInterface = () => {
   // Create an input for each parameter.
   const parameters = Object.entries(parameterMap).map(([name, index], floatParameterIndex) => (
     <NamingInterfaceParameter
+      name={name}
       givenName={names[name]}
       parameterIndex={floatParameterIndex}
       selected={floatParameterIndex === activeItem}
@@ -88,7 +70,7 @@ const NamingInterface = () => {
     </div>
   );
   const nameArea = (
-    <div className={nameFieldActive && 'my-2'}>
+    <div className={nameFieldActive ? 'my-2' : undefined}>
       <SelectionBox selected={nameFieldActive} onSelect={() => setActiveItem(-1)} header={header}>
         {nameFieldActive && nameField}
       </SelectionBox>
@@ -96,9 +78,21 @@ const NamingInterface = () => {
   );
 
   return (
-    <div className="rounded border h-100 w-100 overflow-y-scroll p-2">
-      {nameArea}
-      {parameters}
+    <div className="rounded border h-100 w-100 d-flex flex-column">
+      <div className="d-flex flex-grow-1 flex-column overflow-y-scroll p-2">
+        {nameArea}
+        {parameters}
+      </div>
+      <div className="border-top p-2">
+        <Button
+          size="sm"
+          className="m-2"
+          disabled={Object.entries(parameterMap).length + 1 !== Object.entries(names).length}
+        >
+          Submit Names
+        </Button>
+        <PrecomputeButton />
+      </div>
     </div>
   );
 };

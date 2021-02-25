@@ -7,11 +7,11 @@ import SelectionBox from './SelectionBox';
 import NameField from './NameField';
 import { setParameterValue } from './namingTaskSlice';
 
-const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterIndex, onConfirm, index }) => {
+const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterIndex, onConfirm, index, name }) => {
   const parameterValues = useSelector((state) => state.namingTaskSlice.parameterValues);
-  const value = parameterValues[index];
+  const value = parameterValues[name];
   const dispatch = useDispatch();
-  const setValue = (newValue) => dispatch(setParameterValue({ index, newValue }));
+  const setValue = (newValue) => dispatch(setParameterValue({ name, newValue }));
 
   const nameArea = (
     <div>
@@ -21,7 +21,7 @@ const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterInde
   );
 
   return (
-    <div className={selected && 'my-2'}>
+    <div className={selected ? 'my-2' : ''}>
       <SelectionBox
         header={nameArea}
         selected={selected}
@@ -43,6 +43,7 @@ const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterInde
 
 NamingInterfaceParameter.propTypes = {
   givenName: PropTypes.string,
+  name: PropTypes.string.isRequired,
   parameterIndex: PropTypes.number.isRequired,
   selected: PropTypes.bool,
   onSelect: PropTypes.func,
