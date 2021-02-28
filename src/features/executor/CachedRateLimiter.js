@@ -5,7 +5,7 @@ class CachedRateLimiter extends RateLimiter {
   static cache = new Map();
 
   async cachedExecute(programText, onComplete) {
-    const key = getProgramKey(programText);
+    const key = getProgramKey(programText).toString();
 
     const cachedResult = CachedRateLimiter.cache.get(key);
     if (cachedResult) {

@@ -1,15 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ViewerGridHeader from './ViewerGridHeader';
 import FixedViewer from '../viewer/FixedViewer';
 import { substituteAbstractionValues } from '../executor/executorSlice';
+import { fetchCachedPrecomputations } from './precomputation';
+import CachedRateLimiter from '../executor/CachedRateLimiter';
+import { markCachedValuesFetched } from './namingTaskSlice';
 
 const ViewerGrid = ({ numRows, numCols }) => {
+  const dispatch = useDispatch();
   const prefix = useSelector((state) => state.namingTaskSlice.prefix);
   const programs = useSelector((state) => state.namingTaskSlice.programs);
   const abstraction = useSelector((state) => state.namingTaskSlice.abstraction);
   const parameterValues = useSelector((state) => state.namingTaskSlice.parameterValues);
+  const cachedValuesFetched = useSelector((state) => state.namingTaskSlice.cachedValuesFetched);
+  useEffect(() => {
+    const fetchCache = async () => {
+      if (!cachedValuesFetched) {
+        const result = await fetchCachedPrecomputations(prefix, programs, abstraction);
+        if (result.ok) {
+          const json = await result.json();
+          Object.entries(json).forEach(([key, value]) => {
+            CachedRateLimiter.cache.set(key, value);
+          });
+        }
+        dispatch(markCachedValuesFetched());
+      }
+    };
+    fetchCache();
+  }, [abstraction, cachedValuesFetched, dispatch, prefix, programs]);
 
   const itemsPerPage = numRows * numCols;
   const [currentPrograms, setCurrentPrograms] = useState(programs.slice(0, itemsPerPage));

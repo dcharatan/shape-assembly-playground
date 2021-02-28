@@ -135,6 +135,7 @@ const namingTaskSlice = createSlice({
 
     // Current parameter values, where the mapping is name --> value.
     parameterValues: {},
+    cachedValuesFetched: false,
   },
   reducers: {
     setParameterValue(state, { payload }) {
@@ -144,9 +145,12 @@ const namingTaskSlice = createSlice({
     resetParameterValues(state) {
       state.parameterValues = {};
     },
+    markCachedValuesFetched(state) {
+      state.cachedValuesFetched = true;
+    },
   },
 });
 
-export const { setParameterValue, resetParameterValues } = namingTaskSlice.actions;
+export const { setParameterValue, resetParameterValues, markCachedValuesFetched } = namingTaskSlice.actions;
 
 export default namingTaskSlice.reducer;

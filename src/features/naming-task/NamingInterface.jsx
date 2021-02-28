@@ -83,7 +83,7 @@ const NamingInterface = () => {
         {nameArea}
         {parameters}
       </div>
-      <div className="border-top p-2">
+      <div className="border-top p-2 d-flex flex-row align-items-center">
         <Button
           size="sm"
           className="m-2"

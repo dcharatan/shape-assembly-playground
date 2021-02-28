@@ -16,7 +16,7 @@ const ViewerGridHeader = ({ programs, itemsPerPage, setPrograms }) => {
   for (let pageIndex = 0; pageIndex < numPages; pageIndex += 1) {
     paginationItems.push(
       <Pagination.Item key={pageIndex} active={pageIndex === selectedPageIndex} onClick={() => selectPage(pageIndex)}>
-        {pageIndex}
+        {`Page ${pageIndex}`}
       </Pagination.Item>
     );
   }

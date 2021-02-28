@@ -20,6 +20,8 @@ const hash = (str, seed = 0) => {
 
 export const getProgramKey = (transpiledProgramText) => hash(transpiledProgramText);
 
+export const getProgramSetKey = (prefix, program, abstraction) => hash(`${prefix}//${program}//${abstraction}`);
+
 export const preparePrecomputations = (prefix, program, abstraction) => {
   const parameters = getFloatParameters(prefix, abstraction);
   const precomputations = {};
@@ -36,17 +38,32 @@ export const preparePrecomputations = (prefix, program, abstraction) => {
     }
   });
 
-  return precomputations;
+  return {
+    programSetKey: getProgramSetKey(prefix, program, abstraction),
+    precomputations,
+  };
 };
 
 export const fetchPreparePrecomputations = (prefix, programs, abstraction) => {
-  const precomputations = {};
-  programs.forEach((program) => Object.assign(precomputations, preparePrecomputations(prefix, program, abstraction)));
+  const precomputationSets = {};
+  programs.forEach((program) => {
+    const { programSetKey, precomputations } = preparePrecomputations(prefix, program, abstraction);
+    precomputationSets[programSetKey] = precomputations;
+  });
   return fetch(`${getExecutionBaseUrl()}/precompute`, {
     headers: new Headers({
       'content-type': 'application/json',
     }),
     method: 'POST',
-    body: JSON.stringify(precomputations),
+    body: JSON.stringify(precomputationSets),
   });
 };
+
+export const fetchCachedPrecomputations = (prefix, programs, abstraction) =>
+  fetch(`${getExecutionBaseUrl()}/fetch-cache`, {
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+    method: 'POST',
+    body: JSON.stringify(programs.map((program) => getProgramSetKey(prefix, program, abstraction))),
+  });
