@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import ViewerGridHeader from './ViewerGridHeader';
@@ -32,7 +32,7 @@ const ViewerGrid = ({ numRows, numCols }) => {
   }, [abstraction, cachedValuesFetched, dispatch, prefix, programs]);
 
   const itemsPerPage = numRows * numCols;
-  const [currentPrograms, setCurrentPrograms] = useState(programs.slice(0, itemsPerPage));
+  const currentPrograms = programs.slice(0, itemsPerPage);
 
   const width = `${100 / numCols}%`;
   const height = `${100 / numRows}%`;
@@ -63,7 +63,7 @@ const ViewerGrid = ({ numRows, numCols }) => {
 
   return (
     <div className="d-flex flex-column h-100">
-      <ViewerGridHeader itemsPerPage={itemsPerPage} programs={programs} setPrograms={setCurrentPrograms} />
+      <ViewerGridHeader />
       <div className="border border-top-0 d-flex flex-grow-1 flex-wrap">{viewers}</div>
     </div>
   );

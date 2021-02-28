@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Badge, Button } from 'react-bootstrap';
-import { resetParameterValues } from './namingTaskSlice';
+import { setActiveItem, startNextTask, setParameterNames } from './namingTaskSlice';
 import NamingInterfaceParameter from './NamingInterfaceParameter';
 import NameField from './NameField';
 import SelectionBox from './SelectionBox';
@@ -12,15 +12,9 @@ const NamingInterface = () => {
   const dispatch = useDispatch();
   const prefix = useSelector((state) => state.namingTaskSlice.prefix);
   const abstraction = useSelector((state) => state.namingTaskSlice.abstraction);
-
-  // Set up state for what's currently being named.
-  // -1 is the function name. Nonnegative values are parameters (by float parameter index).
-  const [activeItem, innerSetActiveItem] = useState(-1);
-  const setActiveItem = (item) => {
-    innerSetActiveItem(item);
-    dispatch(resetParameterValues());
-  };
-  const [names, setNames] = useState({});
+  const names = useSelector((state) => state.namingTaskSlice.names);
+  const activeItem = useSelector((state) => state.namingTaskSlice.activeItem);
+  const setNames = (newNames) => dispatch(setParameterNames(newNames));
 
   // Find the abstraction's float parameters.
   const parameterMap = getFloatParameters(prefix, abstraction);
@@ -33,12 +27,12 @@ const NamingInterface = () => {
       parameterIndex={floatParameterIndex}
       selected={floatParameterIndex === activeItem}
       onSelect={() => {
-        setActiveItem(floatParameterIndex);
+        dispatch(setActiveItem(floatParameterIndex));
       }}
       onConfirm={(value, rename) => {
         setNames({ ...names, [name]: value });
         if (!rename) {
-          setActiveItem(activeItem + 1);
+          dispatch(setActiveItem(activeItem + 1));
         }
       }}
       index={index}
@@ -55,7 +49,7 @@ const NamingInterface = () => {
         type="Function"
         onConfirm={(value) => {
           setNames({ ...names, abstraction: value });
-          setActiveItem(0);
+          dispatch(setActiveItem(0));
         }}
         className={nameFieldActive ? '' : 'p-2'}
         disabled={!nameFieldActive}
@@ -87,7 +81,8 @@ const NamingInterface = () => {
         <Button
           size="sm"
           className="m-2"
-          disabled={Object.entries(parameterMap).length + 1 !== Object.entries(names).length}
+          // disabled={Object.entries(parameterMap).length + 1 !== Object.entries(names).length}
+          onClick={() => dispatch(startNextTask())}
         >
           Submit Names
         </Button>

@@ -50,10 +50,17 @@ const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props })
 
   const cuboidNodes = cuboids.map((cuboid) => {
     const matrix = makeCuboidMatrix(cuboid);
-    if (cuboid.isBbox) {
-      return null;
-    }
     const highlight = highlights[cuboid.lineIndex];
+    if (cuboid.isBbox) {
+      if (!highlight) {
+        return null;
+      }
+      return (
+        <GroupWithMatrix matrix={matrix} key={JSON.stringify(cuboid)}>
+          <BaseCuboid {...props} wireframeColor={getColor(highlight)} wireframe />
+        </GroupWithMatrix>
+      );
+    }
     return (
       <GroupWithMatrix matrix={matrix} key={JSON.stringify(cuboid)}>
         <BaseCuboid {...props} color={highlight ? getColor(highlight) : color} />
