@@ -32,6 +32,9 @@ const namingTaskSlice = createSlice({
 
     // -1 is the function name. Nonnegative values are parameters (by float parameter index).
     activeItem: -1,
+
+    // The user's name (this is associated with the data).
+    username: undefined,
   },
   reducers: {
     setParameterValue(state, { payload }) {
@@ -58,6 +61,12 @@ const namingTaskSlice = createSlice({
       state.parameterValues = {};
       state.cachedValuesFetched = false;
       state.activeItem = -1;
+      if (state.taskIndex === 0) {
+        state.username = undefined;
+      }
+    },
+    startFirstTask(state, { payload }) {
+      state.username = payload;
     },
   },
 });
@@ -68,6 +77,7 @@ export const {
   startNextTask,
   setParameterNames,
   setActiveItem,
+  startFirstTask,
 } = namingTaskSlice.actions;
 
 export default namingTaskSlice.reducer;

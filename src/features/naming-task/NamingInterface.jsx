@@ -103,11 +103,10 @@ const NamingInterface = () => {
           className="m-2"
           disabled={Object.entries(parameterMap).length + 1 !== Object.entries(names).length}
           onClick={() => {
-            if (taskIndex + 1 < tasks.length) {
-              // First, clear all cached executions.
-              CachedRateLimiter.cache.clear();
-              dispatch(startNextTask());
-            } else {
+            const done = taskIndex + 1 === tasks.length;
+            CachedRateLimiter.cache.clear();
+            dispatch(startNextTask());
+            if (done) {
               history.push('/naming-task-thank-you');
             }
           }}
