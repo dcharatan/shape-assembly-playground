@@ -1,7 +1,8 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getBaseUrl } from '../../environment';
 
 // Import all tasks in the data folder.
 const context = require.context('./data', true, /.json$/);
@@ -12,6 +13,22 @@ context.keys().forEach((key) => {
   tasks.push(JSON.parse(JSON.stringify(resource)));
 });
 const { prefix: firstPrefix, programs: firstPrograms, abstraction: firstAbstraction } = tasks[0];
+
+export const saveTaskLog = createAsyncThunk('saveTaskLog', async (_, { getState }) => {
+  const { names, username, taskIndex, actionLog } = getState().namingTaskSlice;
+  fetch(`${getBaseUrl()}/save-naming-task`, {
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+    method: 'POST',
+    body: JSON.stringify({
+      names,
+      username,
+      taskIndex,
+      actionLog,
+    }),
+  });
+});
 
 const namingTaskSlice = createSlice({
   name: 'namingTaskSlice',
@@ -35,6 +52,7 @@ const namingTaskSlice = createSlice({
 
     // The user's name (this is associated with the data).
     username: undefined,
+    actionLog: [],
   },
   reducers: {
     setParameterValue(state, { payload }) {
@@ -64,9 +82,18 @@ const namingTaskSlice = createSlice({
       if (state.taskIndex === 0) {
         state.username = undefined;
       }
+      state.actionLog = [];
     },
     startFirstTask(state, { payload }) {
-      state.username = payload;
+      state.username = `${payload}_${new Date().getTime()}`;
+    },
+    recordAction(state, { payload }) {
+      const { type, information } = payload;
+      state.actionLog.push({
+        timestamp: new Date().getTime(),
+        type,
+        information,
+      });
     },
   },
 });
@@ -78,6 +105,7 @@ export const {
   setParameterNames,
   setActiveItem,
   startFirstTask,
+  recordAction,
 } = namingTaskSlice.actions;
 
 export default namingTaskSlice.reducer;

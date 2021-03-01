@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SliderInput from '../../components/SliderInput';
 import SelectionBox from './SelectionBox';
 import NameField from './NameField';
-import { setParameterValue } from './namingTaskSlice';
+import { recordAction, setParameterValue } from './namingTaskSlice';
 
 const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterIndex, onConfirm, index, name }) => {
   const parameterValues = useSelector((state) => state.namingTaskSlice.parameterValues);
@@ -29,6 +29,7 @@ const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterInde
         onSelect={() => {
           if (!selected) {
             onSelect();
+            dispatch(recordAction({ type: 'SELECT_PARAMETER', information: { name } }));
           }
         }}
       >

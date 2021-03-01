@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Badge, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { setActiveItem, startNextTask, setParameterNames, tasks } from './namingTaskSlice';
+import { setActiveItem, startNextTask, setParameterNames, tasks, recordAction, saveTaskLog } from './namingTaskSlice';
 import NamingInterfaceParameter from './NamingInterfaceParameter';
 import NameField from './NameField';
 import SelectionBox from './SelectionBox';
@@ -35,6 +35,7 @@ const NamingInterface = () => {
         dispatch(setActiveItem(floatParameterIndex));
       }}
       onConfirm={(value, rename) => {
+        dispatch(recordAction({ type: 'NAME_PARAMETER', information: { taskIndex, name, rename, value } }));
         setNames({ ...names, [name]: value });
         if (!rename) {
           dispatch(setActiveItem(activeItem + 1));
@@ -53,6 +54,7 @@ const NamingInterface = () => {
       <NameField
         type="Function"
         onConfirm={(value) => {
+          dispatch(recordAction({ type: 'NAME_ABSTRACTION', information: { taskIndex, value } }));
           setNames({ ...names, abstraction: value });
           dispatch(setActiveItem(0));
         }}
@@ -103,6 +105,8 @@ const NamingInterface = () => {
           className="m-2"
           disabled={Object.entries(parameterMap).length + 1 !== Object.entries(names).length}
           onClick={() => {
+            dispatch(recordAction({ type: 'COMPLETE_TASK', information: { taskIndex } }));
+            dispatch(saveTaskLog());
             const done = taskIndex + 1 === tasks.length;
             CachedRateLimiter.cache.clear();
             dispatch(startNextTask());
