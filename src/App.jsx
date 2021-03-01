@@ -14,6 +14,7 @@ import Gallery from './features/gallery/Gallery';
 import EditingTask from './features/editing-task/EditingTask';
 import NamingTask from './features/naming-task/NamingTask';
 import EditingTaskThankYou from './features/editing-task/EditingTaskThankYou';
+import NamingTaskThankYou from './features/naming-task/NamingTaskThankYou';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -34,6 +35,9 @@ const App = () => (
             </Route>
             <Route exact path="/naming-task">
               <NamingTask />
+            </Route>
+            <Route exact path="/naming-task-thank-you">
+              <NamingTaskThankYou />
             </Route>
             <Route exact path="/result-viewer">
               <ResultPage />

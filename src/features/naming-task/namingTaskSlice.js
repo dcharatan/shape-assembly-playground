@@ -49,7 +49,7 @@ const namingTaskSlice = createSlice({
       state.activeItem = payload;
     },
     startNextTask(state) {
-      state.taskIndex += 1;
+      state.taskIndex = (state.taskIndex + 1) % tasks.length;
       const { prefix, programs, abstraction } = tasks[state.taskIndex];
       state.prefix = prefix;
       state.programs = programs;

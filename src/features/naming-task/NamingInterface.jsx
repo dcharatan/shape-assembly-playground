@@ -1,18 +1,22 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Badge, Button } from 'react-bootstrap';
-import { setActiveItem, startNextTask, setParameterNames } from './namingTaskSlice';
+import { useHistory } from 'react-router-dom';
+import { setActiveItem, startNextTask, setParameterNames, tasks } from './namingTaskSlice';
 import NamingInterfaceParameter from './NamingInterfaceParameter';
 import NameField from './NameField';
 import SelectionBox from './SelectionBox';
 import PrecomputeButton from './PrecomputeButton';
 import { getFloatParameters } from '../executor/executorSlice';
 import Code from '../editing-task/tutorial/Code';
+import CachedRateLimiter from '../executor/CachedRateLimiter';
 
 const NamingInterface = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const prefix = useSelector((state) => state.namingTaskSlice.prefix);
   const abstraction = useSelector((state) => state.namingTaskSlice.abstraction);
+  const taskIndex = useSelector((state) => state.namingTaskSlice.taskIndex);
   const names = useSelector((state) => state.namingTaskSlice.names);
   const activeItem = useSelector((state) => state.namingTaskSlice.activeItem);
   const setNames = (newNames) => dispatch(setParameterNames(newNames));
@@ -78,7 +82,7 @@ const NamingInterface = () => {
   const heading = (
     <div className="border-bottom">
       <div className="p-3">
-        <div>You are currently naming:</div>
+        <div>{`Task ${taskIndex + 1} of ${tasks.length}: You are currently naming:`}</div>
         <Code>{`${names.abstraction ?? 'function'}(${parameterNames.join(', ')})`}</Code>
       </div>
     </div>
@@ -98,7 +102,15 @@ const NamingInterface = () => {
           size="sm"
           className="m-2"
           disabled={Object.entries(parameterMap).length + 1 !== Object.entries(names).length}
-          onClick={() => dispatch(startNextTask())}
+          onClick={() => {
+            if (taskIndex + 1 < tasks.length) {
+              // First, clear all cached executions.
+              CachedRateLimiter.cache.clear();
+              dispatch(startNextTask());
+            } else {
+              history.push('/naming-task-thank-you');
+            }
+          }}
         >
           Submit Names
         </Button>
