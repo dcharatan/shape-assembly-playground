@@ -33,7 +33,7 @@ const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterInde
         }}
       >
         <div className="pt-2 border-top">
-          <SliderInput value={value} onChange={setValue} />
+          <SliderInput value={value} onChange={setValue} animation={{ fps: 30, step: 0.05 }} />
           <NameField className="mt-2" onConfirm={onConfirm} rename={!!givenName} />
         </div>
       </SelectionBox>
