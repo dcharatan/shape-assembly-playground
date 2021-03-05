@@ -26,7 +26,7 @@ export const preparePrecomputations = (prefix, program, abstraction) => {
   const parameters = getFloatParameters(prefix, abstraction);
   const precomputations = {};
   Object.keys(parameters).forEach((parameter) => {
-    for (let parameterValue = 0; parameterValue <= 1; parameterValue += 0.01) {
+    for (let parameterValue = 0; parameterValue <= 1; parameterValue += 0.05) {
       const substitutedProgram = substituteAbstractionValues(program, prefix, abstraction, {
         [parameter]: parameterValue,
       });
