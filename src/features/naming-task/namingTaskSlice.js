@@ -30,6 +30,31 @@ export const saveTaskLog = createAsyncThunk('saveTaskLog', async (_, { getState 
   });
 });
 
+export const saveRanges = createAsyncThunk('saveRanges', async (_, { getState }) => {
+  const { parameterBounds } = getState().namingTaskSlice;
+  try {
+    const result = await fetch(`${getBaseUrl()}/save-parameter-ranges`, {
+      headers: new Headers({
+        'content-type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify(parameterBounds),
+    });
+
+    // Using alert is OK because this isn't public-facing.
+    if (result.ok) {
+      // eslint-disable-next-line no-alert
+      alert('Saved parameter ranges successfully.');
+    } else {
+      // eslint-disable-next-line no-alert
+      alert('Failed to save parameter ranges.');
+    }
+  } catch {
+    // eslint-disable-next-line no-alert
+    alert('Failed to save parameter ranges.');
+  }
+});
+
 const recursiveUpdate = (initial, update) => {
   [...Object.keys(initial), ...Object.keys(update)].forEach((key) => {
     if (initial[key] !== undefined && update[key] !== undefined) {
@@ -131,3 +156,14 @@ export const {
 } = namingTaskSlice.actions;
 
 export default namingTaskSlice.reducer;
+
+export const loadRanges = createAsyncThunk('loadRanges', async (_, { dispatch }) => {
+  const result = await fetch(`${getBaseUrl()}/load-parameter-ranges`, {
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+    method: 'GET',
+  });
+  const json = await result.json();
+  dispatch(setParameterBounds(json));
+});

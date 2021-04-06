@@ -10,6 +10,7 @@ import PrecomputeButton from './PrecomputeButton';
 import { getFloatParameters } from '../executor/executorSlice';
 import Code from '../editing-task/tutorial/Code';
 import CachedRateLimiter from '../executor/CachedRateLimiter';
+import SaveRangesButton from './SaveRangesButton';
 
 const NamingInterface = () => {
   const history = useHistory();
@@ -117,6 +118,7 @@ const NamingInterface = () => {
         >
           Submit Names
         </Button>
+        <SaveRangesButton />
         <PrecomputeButton />
       </div>
     </div>
