@@ -6,6 +6,7 @@ import SliderInput from '../../components/SliderInput';
 import SelectionBox from './SelectionBox';
 import NameField from './NameField';
 import { recordAction, setParameterValue } from './namingTaskSlice';
+import RangeSelector from './RangeSelector';
 
 const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterIndex, onConfirm, index, name }) => {
   const parameterValues = useSelector((state) => state.namingTaskSlice.parameterValues);
@@ -13,6 +14,16 @@ const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterInde
   const dispatch = useDispatch();
   const setValue = (newValue) => dispatch(setParameterValue({ name, newValue }));
 
+  // Find the minimum and maximum for the parameter.
+  const parameterBounds = useSelector((state) => state.namingTaskSlice.parameterBounds);
+  const taskIndex = useSelector((state) => state.namingTaskSlice.taskIndex);
+  let range;
+  try {
+    const rangeValue = parameterBounds[taskIndex][parameterIndex].range;
+    range = rangeValue ? parseFloat(rangeValue) : 1;
+  } catch {
+    range = 1;
+  }
   const nameArea = (
     <div>
       <Badge variant={givenName ? 'success' : 'danger'}>{givenName ? 'Named' : 'Unnamed'}</Badge>
@@ -34,8 +45,9 @@ const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterInde
         }}
       >
         <div className="pt-2 border-top">
-          <SliderInput value={value} onChange={setValue} animation={{ fps: 30, step: 0.05 }} />
+          <SliderInput value={value} onChange={setValue} animation={{ fps: 30, step: 0.05 }} min={0} max={range} />
           <NameField className="mt-2" onConfirm={onConfirm} rename={!!givenName} />
+          <RangeSelector className="mt-2" parameterIndex={parameterIndex} />
         </div>
       </SelectionBox>
     </div>

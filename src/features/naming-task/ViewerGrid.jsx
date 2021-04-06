@@ -7,6 +7,7 @@ import { substituteAbstractionValues } from '../executor/executorSlice';
 import { fetchCachedPrecomputations } from './precomputation';
 import CachedRateLimiter from '../executor/CachedRateLimiter';
 import { markCachedValuesFetched } from './namingTaskSlice';
+import CenterSelector from './CenterSelector';
 
 const ViewerGrid = ({ numRows, numCols }) => {
   const dispatch = useDispatch();
@@ -15,6 +16,9 @@ const ViewerGrid = ({ numRows, numCols }) => {
   const abstraction = useSelector((state) => state.namingTaskSlice.abstraction);
   const parameterValues = useSelector((state) => state.namingTaskSlice.parameterValues);
   const cachedValuesFetched = useSelector((state) => state.namingTaskSlice.cachedValuesFetched);
+  const activeItem = useSelector((state) => state.namingTaskSlice.activeItem);
+  const parameterBounds = useSelector((state) => state.namingTaskSlice.parameterBounds);
+  const taskIndex = useSelector((state) => state.namingTaskSlice.taskIndex);
   useEffect(() => {
     const fetchCache = async () => {
       if (!cachedValuesFetched) {
@@ -40,23 +44,51 @@ const ViewerGrid = ({ numRows, numCols }) => {
   const viewers = currentPrograms.map((program, index) => {
     const row = Math.floor(index / numCols);
     const col = index % numCols;
-    const classNames = [];
+    const classNames = ['d-flex flex-column'];
     if (row < numRows - 1) {
       classNames.push('border-bottom');
     }
     if (col < numCols - 1) {
       classNames.push('border-right');
     }
-    const modifiedProgram = substituteAbstractionValues(program, prefix, abstraction, parameterValues);
+
+    // Add the offset from center.
+    // This is super hacky. Warning: VERY bad code :)
+    let center;
+    let range;
+    try {
+      const parameterIndex = parseInt(Object.keys(parameterValues)[0].split('_')[2], 10);
+      const centerValue = parameterBounds[taskIndex][parameterIndex].centers[index];
+      center = centerValue ? parseFloat(centerValue) : 0.5;
+    } catch {
+      center = 0.5;
+    }
+    try {
+      const parameterIndex = parseInt(Object.keys(parameterValues)[0].split('_')[2], 10);
+      const rangeValue = parameterBounds[taskIndex][parameterIndex].range;
+      range = rangeValue ? parseFloat(rangeValue) : 1;
+    } catch {
+      range = 1;
+    }
+    center = Math.min(1, Math.max(center, 0));
+    const adjustedParameterValues = {};
+    Object.entries(parameterValues).forEach(([key, value]) => {
+      adjustedParameterValues[key] = Math.min(1, Math.max(0, value + center - range * 0.5));
+    });
+
+    const modifiedProgram = substituteAbstractionValues(program, prefix, abstraction, adjustedParameterValues);
     return (
       <div style={{ width, height }} className={classNames.join(' ')} key={`${row}/${col}`}>
-        <FixedViewer
-          code={modifiedProgram}
-          prefix={prefix}
-          highlightAbstraction={abstraction}
-          noBorder
-          cuboidColor="gray"
-        />
+        <div className="d-flex flex-grow-1 border-bottom">
+          <FixedViewer
+            code={modifiedProgram}
+            prefix={prefix}
+            highlightAbstraction={abstraction}
+            noBorder
+            cuboidColor="gray"
+          />
+        </div>
+        <CenterSelector className="m-2" shapeIndex={index} parameterIndex={activeItem} />
       </div>
     );
   });

@@ -30,6 +30,21 @@ export const saveTaskLog = createAsyncThunk('saveTaskLog', async (_, { getState 
   });
 });
 
+const recursiveUpdate = (initial, update) => {
+  [...Object.keys(initial), ...Object.keys(update)].forEach((key) => {
+    if (initial[key] !== undefined && update[key] !== undefined) {
+      if (typeof initial[key] === 'object' && typeof update[key] === 'object') {
+        recursiveUpdate(initial[key], update[key]);
+      } else {
+        initial[key] = update[key];
+      }
+    } else if (update[key] !== undefined) {
+      initial[key] = update[key];
+    }
+  });
+  return initial;
+};
+
 const namingTaskSlice = createSlice({
   name: 'namingTaskSlice',
   initialState: {
@@ -53,8 +68,14 @@ const namingTaskSlice = createSlice({
     // The user's name (this is associated with the data).
     username: undefined,
     actionLog: [],
+
+    // The parameter bounds.
+    parameterBounds: {},
   },
   reducers: {
+    setParameterBounds(state, { payload }) {
+      state.parameterBounds = recursiveUpdate(state.parameterBounds, payload);
+    },
     setParameterValue(state, { payload }) {
       const { name, newValue } = payload;
       state.parameterValues = { [name]: newValue };
@@ -106,6 +127,7 @@ export const {
   setActiveItem,
   startFirstTask,
   recordAction,
+  setParameterBounds,
 } = namingTaskSlice.actions;
 
 export default namingTaskSlice.reducer;
