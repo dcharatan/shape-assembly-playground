@@ -9,7 +9,7 @@ const NamingTask = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadRanges());
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <div className="d-flex flex-grow-1 overflow-y-hidden">
