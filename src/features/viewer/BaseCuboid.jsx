@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import * as THREE from 'three';
 
@@ -19,10 +19,10 @@ export const makeCuboidMatrix = (cuboid) => {
 };
 
 const BaseCuboid = ({ color, wireframeColor, onPointerOver, onPointerOut, onClick, wireframe, invisible }) => {
-  const geometry = new THREE.BoxBufferGeometry();
+  const geometry = useRef(new THREE.BoxBufferGeometry());
   const mesh = (
     <mesh
-      geometry={geometry}
+      geometry={geometry.current}
       onPointerOut={onPointerOut}
       onPointerOver={onPointerOver}
       onClick={(e) => {
@@ -35,7 +35,7 @@ const BaseCuboid = ({ color, wireframeColor, onPointerOver, onPointerOut, onClic
   );
   const lines = (
     <lineSegments>
-      <edgesGeometry attach="geometry" args={[geometry]} />
+      <edgesGeometry attach="geometry" args={[geometry.current]} />
       <lineBasicMaterial attach="material" color={wireframeColor} />
     </lineSegments>
   );
