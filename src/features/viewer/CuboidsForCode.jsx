@@ -44,7 +44,7 @@ const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props })
     // Call the executor.
     rateLimiterRef.current.cachedExecute(transpiled.text, (result) => {
       softCuboids.current = result.cuboids;
-      if (cuboids.length === 0) {
+      if (cuboids.length !== result.cuboids.length) {
         setCuboids(result.cuboids);
         setHighlights(newHighlights);
       }
