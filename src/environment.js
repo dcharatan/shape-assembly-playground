@@ -16,3 +16,8 @@ export const getShowTutorial = () =>
 
 export const getOptimizerDisabled = () =>
   process.env.REACT_APP_OPTIMIZER_DISABLED ? process.env.REACT_APP_OPTIMIZER_DISABLED === 'true' : true;
+
+export const getParameterBoundsToolsEnabled = () =>
+  process.env.REACT_APP_PARAMETER_BOUNDS_TOOLS_ENABLED
+    ? process.env.REACT_APP_PARAMETER_BOUNDS_TOOLS_ENABLED === 'true'
+    : false;

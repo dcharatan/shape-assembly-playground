@@ -8,6 +8,7 @@ import { fetchCachedPrecomputations } from './precomputation';
 import CachedRateLimiter from '../executor/CachedRateLimiter';
 import { markCachedValuesFetched } from './namingTaskSlice';
 import CenterSelector from './CenterSelector';
+import { getParameterBoundsToolsEnabled } from '../../environment';
 
 const ViewerGrid = ({ numRows, numCols }) => {
   const dispatch = useDispatch();
@@ -88,7 +89,9 @@ const ViewerGrid = ({ numRows, numCols }) => {
             cuboidColor="gray"
           />
         </div>
-        <CenterSelector className="m-2" shapeIndex={index} parameterIndex={activeItem} />
+        {getParameterBoundsToolsEnabled() ? (
+          <CenterSelector className="m-2" shapeIndex={index} parameterIndex={activeItem} />
+        ) : null}
       </div>
     );
   });

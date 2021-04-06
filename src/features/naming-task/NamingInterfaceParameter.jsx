@@ -7,6 +7,7 @@ import SelectionBox from './SelectionBox';
 import NameField from './NameField';
 import { recordAction, setParameterValue } from './namingTaskSlice';
 import RangeSelector from './RangeSelector';
+import { getParameterBoundsToolsEnabled } from '../../environment';
 
 const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterIndex, onConfirm, index, name }) => {
   const parameterValues = useSelector((state) => state.namingTaskSlice.parameterValues);
@@ -47,7 +48,7 @@ const NamingInterfaceParameter = ({ selected, onSelect, givenName, parameterInde
         <div className="pt-2 border-top">
           <SliderInput value={value} onChange={setValue} animation={{ fps: 30, step: 0.05 }} min={0} max={range} />
           <NameField className="mt-2" onConfirm={onConfirm} rename={!!givenName} />
-          <RangeSelector className="mt-2" parameterIndex={parameterIndex} />
+          {getParameterBoundsToolsEnabled() ? <RangeSelector className="mt-2" parameterIndex={parameterIndex} /> : null}
         </div>
       </SelectionBox>
     </div>

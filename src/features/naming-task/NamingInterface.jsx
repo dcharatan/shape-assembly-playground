@@ -11,6 +11,7 @@ import { getFloatParameters } from '../executor/executorSlice';
 import Code from '../editing-task/tutorial/Code';
 import CachedRateLimiter from '../executor/CachedRateLimiter';
 import SaveRangesButton from './SaveRangesButton';
+import { getParameterBoundsToolsEnabled } from '../../environment';
 
 const NamingInterface = () => {
   const history = useHistory();
@@ -118,7 +119,7 @@ const NamingInterface = () => {
         >
           Submit Names
         </Button>
-        <SaveRangesButton />
+        {getParameterBoundsToolsEnabled() ? <SaveRangesButton /> : null}
         <PrecomputeButton />
       </div>
     </div>
