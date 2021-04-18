@@ -10,6 +10,7 @@ const NameField = ({ onConfirm, type, disabled, rename, ...props }) => {
     <div {...props}>
       <InputGroup>
         <FormControl
+          autoFocus
           placeholder={`${type} Name`}
           value={text}
           onChange={(e) => setText(e.target.value)}

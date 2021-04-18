@@ -88,7 +88,7 @@ const namingTaskSlice = createSlice({
     taskIndex: 0,
 
     // -1 is the function name. Nonnegative values are parameters (by float parameter index).
-    activeItem: -1,
+    activeItem: 0,
 
     // The user's name (this is associated with the data).
     username: undefined,
@@ -124,7 +124,7 @@ const namingTaskSlice = createSlice({
       state.names = {};
       state.parameterValues = {};
       state.cachedValuesFetched = false;
-      state.activeItem = -1;
+      state.activeItem = 0;
       if (state.taskIndex === 0) {
         state.username = undefined;
       }

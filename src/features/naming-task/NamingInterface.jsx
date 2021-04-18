@@ -39,9 +39,8 @@ const NamingInterface = () => {
       onConfirm={(value, rename) => {
         dispatch(recordAction({ type: 'NAME_PARAMETER', information: { taskIndex, name, rename, value } }));
         setNames({ ...names, [name]: value });
-        if (!rename) {
-          dispatch(setActiveItem(activeItem + 1));
-        }
+        const nextItem = activeItem === parameters.length - 1 ? -1 : activeItem + 1;
+        dispatch(setActiveItem(nextItem));
       }}
       index={index}
       key={name}
@@ -97,8 +96,8 @@ const NamingInterface = () => {
       <div className="d-flex flex-grow-1 flex-column overflow-y-scroll">
         {heading}
         <div className="p-2">
-          {nameArea}
           {parameters}
+          {nameArea}
         </div>
       </div>
       <div className="border-top p-2 d-flex flex-row align-items-center">
