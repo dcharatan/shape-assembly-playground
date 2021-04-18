@@ -62,6 +62,7 @@ const NamingInterface = () => {
         className={nameFieldActive ? '' : 'p-2'}
         disabled={!nameFieldActive}
         rename={!!names.abstraction}
+        initialName={names.abstraction}
       />
     </div>
   );

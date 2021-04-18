@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 
-const NameField = ({ onConfirm, type, disabled, rename, ...props }) => {
-  const [text, setText] = useState('');
+const NameField = ({ onConfirm, type, disabled, rename, initialName, ...props }) => {
+  const [text, setText] = useState(initialName);
 
   return (
     <div {...props}>
@@ -36,6 +36,7 @@ NameField.propTypes = {
   onConfirm: PropTypes.func,
   disabled: PropTypes.bool,
   rename: PropTypes.bool,
+  initialName: PropTypes.string,
 };
 
 NameField.defaultProps = {
@@ -43,6 +44,7 @@ NameField.defaultProps = {
   onConfirm: () => {},
   disabled: false,
   rename: false,
+  initialName: '',
 };
 
 export default NameField;
