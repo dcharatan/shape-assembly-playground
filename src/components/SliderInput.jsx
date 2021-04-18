@@ -22,7 +22,7 @@ const SliderInput = ({ value, onChange, min, max, step, animation }) => {
         }
         setTextValue(newValue.toFixed(2));
         onChange(newValue);
-      }, 1000 / fps);
+      }, (1000 / fps) * (0.5 / (max - min)));
       return () => clearInterval(interval);
     }
     return () => {};
