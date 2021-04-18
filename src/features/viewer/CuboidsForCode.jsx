@@ -14,7 +14,6 @@ const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props })
   // Call the executor to get the code's result.
   const [cuboids, setCuboids] = useState([]);
   const [highlights, setHighlights] = useState({});
-  const softCuboids = useRef(undefined);
   const rateLimiterRef = useRef(new CachedRateLimiter(2));
   const doFetch = useCallback(async () => {
     // Transpile the code.
@@ -43,31 +42,29 @@ const CuboidsForCode = ({ code, prefix, highlightAbstraction, color, ...props })
 
     // Call the executor.
     rateLimiterRef.current.cachedExecute(transpiled.text, (result) => {
-      softCuboids.current = result.cuboids;
-      if (cuboids.length !== result.cuboids.length) {
-        setCuboids(result.cuboids);
-        setHighlights(newHighlights);
-      }
+      setCuboids(result.cuboids);
+      setHighlights(newHighlights);
     });
-  }, [code, prefix, highlightAbstraction, cuboids.length]);
+  }, [code, prefix, highlightAbstraction]);
   useEffect(() => {
     doFetch();
   }, [code, prefix, highlightAbstraction, doFetch]);
 
-  const cuboidNodes = cuboids.map((cuboid, index) => {
+  const cuboidNodes = cuboids.map((cuboid) => {
     const highlight = highlights[cuboid.lineIndex];
+    const matrix = makeCuboidMatrix(cuboid);
     if (cuboid.isBbox) {
       if (!highlight) {
         return null;
       }
       return (
-        <GroupWithMatrix matrix={() => makeCuboidMatrix(softCuboids.current[index])} key={index}>
+        <GroupWithMatrix matrix={matrix} key={JSON.stringify(cuboid)}>
           <BaseCuboid {...props} wireframeColor={getColor(highlight)} wireframe />
         </GroupWithMatrix>
       );
     }
     return (
-      <GroupWithMatrix matrix={() => makeCuboidMatrix(softCuboids.current[index])} key={index}>
+      <GroupWithMatrix matrix={matrix} key={JSON.stringify(cuboid)}>
         <BaseCuboid {...props} color={highlight ? getColor(highlight) : color} />
       </GroupWithMatrix>
     );
