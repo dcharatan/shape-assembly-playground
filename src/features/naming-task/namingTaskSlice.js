@@ -109,7 +109,14 @@ const namingTaskSlice = createSlice({
       state.cachedValuesFetched = true;
     },
     setParameterNames(state, { payload }) {
-      state.names = payload;
+      // Make sure empty strings aren't added to names.
+      const corrected = {};
+      Object.entries(payload).forEach(([key, value]) => {
+        if (value) {
+          corrected[key] = value;
+        }
+      });
+      state.names = corrected;
     },
     setActiveItem(state, { payload }) {
       state.parameterValues = {};
