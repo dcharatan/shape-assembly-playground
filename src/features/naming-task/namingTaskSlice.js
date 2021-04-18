@@ -14,6 +14,18 @@ context.keys().forEach((key) => {
 });
 const { prefix: firstPrefix, programs: firstPrograms, abstraction: firstAbstraction } = tasks[0];
 
+// Only enable certain tasks.
+// This can also be undefined to enable all tasks.
+export const ENABLED_TASKS = [0, 1, 4, 5, 6, 8, 10];
+
+const getNextTask = (taskIndex) => {
+  if (ENABLED_TASKS) {
+    const index = (ENABLED_TASKS.indexOf(taskIndex) + 1) % ENABLED_TASKS.length;
+    return ENABLED_TASKS[index];
+  }
+  return (taskIndex + 1) % tasks.length;
+};
+
 export const saveTaskLog = createAsyncThunk('saveTaskLog', async (_, { getState }) => {
   const { names, username, taskIndex, actionLog } = getState().namingTaskSlice;
   fetch(`${getBaseUrl()}/save-naming-task`, {
@@ -85,7 +97,7 @@ const namingTaskSlice = createSlice({
     parameterValues: {},
     cachedValuesFetched: false,
 
-    taskIndex: 0,
+    taskIndex: ENABLED_TASKS ? ENABLED_TASKS[0] : 0,
 
     // -1 is the function name. Nonnegative values are parameters (by float parameter index).
     activeItem: undefined,
@@ -123,7 +135,7 @@ const namingTaskSlice = createSlice({
       state.activeItem = payload;
     },
     startNextTask(state) {
-      state.taskIndex = (state.taskIndex + 1) % tasks.length;
+      state.taskIndex = getNextTask(state.taskIndex);
       const { prefix, programs, abstraction } = tasks[state.taskIndex];
       state.prefix = prefix;
       state.programs = programs;

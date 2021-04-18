@@ -2,7 +2,15 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Badge, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { setActiveItem, startNextTask, setParameterNames, tasks, recordAction, saveTaskLog } from './namingTaskSlice';
+import {
+  setActiveItem,
+  startNextTask,
+  setParameterNames,
+  tasks,
+  recordAction,
+  saveTaskLog,
+  ENABLED_TASKS,
+} from './namingTaskSlice';
 import NamingInterfaceParameter from './NamingInterfaceParameter';
 import NameField from './NameField';
 import SelectionBox from './SelectionBox';
@@ -83,10 +91,16 @@ const NamingInterface = () => {
   const parameterNames = Object.entries(parameterMap).map(
     ([name], floatParameterIndex) => names[name] ?? `parameter ${floatParameterIndex + 1}`
   );
+  let text = `Task ${taskIndex + 1} of ${tasks.length}: You are currently naming:`;
+  if (ENABLED_TASKS) {
+    text = `Task ${taskIndex + 1} (${ENABLED_TASKS.indexOf(taskIndex) + 1} of ${
+      ENABLED_TASKS.length
+    } in test sequence)`;
+  }
   const heading = (
     <div className="border-bottom">
       <div className="p-3">
-        <div>{`Task ${taskIndex + 1} of ${tasks.length}: You are currently naming:`}</div>
+        <div>{text}</div>
         <Code>{`${names.abstraction ?? 'function'}(${parameterNames.join(', ')})`}</Code>
       </div>
     </div>
@@ -109,7 +123,9 @@ const NamingInterface = () => {
           onClick={() => {
             dispatch(recordAction({ type: 'COMPLETE_TASK', information: { taskIndex } }));
             dispatch(saveTaskLog());
-            const done = taskIndex + 1 === tasks.length;
+            const done = ENABLED_TASKS
+              ? ENABLED_TASKS.indexOf(taskIndex) === ENABLED_TASKS.length - 1
+              : taskIndex + 1 === tasks.length;
             CachedRateLimiter.cache.clear();
             dispatch(startNextTask());
             if (done) {
